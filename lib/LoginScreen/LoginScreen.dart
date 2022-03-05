@@ -22,6 +22,7 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(onPressed: (){
               final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.googleLogin();
+              
             }, child: const Text("Anmelden"))
 
           ],

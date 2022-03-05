@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mintag_application/Homescreen/Homescreen.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/LoginScreen/LoginScreen.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.green,
         ),
-        home: const LoginScreen(),
+        home: const HomeScreen(),
       ),
     );
   }
