@@ -17,6 +17,8 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     _user = googleUser;
 
+    debugPrint("[---user---]" + user.email);
+
     final googleAuth = await googleUser.authentication;
 
     final credential = GoogleAuthProvider.credential(
@@ -24,7 +26,6 @@ class GoogleSignInProvider extends ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-        debugPrint("[----token----]");
 
     debugPrint(credential.accessToken);
 
