@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1003331260950",
+    "project_id": "mintag-bachelor-thesis",
+    "storage_bucket": "mintag-bachelor-thesis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003331260950:android:ab8f387302179682d59b37",
+        "android_client_info": {
+          "package_name": "com.example.mintag_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003331260950-n5sp1ukbere0u1jgmshjo03fuicmcqqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1xn7FVFl9R46kgsT5fuXNxjUU-7ZKWGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003331260950-n5sp1ukbere0u1jgmshjo03fuicmcqqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
