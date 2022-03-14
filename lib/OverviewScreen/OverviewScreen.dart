@@ -56,7 +56,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   void createTestEntry(){
 
     String date = DateTime.now().toString();
-    var newEntry = new DiaryEntry(date, "Hello, this is a test entry");
+    var newEntry = DiaryEntry(date, "Hello, this is a test entry");
     newEntry.setId(saveEntry(newEntry));
 
     // setState(() {
