@@ -1,17 +1,22 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
+import 'package:uuid/uuid.dart';
 
 class DiaryDTO {
 
-  DatabaseReference? diaryId;
+  String? diaryId;
   List<DiaryEntryDTO> entries = [];
-  String diaryName;
+  String? diaryName;
 
-  DiaryDTO(this.diaryName);
+  DiaryDTO(this.diaryName){
 
-  void setId(DatabaseReference id){
-    diaryId = id;
+      const uuid = Uuid();
+      diaryId = uuid.v1();
   }
+
+  
 
   void addEntry(DiaryEntryDTO entry){
     entries.add(entry);
@@ -19,8 +24,9 @@ class DiaryDTO {
 
   Map<String, dynamic> toJson(){
     return {
+      'diaryId': diaryId,
       'diaryName': diaryName,
-      'entries': entries.toList()
+      'entries': jsonEncode(entries)
     };
   }
 

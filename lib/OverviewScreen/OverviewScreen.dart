@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mintag_application/Database/Database.dart';
+import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntry.dart';
+import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +47,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                provider.googleLogout();
              }, child: const Text("logout")),
             const SizedBox(height: 30,),
-            ElevatedButton(onPressed: createTestEntry, child: const Text("Test post"))
+            ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc"))
           ],
         ),
       )
@@ -53,6 +55,18 @@ class _OverviewScreenState extends State<OverviewScreen> {
     
   }
 
+
+  void createUserAccount(){
+
+    final user = FirebaseAuth.instance.currentUser!;
+
+    //String diaryName = "richards diary";
+    DiaryDTO diary = DiaryDTO("yeahh");
+    UserAccountDTO newAccount = UserAccountDTO(diary, user.uid);
+    newAccount.setId(persistUserAccout(newAccount));
+  }
+
+  //this one is for test purposes
   void createTestEntry(){
 
     String date = DateTime.now().toString();

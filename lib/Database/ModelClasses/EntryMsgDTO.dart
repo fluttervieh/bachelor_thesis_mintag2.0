@@ -1,19 +1,22 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:uuid/uuid.dart';
 
 class EntryMsgDTO{
 
-  DatabaseReference? entryMsgId;
+  String? entryMsgId;
   String message;
   double rating;
 
-  EntryMsgDTO(this.message, this.rating);
-
-  void setId(DatabaseReference id){
-    entryMsgId = id;
+  EntryMsgDTO(this.message, this.rating){
+    const uuid = Uuid();
+    entryMsgId = uuid.v1();
   }
+
+ 
 
   Map<String, dynamic> toJson(){
     return {
+      'entryMsgId': entryMsgId,
       'message' : message,
       'rating': rating
     };
