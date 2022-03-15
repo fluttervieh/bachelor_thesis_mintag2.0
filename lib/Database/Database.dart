@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
+import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'ModelClasses/DiaryEntry.dart';
@@ -21,6 +22,14 @@ DatabaseReference addDiaryEntry(String dataBaseId, DiaryEntryDTO entry){
   var ref = databaseReference.child('accounts/' + dataBaseId + "/diary/entries/").push();
   ref.set(entry.toJson());
   return ref;
+}
+
+Query getAllEntries(String databaseId){
+  
+  databaseReference.child('accounts/' + databaseId + "/diary/entries/").onChildAdded.forEach((element) => {
+     print(element.snapshot.value.toString())
+  });
+  return databaseReference;
 }
 
 //this one is just for test purposes

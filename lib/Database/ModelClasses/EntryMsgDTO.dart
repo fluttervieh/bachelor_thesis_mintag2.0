@@ -8,7 +8,7 @@ class EntryMsgDTO{
   double rating;
 
   EntryMsgDTO(this.message, this.rating){
-    const uuid = Uuid();
+    var uuid = Uuid();
     entryMsgId = uuid.v1();
   }
 

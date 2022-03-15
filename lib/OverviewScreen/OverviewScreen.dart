@@ -49,7 +49,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
              }, child: const Text("logout")),
             const SizedBox(height: 30,),
             ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc")),
-                        ElevatedButton(onPressed: addTestEntry, child: const Text("testEntry"))
+            ElevatedButton(onPressed: addTestEntry, child: const Text("testEntry")),
+            ElevatedButton(onPressed: printAllEntries, child: const Text("getAllEntries")),
+
+
 
           ],
         ),
@@ -59,6 +62,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 
 
+//test purpose
   void createUserAccount(){
 
     final user = FirebaseAuth.instance.currentUser!;
@@ -69,6 +73,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     newAccount.setId(persistUserAccout(newAccount));
   }
 
+//test purpose
   void addTestEntry(){
 
     List<EntryMsgDTO> entryMsgs = [];
@@ -77,11 +82,20 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
     var entry = DiaryEntryDTO(DateTime.now().toString(), entryMsgs);
 
-    String testId = "-MyDMr8py8W9egiOLBeu";
+    String testId = "-MyDTrYVsdUIbLcdlp_t";
 
     addDiaryEntry(testId, entry);
 
   }
+
+//test purpose
+void printAllEntries(){
+  getAllEntries("-MyDTrYVsdUIbLcdlp_t");
+}
+  
+
+
+
 
 
 

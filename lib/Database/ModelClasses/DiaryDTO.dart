@@ -7,26 +7,25 @@ import 'package:uuid/uuid.dart';
 class DiaryDTO {
 
   String? diaryId;
-  List<DiaryEntryDTO> entries = [];
   String? diaryName;
 
   DiaryDTO(this.diaryName){
 
-      const uuid = Uuid();
+      var uuid = Uuid();
       diaryId = uuid.v1();
   }
 
   
 
-  void addEntry(DiaryEntryDTO entry){
-    entries.add(entry);
-  }
+  // void addEntry(DiaryEntryDTO entry){
+  //   entries.add(entry);
+  // }
 
   Map<String, dynamic> toJson(){
     return {
       'diaryId': diaryId,
       'diaryName': diaryName,
-      'entries': jsonEncode(entries)
+      //'entries': jsonEncode(entries)
     };
   }
 
