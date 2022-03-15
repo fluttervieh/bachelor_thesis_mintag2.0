@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntry.dart';
+import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
+import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +48,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
                provider.googleLogout();
              }, child: const Text("logout")),
             const SizedBox(height: 30,),
-            ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc"))
+            ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc")),
+                        ElevatedButton(onPressed: addTestEntry, child: const Text("testEntry"))
+
           ],
         ),
       )
@@ -63,6 +67,20 @@ class _OverviewScreenState extends State<OverviewScreen> {
     DiaryDTO diary = DiaryDTO("yeahh");
     UserAccountDTO newAccount = UserAccountDTO(diary, user.uid);
     newAccount.setId(persistUserAccout(newAccount));
+  }
+
+  void addTestEntry(){
+
+    List<EntryMsgDTO> entryMsgs = [];
+    var msg = EntryMsgDTO("Heute gings mir gut", 5);
+    entryMsgs.add(msg);
+
+    var entry = DiaryEntryDTO(DateTime.now().toString(), entryMsgs);
+
+    String testId = "-MyDMr8py8W9egiOLBeu";
+
+    addDiaryEntry(testId, entry);
+
   }
 
 

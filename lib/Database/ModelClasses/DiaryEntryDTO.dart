@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
@@ -11,7 +12,7 @@ class DiaryEntryDTO{
   List<EntryMsgDTO> entryMsgs = [];
 
   DiaryEntryDTO(this.date, this.entryMsgs){
-    const uuid = Uuid();
+    var uuid = Uuid();
     entryId = uuid.v1();
   }
 
@@ -20,7 +21,7 @@ class DiaryEntryDTO{
     return {
       'entryId': entryId,
       'date': date,
-      'entryMsgs': entryMsgs.toList()
+      'entryMsgs': jsonEncode(entryMsgs)
     };
   }
 
