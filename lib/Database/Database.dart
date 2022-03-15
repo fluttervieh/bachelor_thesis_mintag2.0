@@ -9,9 +9,11 @@ final databaseReference = FirebaseDatabase.instance.ref();
 
 DatabaseReference persistUserAccout(UserAccountDTO userAccountDTO){
 
-  var id = databaseReference.child('accounts/').push();
-  id.set(userAccountDTO.toJson());
-  return id;
+  var ref = databaseReference.child('accounts/').push();
+  //String? key = ref.key;
+  userAccountDTO.setId(ref);
+  ref.set(userAccountDTO.toJson());
+  return ref;
 }
 
 //this one is just for test purposes

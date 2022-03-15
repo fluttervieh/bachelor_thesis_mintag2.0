@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mintag_application/Database/Database.dart';
@@ -65,6 +64,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
     UserAccountDTO newAccount = UserAccountDTO(diary, user.uid);
     newAccount.setId(persistUserAccout(newAccount));
   }
+
+
 
   //this one is for test purposes
   void createTestEntry(){
