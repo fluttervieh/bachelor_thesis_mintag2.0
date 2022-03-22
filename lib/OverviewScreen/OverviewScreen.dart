@@ -71,7 +71,6 @@ class _OverviewScreenState extends State<OverviewScreen> {
   void createUserAccount(){
 
     final user = FirebaseAuth.instance.currentUser!;
-
     //String diaryName = "richards diary";
     DiaryDTO diary = DiaryDTO("yeahh");
     UserAccountDTO newAccount = UserAccountDTO(diary, user.uid);
