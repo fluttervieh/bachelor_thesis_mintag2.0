@@ -19,14 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    readKeyfromStorage();
     super.initState();
+    readKeyfromStorage();
+
   }
 
+  //reads from local storage if theres a DB reference 
   Future<void> readKeyfromStorage()async{
-    _dbId = await _storage.read(key: "db_id");
+    String? dbId = await _storage.read(key: "db_id");
+    setState(() {
+      _dbId = dbId;
+    });
     //await _storage.deleteAll();
-    debugPrint("[----IDDDD-----]" + _dbId);
   }
 
   @override
@@ -40,20 +44,14 @@ class _HomeScreenState extends State<HomeScreen> {
           }else if (snapshot.hasError){
             return const Center(child: Text("irgendwas is schiefgelaufen..."),);
           }else if(snapshot.hasData){
-            
-           
-           if(_dbId == null){
-              return const CreateDiary();
+      
+           //no diary, create a new one!
+           if(_dbId != null){
+              return  const OverviewScreen(); 
            }else{
+                return const CreateDiary();
 
-            //UserAccountDTO userAccountDTO =  fetchAndParseUserAccountDTO(_dbId);
-            return  const OverviewScreen();
-             
-           }
-            //return const OverviewScreen(entries: [],);
-            //checkSecureStorageandGetUserAccountDTO();
-            //return LoginScreen();
-            
+           }  
           }else{
             return const LoginScreen();
           }

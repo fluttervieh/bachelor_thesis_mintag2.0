@@ -23,18 +23,35 @@ DatabaseReference addDiaryEntry(String dataBaseId, DiaryEntryDTO entry){
   return ref;
 }
 
-Query getAllEntries(String databaseId){
-  
-  databaseReference.child('accounts/' + databaseId + "/diary/entries/").onChildAdded.forEach((element) => {
-     print(element.snapshot.value.toString())
-  });
-  return databaseReference;
-}
 
+
+//Database reference for the UserAccountDTO
 DatabaseReference getDiaryReference(String dataBaseId){
   DatabaseReference diaryRef = databaseReference.child('accounts/' + dataBaseId + '/');
   return diaryRef; 
 }
+
+//fetches user account and transforms it into a UseraccountDTO
+Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
+    DatabaseReference ref = getDiaryReference(dataBaseId!);
+    var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
+    var diary = json['diary'];
+    var entries = diary['entries'];
+
+
+    String dbId  = json['databaseId'];
+    String userName = json['userName'];
+    String diaryId = diary['diaryId'];
+    String diaryName = diary['diaryName'];
+  
+    //TODO: parse entry msgs.
+
+    DiaryDTO diaryDTO = DiaryDTO(diaryId, diaryName);
+    UserAccountDTO userAccountDTO = UserAccountDTO( diaryDTO, userName, databaseId: dataBaseId,);
+    return userAccountDTO;
+}
+
+
 
 //this one is just for test purposes
 DatabaseReference saveEntry(DiaryEntry entry){
