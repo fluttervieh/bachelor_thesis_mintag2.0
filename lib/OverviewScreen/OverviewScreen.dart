@@ -70,16 +70,21 @@ class _OverviewScreenState extends State<OverviewScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    const SizedBox(height: 32),
                     OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: (){}),
+                    const SizedBox(height: 16),
                     OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: (){}),
+                    const SizedBox(height: 16),
                     OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: (){}),
-
+        
                     
                   ],
                 ),
               )
-      
+            
           ],
         ),
       )
