@@ -6,10 +6,10 @@ import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 class UserAccountDTO {
 
   String? databaseId;
-  String userId;
+  String userName;
   DiaryDTO diary;
 
-  UserAccountDTO(this.diary, this.userId);
+  UserAccountDTO(this.diary, this.userName);
 
   void setId(DatabaseReference ref){
     databaseId = ref.key;
@@ -18,7 +18,7 @@ class UserAccountDTO {
   Map<String, dynamic> toJson(){
     return {
       'databaseId': databaseId,
-      'userId': userId,
+      'userName': userName,
       'diary': diary.toJson()
     };
   }

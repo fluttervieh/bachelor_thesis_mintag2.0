@@ -12,7 +12,6 @@ final databaseReference = FirebaseDatabase.instance.ref();
 DatabaseReference persistUserAccout(UserAccountDTO userAccountDTO){
 
   var ref = databaseReference.child('accounts/').push();
-  //String? key = ref.key;
   userAccountDTO.setId(ref);
   ref.set(userAccountDTO.toJson());
   return ref;
