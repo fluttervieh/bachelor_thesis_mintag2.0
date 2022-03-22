@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mintag_application/CreateDiaryScreen/CreateDiary.dart';
 import 'package:mintag_application/LoginScreen/LoginScreen.dart';
 import 'package:mintag_application/OverviewScreen/overviewScreen.dart';
 
@@ -17,7 +18,8 @@ class HomeScreen extends StatelessWidget {
           }else if (snapshot.hasError){
             return const Center(child: Text("irgendwas is schiefgelaufen..."),);
           }else if(snapshot.hasData){
-            return const OverviewScreen(entries: [],);
+            return const CreateDiary();
+            //return const OverviewScreen(entries: [],);
           
           }else{
             return const LoginScreen();
