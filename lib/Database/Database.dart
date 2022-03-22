@@ -1,9 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:http/http.dart' as http;
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'ModelClasses/DiaryEntry.dart';
+import 'package:flutter/material.dart';
 
 final databaseReference = FirebaseDatabase.instance.ref();
 
@@ -30,6 +30,12 @@ Query getAllEntries(String databaseId){
      print(element.snapshot.value.toString())
   });
   return databaseReference;
+}
+
+DatabaseReference getDiaryReference(String dataBaseId){
+  DatabaseReference diaryRef = databaseReference.child('accounts/' + dataBaseId + '/');
+  return diaryRef;
+  
 }
 
 //this one is just for test purposes

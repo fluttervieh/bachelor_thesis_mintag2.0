@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_print
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mintag_application/Database/Database.dart';
@@ -51,6 +54,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
             ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc")),
             ElevatedButton(onPressed: addTestEntry, child: const Text("testEntry")),
             ElevatedButton(onPressed: printAllEntries, child: const Text("getAllEntries")),
+            ElevatedButton(onPressed: printDiary, child: const Text("getDiary")),
+
 
 
 
@@ -87,6 +92,15 @@ class _OverviewScreenState extends State<OverviewScreen> {
     addDiaryEntry(testId, entry);
 
   }
+
+
+//test purpose
+void printDiary(){
+  DatabaseReference ref = getDiaryReference("-MyDTrYVsdUIbLcdlp_t");
+  ref.once().then((DatabaseEvent dataSnapshot){
+    print("data: " + dataSnapshot.snapshot.value.toString());
+  });
+}
 
 //test purpose
 void printAllEntries(){

@@ -27,6 +27,7 @@ dependencies:
   firebase_database: ^9.0.8
   http: ^0.13.4
   uuid: ^3.0.6
+  flutter_secure_storage: ^5.0.2
   
 
 dev_dependencies:
