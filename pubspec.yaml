@@ -50,13 +50,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/img/undraw_back_to_school_inwc.png
-    - assets/img/undraw_creative_thinking_b3bc.png
-    - assets/img/undraw_Diary_re_4jpc.png
-    - assets/img/undraw_Pie_graph_re_fvol.png
-    - assets/img/undraw_play_time_7k7b.png
-    - assets/img/undraw_Taken_re_yn20.png
-    - assets/img/undraw_Welcoming_re_x0qo.png
+    - assets/img/undraw_Diary.png
+    - assets/img/undraw_moments.png
+    - assets/img/undraw_Segment_analysis.png
+   
 
 
 
