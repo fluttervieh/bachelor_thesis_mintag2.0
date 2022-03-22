@@ -13,6 +13,7 @@ import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
+import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +67,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children:  [
-             HeaderContainer(header: _userAccountDTO==null?"":"Willkommen, " + userName!, subHeader: "Heute ist der 22.03.2022."),
+             HeaderContainer(header: _userAccountDTO==null?"":"Willkommen, " + userName!, subHeader: "Heute ist der " + DateParser.parseDate(DateTime.now()).toString()),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
