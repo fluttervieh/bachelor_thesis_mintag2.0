@@ -51,7 +51,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                provider.googleLogout();
              }, child: const Text("logout")),
             const SizedBox(height: 30,),
-            ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc")),
+            //ElevatedButton(onPressed: createUserAccount, child: const Text("test create acc")),
             ElevatedButton(onPressed: addTestEntry, child: const Text("testEntry")),
             ElevatedButton(onPressed: printAllEntries, child: const Text("getAllEntries")),
             ElevatedButton(onPressed: printDiary, child: const Text("getDiary")),
@@ -67,15 +67,15 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 
 
-//test purpose
-  void createUserAccount(){
+// //test purpose
+//   void createUserAccount(){
 
-    final user = FirebaseAuth.instance.currentUser!;
-    //String diaryName = "richards diary";
-    DiaryDTO diary = DiaryDTO("yeahh");
-    UserAccountDTO newAccount = UserAccountDTO(diary, user.uid);
-    newAccount.setId(persistUserAccout(newAccount));
-  }
+//     final user = FirebaseAuth.instance.currentUser!;
+//     //String diaryName = "richards diary";
+//     DiaryDTO diary = DiaryDTO("yeahh");
+//     UserAccountDTO newAccount = UserAccountDTO(diary: diary, user.uid);
+//     newAccount.setId(persistUserAccout(newAccount));
+//   }
 
 //test purpose
   void addTestEntry(){

@@ -6,13 +6,16 @@ import 'package:uuid/uuid.dart';
 
 class DiaryDTO {
 
-  String? diaryId;
-  String? diaryName;
+  final String diaryId;
+  List<DiaryEntryDTO>? entries;
+  final String diaryName;
 
-  DiaryDTO(this.diaryName){
 
-      var uuid = Uuid();
-      diaryId = uuid.v1();
+  DiaryDTO(this.diaryId,  this.diaryName, {this.entries}){
+
+      // var uuid = Uuid();
+      // diaryId = uuid.v1();
+      
   }
 
   
@@ -26,8 +29,16 @@ class DiaryDTO {
       'diaryId': diaryId,
       'diaryName': diaryName,
       //'entries': jsonEncode(entries)
+      'entries': jsonEncode(entries)
     };
   }
+
+  // factory DiaryDTO.fromJson(Map<String, dynamic> json) =>
+  //   DiaryDTO(
+  //     diaryId: 'diaryId',
+  //     diaryName: 'diaryName');
+
+
 
   
 

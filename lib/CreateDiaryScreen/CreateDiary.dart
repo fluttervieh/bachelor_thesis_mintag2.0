@@ -5,6 +5,7 @@ import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateDiary extends StatefulWidget {
   const CreateDiary({ Key? key }) : super(key: key);
@@ -57,9 +58,11 @@ class _CreateDiaryState extends State<CreateDiary> {
   }
 
   //creates a new diary persists it in firebase
-  Future<void> createDiary(String name)async{
+  Future<void> createDiary(String name )async{
       //final user = FirebaseAuth.instance.currentUser!;
-      DiaryDTO diaryDTO = DiaryDTO(name + "'s diary");
+      var uuid = Uuid();
+       String newDiaryId = uuid.v1();
+      DiaryDTO diaryDTO = DiaryDTO(newDiaryId, name + "'s diary", entries: null);
       UserAccountDTO userAccountDTO = UserAccountDTO(diaryDTO, name);
       userAccountDTO.setId(persistUserAccout(userAccountDTO));
 

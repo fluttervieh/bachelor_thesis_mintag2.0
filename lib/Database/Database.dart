@@ -33,8 +33,7 @@ Query getAllEntries(String databaseId){
 
 DatabaseReference getDiaryReference(String dataBaseId){
   DatabaseReference diaryRef = databaseReference.child('accounts/' + dataBaseId + '/');
-  return diaryRef;
-  
+  return diaryRef; 
 }
 
 //this one is just for test purposes
