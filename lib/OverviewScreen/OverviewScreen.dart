@@ -68,7 +68,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children:  [
-             HeaderContainer(header: _userAccountDTO==null?"":"Willkommen, " + userName!, subHeader: "Heute ist der " + DateParser.parseDate(DateTime.now()).toString()),
+             HeaderContainer(header: _userAccountDTO==null?"":"Willkommen, " + userName!, subHeader: "Heute ist der " + DateParser.parseDate(DateTime.now()).toString(), optionalDescription: "Wie geht es dir heute?",),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
