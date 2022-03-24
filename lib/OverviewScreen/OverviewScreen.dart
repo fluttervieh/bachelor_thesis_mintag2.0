@@ -13,6 +13,7 @@ import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
+import 'package:mintag_application/MyDiaryView/MyDiaryView.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const SizedBox(height: 32),
-                    OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: (){}),
+                    OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
                     const SizedBox(height: 16),
                     OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: (){}),
                     const SizedBox(height: 16),
@@ -91,6 +92,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
       )
       );
     
+  }
+
+  void navigateToMyDiaryView(){
+    debugPrint("prssss");
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyDiaryView(userAccountDTO: _userAccountDTO)));
   }
 }
 
@@ -160,16 +166,19 @@ class _OverViewListItemState extends State<OverViewListItem> {
             Expanded(
               flex: 2,
               child: GestureDetector(
-                onTapDown: (_){
-                  setState(() {
-                    _isPressed = true;
-                  });
-                },
-                onTapUp: (_){
-                  setState(() {
-                    _isPressed = false;
-                  });
-                },
+                onTap: widget.onPress,
+                // onTapDown: (_){
+                //     widget.onPress;
+
+                //   setState(() {
+                //     _isPressed = true;
+                //   });
+                // },
+                // onTapUp: (_){
+                //   setState(() {
+                //     _isPressed = false;
+                //   });
+                // },
                 child: Container(
                   decoration:  BoxDecoration(
                       color:  _isPressed?Colors.white:const Color(0xff0c947b),
