@@ -14,8 +14,10 @@ import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/MyDiaryView/MyDiaryView.dart';
+import 'package:mintag_application/MyRatingsView/MyRatingsView.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
+import 'package:mintag_application/ThankfulMomentsView/ThankfulMomentsView.dart';
 import 'package:provider/provider.dart';
 
 
@@ -78,9 +80,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
                     const SizedBox(height: 32),
                     OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
                     const SizedBox(height: 16),
-                    OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: (){}),
+                    OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
                     const SizedBox(height: 16),
-                    OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: (){}),
+                    OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
         
                     
                   ],
@@ -95,10 +97,18 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 
   void navigateToMyDiaryView(){
-    debugPrint("prssss");
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyDiaryView(userAccountDTO: _userAccountDTO)));
   }
+
+  void navigateToThankfulMomentsView(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ThankfulMomentsView(userAccountDTO: _userAccountDTO!)));
+  }
+
+  void navigateToMyRatingsView(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyRatingsView(userAccountDTO: _userAccountDTO!)));
+  }
 }
+
 
 
 class OverViewListItem extends StatefulWidget {

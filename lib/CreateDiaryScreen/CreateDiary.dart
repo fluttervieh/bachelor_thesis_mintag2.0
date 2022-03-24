@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
+import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:uuid/uuid.dart';
 
@@ -70,6 +71,8 @@ class _CreateDiaryState extends State<CreateDiary> {
 
       String? key = await _storage.read(key: "db_id");
       debugPrint("[----KEY---]" + key.toString());
+
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const OverviewScreen()) );
   }
 }
 
