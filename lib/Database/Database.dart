@@ -51,6 +51,13 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
     return userAccountDTO;
 }
 
+//created DB ref for a new entry and returns an ID, so that single entry msgs can be pushed
+void persistEntryDTO(String databaseId, DiaryEntryDTO diaryEntryDTO){
+  var ref = databaseReference.child('accounts/' + databaseId + '/diary/entries/').push();
+  diaryEntryDTO.setEntryId(ref);
+  ref.set(diaryEntryDTO.toJson());
+}
+
 
 
 //this one is just for test purposes

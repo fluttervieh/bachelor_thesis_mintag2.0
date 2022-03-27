@@ -82,7 +82,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                     const SizedBox(height: 16),
                     OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
                     const SizedBox(height: 16),
-                    OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
+                    OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: addTestEntry),
         
                     
                   ],
@@ -107,6 +107,23 @@ class _OverviewScreenState extends State<OverviewScreen> {
   void navigateToMyRatingsView(){
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyRatingsView(userAccountDTO: _userAccountDTO!)));
   }
+
+  // //test purpose
+  void addTestEntry(){
+
+    List<EntryMsgDTO> entryMsgs = [];
+    var msg = EntryMsgDTO("Heute gings mir gut", 5);
+    entryMsgs.add(msg);
+
+    var entry = DiaryEntryDTO(DateTime.now().toString());
+
+    String testId = "-Myxr3Es9N_RaejbISLH";
+
+    persistEntryDTO(testId, entry);
+    debugPrint("[-----sdfsf]" + entry.entryId.toString());
+
+  }
+
 }
 
 

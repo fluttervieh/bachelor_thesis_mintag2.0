@@ -9,19 +9,18 @@ class DiaryEntryDTO{
 
   String? entryId;
   String date;
-  List<EntryMsgDTO> entryMsgs = [];
+  //List<EntryMsgDTO> entryMsgs = [];
 
-  DiaryEntryDTO(this.date, this.entryMsgs){
-    var uuid = Uuid();
-    entryId = uuid.v1();
+  DiaryEntryDTO(this.date);
+
+  void setEntryId(DatabaseReference entryId){
+    this.entryId =entryId.key;
   }
 
-  
   Map<String, dynamic> toJson(){
     return {
-      'entryId': entryId,
+      //'entryId': entryId,
       'date': date,
-      'entryMsgs': jsonEncode(entryMsgs)
     };
   }
 
