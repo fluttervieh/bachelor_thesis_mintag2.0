@@ -20,25 +20,42 @@ class MyDiaryView extends StatefulWidget {
 class _MyDiaryViewState extends State<MyDiaryView> {
 
   DateTime _currentDate = DateTime(2022, 2, 3);
+  DateTime _currentDate2 = DateTime(2019, 2, 3);
+
+  EventList<Event> _markedDateMap = new EventList(events: {});
+
+
+  //initState fills map with events
 
 
   @override
   Widget build(BuildContext context) {
 
+
+    //initalizing the calendar + styles
     final _calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events){
-        setState(()=> _currentDate = date);
+        debugPrint("[--day pressed--]" + date.toString());
+        setState((){ _currentDate = date;});
         for (var event in events) {
           print(event.title);
         }
       },
+      headerTextStyle: const TextStyle(color:  Color(0xff0c947b), fontSize: 16, fontWeight: FontWeight.bold),
+      leftButtonIcon: const Icon(Icons.arrow_back_ios, color: Themes.primaryColor,),
+      rightButtonIcon: const Icon(Icons.arrow_forward_ios, color: Themes.primaryColor),
+      //text: const TextStyle(color: Themes.primaryColor),
       weekendTextStyle: const TextStyle(
-        color:  Color(0xffE06031)
+        color:  Themes.secondaryColor,
       ),
       thisMonthDayBorderColor: const Color(0xffa4a4a4),
       height: 400,
       customGridViewPhysics: const NeverScrollableScrollPhysics(),
-      todayTextStyle: const TextStyle(color: Colors.yellow),
+      todayTextStyle: const TextStyle(color: Colors.white),
+      todayButtonColor: Themes.primaryColor,
+      selectedDateTime: _currentDate,
+      selectedDayButtonColor: Colors.red
+
     );
 
 

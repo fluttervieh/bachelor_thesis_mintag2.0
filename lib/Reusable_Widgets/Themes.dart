@@ -12,6 +12,10 @@ class Themes{
         borderRadius: BorderRadius.circular(30)),
       primary: const  Color(0xffE06031)
     );
+
+    static const Color primaryColor =  Color(0xff0c947b);
+
+    static const Color secondaryColor = Color(0xffe06031);
     
 
 }
