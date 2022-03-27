@@ -114,13 +114,20 @@ class _OverviewScreenState extends State<OverviewScreen> {
     List<EntryMsgDTO> entryMsgs = [];
     var msg = EntryMsgDTO("Heute gings mir gut", 5);
     entryMsgs.add(msg);
+    entryMsgs.add(msg);
 
     var entry = DiaryEntryDTO(DateTime.now().toString());
 
     String testId = "-Myxr3Es9N_RaejbISLH";
 
     persistEntryDTO(testId, entry);
+    String entryId = entry.entryId!;
+
     debugPrint("[-----sdfsf]" + entry.entryId.toString());
+
+    entryMsgs.forEach((entryMsg) {
+      persistEntryMsgDTO(testId, entryId, entryMsg);
+    });
 
   }
 

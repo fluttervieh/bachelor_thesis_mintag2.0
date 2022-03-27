@@ -7,16 +7,16 @@ class EntryMsgDTO{
   String message;
   double rating;
 
-  EntryMsgDTO(this.message, this.rating){
-    var uuid = Uuid();
-    entryMsgId = uuid.v1();
+  EntryMsgDTO(this.message, this.rating);
+
+  void setId(DatabaseReference id){
+    entryMsgId = id.key;
   }
 
  
 
   Map<String, dynamic> toJson(){
     return {
-      'entryMsgId': entryMsgId,
       'message' : message,
       'rating': rating
     };

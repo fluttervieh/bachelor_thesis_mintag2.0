@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
+import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'ModelClasses/DiaryEntry.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,13 @@ void persistEntryDTO(String databaseId, DiaryEntryDTO diaryEntryDTO){
   var ref = databaseReference.child('accounts/' + databaseId + '/diary/entries/').push();
   diaryEntryDTO.setEntryId(ref);
   ref.set(diaryEntryDTO.toJson());
+}
+
+//persists a entryMsgDTO under a given EntryDTO
+void persistEntryMsgDTO(String databaseId, String entryId, EntryMsgDTO entryMsgDTO){
+  var ref = databaseReference.child('accounts/' + databaseId + '/diary/entries/' + entryId + '/').push();
+  entryMsgDTO.setId(ref);
+  ref.set(entryMsgDTO.toJson());
 }
 
 
