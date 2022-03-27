@@ -28,6 +28,7 @@ dependencies:
   http: ^0.13.4
   uuid: ^3.0.6
   flutter_secure_storage: ^5.0.2
+  flutter_calendar_carousel: ^2.1.0
   
 
 dev_dependencies:
