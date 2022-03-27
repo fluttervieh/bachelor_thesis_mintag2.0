@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
@@ -19,13 +20,33 @@ class MyDiaryView extends StatefulWidget {
 
 class _MyDiaryViewState extends State<MyDiaryView> {
 
-  DateTime _currentDate = DateTime(2022, 2, 3);
+  DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime(2019, 2, 3);
 
   EventList<Event> _markedDateMap = new EventList(events: {});
 
+   
+
 
   //initState fills map with events
+  @override
+  void initState() {
+    super.initState();
+    List<DiaryEntryDTO>? allEntries = widget.userAccountDTO!.diary.entries;
+    for(var entry in allEntries!){
+      debugPrint("date: " + entry.date);
+      var parsedDate = DateTime.parse(entry.date);
+
+      _markedDateMap.add(
+        parsedDate,
+         Event(
+          date: parsedDate,
+          title: 'Entry',
+          icon: const Icon(Icons.check_circle_outline, color: Themes.primaryColor)
+        ));
+    }
+
+  }
 
 
   @override
@@ -52,9 +73,15 @@ class _MyDiaryViewState extends State<MyDiaryView> {
       height: 400,
       customGridViewPhysics: const NeverScrollableScrollPhysics(),
       todayTextStyle: const TextStyle(color: Colors.white),
-      todayButtonColor: Themes.primaryColor,
+      //todayButtonColor: Themes.primaryColor,
       selectedDateTime: _currentDate,
-      selectedDayButtonColor: Colors.red
+      selectedDayButtonColor: Colors.yellow,
+      markedDatesMap: _markedDateMap,
+      markedDateShowIcon: true,
+      showIconBehindDayText: true,
+       markedDateIconBuilder: (event) {
+        return event.icon ?? const Icon(Icons.help_outline);
+      },
 
     );
 
@@ -93,5 +120,7 @@ class _MyDiaryViewState extends State<MyDiaryView> {
       ),
     );
   }
+
+  
 
 }

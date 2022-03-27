@@ -36,6 +36,8 @@ DatabaseReference getDiaryReference(String dataBaseId){
 
 //fetches user account and transforms it into a UseraccountDTO
 Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
+
+    //references
     DatabaseReference ref = getDiaryReference(dataBaseId!);
     var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
     var diary = json['diary'];
@@ -48,7 +50,6 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
     entries.forEach((entryKey, entryValue) {
      
       DiaryEntryDTO diaryEntryDTO;
-
       var allEntryMsgs = entryValue as Map<dynamic, dynamic>;
       entryMsgDTOs = [];
       EntryMsgDTO entryMsgDTO;
@@ -57,11 +58,9 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
       int rating;
       String entryDate = "";
 
-
       //fetching and parsing all entryMsgDTOs 
       allEntryMsgs.forEach((msgKey, msgValue) {
           
-
           if(msgKey != "date"){
             rating = msgValue['rating'];
             message = msgValue['message'];
@@ -74,10 +73,9 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
           }else{
             entryDate = msgValue;
           }
-
-          
-          
+   
       });
+
       diaryEntryDTO = DiaryEntryDTO(entryDate);
       diaryEntryDTO.setEntryId(entryKey);
       diaryEntryDTO.setEntryMsgs(entryMsgDTOs);
@@ -85,19 +83,19 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
 
     });
 
-
+    //credentials for the account/diary dto
     String dbId  = json['databaseId'];
     String userName = json['userName'];
     String diaryId = diary['diaryId'];
     String diaryName = diary['diaryName'];
   
-    debugPrint("[-------entries-----]" + entries.runtimeType.toString());
-
+    //creating diarydto/ useraccountdto object
     DiaryDTO diaryDTO = DiaryDTO(diaryId, diaryName);
     diaryDTO.setEntries(entryDTOs);
     UserAccountDTO userAccountDTO = UserAccountDTO( diaryDTO, userName, databaseId: dataBaseId,);
     return userAccountDTO;
 }
+
 
 //created DB ref for a new entry and returns an ID, so that single entry msgs can be pushed
 void persistEntryDTO(String databaseId, DiaryEntryDTO diaryEntryDTO){
