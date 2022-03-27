@@ -9,8 +9,8 @@ class EntryMsgDTO{
 
   EntryMsgDTO(this.message, this.rating);
 
-  void setId(DatabaseReference id){
-    entryMsgId = id.key;
+  void setId(String? id){
+    entryMsgId = id;
   }
 
  

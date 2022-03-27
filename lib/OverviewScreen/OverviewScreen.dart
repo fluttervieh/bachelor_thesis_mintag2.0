@@ -125,9 +125,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
     debugPrint("[-----sdfsf]" + entry.entryId.toString());
 
-    entryMsgs.forEach((entryMsg) {
+    for (var entryMsg in entryMsgs) {
       persistEntryMsgDTO(testId, entryId, entryMsg);
-    });
+    }
 
   }
 

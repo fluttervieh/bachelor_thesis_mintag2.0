@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 class DiaryDTO {
 
   final String diaryId;
-  List<DiaryEntryDTO>? entries;
+  List<DiaryEntryDTO>? entries = [];
   final String diaryName;
 
 
@@ -23,6 +23,10 @@ class DiaryDTO {
   // void addEntry(DiaryEntryDTO entry){
   //   entries.add(entry);
   // }
+
+  void setEntries(List<DiaryEntryDTO> entries){
+    this.entries = entries;
+  }
 
   Map<String, dynamic> toJson(){
     return {
