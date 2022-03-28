@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
@@ -9,23 +10,33 @@ import 'ModelClasses/DiaryEntry.dart';
 import 'package:flutter/material.dart';
 
 final databaseReference = FirebaseDatabase.instance.ref();
+final user = FirebaseAuth.instance.currentUser;
 
 
 
-DatabaseReference persistUserAccout(UserAccountDTO userAccountDTO){
+//checks if user already has a diary
+Future<bool>checkIfUserAlreadyHasAccount()async{
+  //var ref2 = databaseReference.set('accounts');
+  var ref  = databaseReference.child('accounts/');
+  var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
 
-  var ref = databaseReference.child('accounts/').push();
-  userAccountDTO.setId(ref);
-  ref.set(userAccountDTO.toJson());
-  return ref;
+  return json.containsKey(user!.uid);
 }
 
+//persists a given useraccountdto for a new user. 
+Future<void> persistUserAccout(UserAccountDTO userAccountDTO)async{
+
+  var ref = databaseReference.child('accounts/' + user!.uid + '/');
+  userAccountDTO.setId(user!.uid);
+  ref.set(userAccountDTO.toJson());
+}
+
+//persists a given diaryentrydto to a given diary. 
 DatabaseReference addDiaryEntry(String dataBaseId, DiaryEntryDTO entry){
   var ref = databaseReference.child('accounts/' + dataBaseId + "/diary/entries/").push();
   ref.set(entry.toJson());
   return ref;
 }
-
 
 
 //Database reference for the UserAccountDTO
@@ -41,25 +52,29 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
     DatabaseReference ref = getDiaryReference(dataBaseId!);
     var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
     var diary = json['diary'];
-    var  entries = diary['entries'] as Map<dynamic, dynamic>;
 
     List<DiaryEntryDTO> entryDTOs = [];
     List<EntryMsgDTO> entryMsgDTOs;
-   
-    //fetching and parsing all entryDTOS
-    entries.forEach((entryKey, entryValue) {
-     
-      DiaryEntryDTO diaryEntryDTO;
-      var allEntryMsgs = entryValue as Map<dynamic, dynamic>;
-      entryMsgDTOs = [];
-      EntryMsgDTO entryMsgDTO;
-      String msgId;
-      String message;
-      int rating;
-      String entryDate = "";
 
-      //fetching and parsing all entryMsgDTOs 
-      allEntryMsgs.forEach((msgKey, msgValue) {
+
+    //if there are some entry dtos, they gon be fetched
+    if(diary['entries'] != "null"){
+
+        var entries = diary['entries'] as Map<dynamic, dynamic>;
+
+        entries.forEach((entryKey, entryValue) {
+     
+        DiaryEntryDTO diaryEntryDTO;
+        var allEntryMsgs = entryValue as Map<dynamic, dynamic>;
+        entryMsgDTOs = [];
+        EntryMsgDTO entryMsgDTO;
+        String msgId;
+        String message;
+        int rating;
+        String entryDate = "";
+
+        //fetching and parsing all entryMsgDTOs 
+        allEntryMsgs.forEach((msgKey, msgValue) {
           
           if(msgKey != "date"){
             rating = msgValue['rating'];
@@ -82,6 +97,11 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
       entryDTOs.add(diaryEntryDTO);
 
     });
+    }
+
+    
+   
+    
 
     //credentials for the account/diary dto
     String dbId  = json['databaseId'];

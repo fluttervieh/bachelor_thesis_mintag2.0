@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/CreateDiaryScreen/CreateDiary.dart';
+import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/LoginScreen/LoginScreen.dart';
 import 'package:mintag_application/OverviewScreen/overviewScreen.dart';
 
@@ -14,23 +15,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _storage = const FlutterSecureStorage();
-  var _dbId;
+  bool _hasUserAlreadyAccount = false;
 
   @override
   void initState() {
     super.initState();
-    readKeyfromStorage();
+    checkIfUserExists();
 
   }
 
-  //reads from local storage if theres a DB reference 
-  Future<void> readKeyfromStorage()async{
-    String? dbId = await _storage.read(key: "db_id");
+  //checks if a user already exists
+  Future<void> checkIfUserExists()async{
+
+    bool hasUserAlreadyAccount = await checkIfUserAlreadyHasAccount();
+
+    debugPrint("[---userExists???----]    " + hasUserAlreadyAccount.toString());
     setState(() {
-      _dbId = dbId;
+      _hasUserAlreadyAccount = hasUserAlreadyAccount;
     });
-    //await _storage.deleteAll();
+
   }
 
   @override
@@ -46,15 +49,17 @@ class _HomeScreenState extends State<HomeScreen> {
           }else if(snapshot.hasData){
       
            //no diary, create a new one!
-           if(_dbId != null){
+
+           if(_hasUserAlreadyAccount){
               return  const OverviewScreen(); 
            }else{
                 return const CreateDiary();
-
            }  
+         
           }else{
             return const LoginScreen();
           }
+         
         },
       ),
     );

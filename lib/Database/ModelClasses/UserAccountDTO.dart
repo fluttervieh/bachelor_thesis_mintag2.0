@@ -15,8 +15,8 @@ class UserAccountDTO {
     {this.databaseId}
   );
 
-  void setId(DatabaseReference ref){
-    databaseId = ref.key;
+  void setId(String key){
+    databaseId = key;
   }
 
   Map<String, dynamic> toJson(){

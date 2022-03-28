@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
+import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
@@ -62,16 +63,12 @@ class _CreateDiaryState extends State<CreateDiary> {
   Future<void> createDiary(String name )async{
       //final user = FirebaseAuth.instance.currentUser!;
       var uuid = Uuid();
-       String newDiaryId = uuid.v1();
-      DiaryDTO diaryDTO = DiaryDTO(newDiaryId, name + "'s diary", entries: null);
+      String newDiaryId = uuid.v1();
+      List<DiaryEntryDTO> entries = [];
+      DiaryDTO diaryDTO = DiaryDTO(newDiaryId, name + "'s diary");
       UserAccountDTO userAccountDTO = UserAccountDTO(diaryDTO, name);
-      userAccountDTO.setId(persistUserAccout(userAccountDTO));
-
-      await _storage.write(key: "db_id", value: userAccountDTO.databaseId);
-
-      String? key = await _storage.read(key: "db_id");
-      debugPrint("[----KEY---]" + key.toString());
-
+      
+      await persistUserAccout(userAccountDTO);
       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const OverviewScreen()) );
   }
 }

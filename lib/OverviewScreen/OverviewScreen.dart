@@ -35,21 +35,19 @@ class OverviewScreen extends StatefulWidget {
 
 class _OverviewScreenState extends State<OverviewScreen> {
 
-  final _storage = const FlutterSecureStorage();
-  String? _dbId;
+  final _user = FirebaseAuth.instance.currentUser;
   UserAccountDTO? _userAccountDTO;
 
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchUserAccount();
   }
 
   Future<void>fetchUserAccount()async{
-     _dbId = await _storage.read(key: "db_id");
-    UserAccountDTO u = await fetchUserAccountDTO(_dbId!);
+     //_dbId = await _storage.read(key: "db_id");
+    UserAccountDTO u = await fetchUserAccountDTO(_user!.uid);
 
      setState(() {
        _userAccountDTO = u;
@@ -82,7 +80,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                     const SizedBox(height: 16),
                     OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
                     const SizedBox(height: 16),
-                    OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
+                    OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: addTestEntry),
         
                     
                   ],
@@ -118,7 +116,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
     var entry = DiaryEntryDTO(DateTime.now().toString());
 
-    String testId = "-Myxr3Es9N_RaejbISLH";
+    String testId = user!.uid;
 
     persistEntryDTO(testId, entry);
     String entryId = entry.entryId!;
