@@ -125,7 +125,7 @@ class _MyDiaryViewState extends State<MyDiaryView> {
     );
   }
 
-
+  //checks if the selected Date is correct. if yes, it navigates to the new netry view.
   void navigateToNewEntryView(DateTime selectedDate){
 
     var isSameDay = false;
@@ -135,17 +135,25 @@ class _MyDiaryViewState extends State<MyDiaryView> {
         }
     });
 
+    var isDateInFuture = selectedDate.isAfter(DateTime.now());
 
-    if(!isSameDay){
+
+    if(!isSameDay && !isDateInFuture){
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) => NewEntryView(newEntryDate: selectedDate)
         )
       );
-    }else{
+    }else if(isSameDay && !isDateInFuture){
       showDialog(context: context, builder: (BuildContext context){
         return const AlertDialog(
           title: Text("HIER HAST DU SCHON EINEN EINTRAG GEMACHT"),
+        );
+      });
+    }else{
+      showDialog(context: context, builder: (BuildContext context){
+        return const AlertDialog(
+          title: Text("DER TAG LIEGT IN DER ZUKUNFT"),
         );
       });
     }
