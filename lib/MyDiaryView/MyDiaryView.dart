@@ -3,6 +3,7 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
+import 'package:mintag_application/MyDiaryView/NewEntryView.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
@@ -21,9 +22,7 @@ class MyDiaryView extends StatefulWidget {
 class _MyDiaryViewState extends State<MyDiaryView> {
 
   DateTime _currentDate = DateTime.now();
-  DateTime _currentDate2 = DateTime(2019, 2, 3);
-
-  EventList<Event> _markedDateMap = new EventList(events: {});
+  final EventList<Event> _markedDateMap = new EventList(events: {});
 
    
 
@@ -92,10 +91,15 @@ class _MyDiaryViewState extends State<MyDiaryView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children:[
             HeaderContainer(header: "Mein Tagebuch", subHeader: "Heute ist der " + DateParser.parseDate(DateTime.now()).toString(), optionalDescription: "Wähle ein freies Datum auf dem Kalender aus und drücke auf “neuer Eintrag”.",),
-            Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarousel,
-              ),
+            const SizedBox(height: 16,),
+            Column(
+              children: [
+                Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: _calendarCarousel,
+                  ),
+              ],
+            ),
           ]
         ),
       ),
@@ -112,13 +116,40 @@ class _MyDiaryViewState extends State<MyDiaryView> {
               flex: 1,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8, right: 16, top: 8, bottom: 8),
-                child: ElevatedButton(onPressed: ()=> Navigator.of(context).pop(), child:  const Text("Neuer Eintrag"), style: Themes.primaryButtonStyle,),
+                child: ElevatedButton(onPressed: ()=>navigateToNewEntryView(_currentDate), child:  const Text("Neuer Eintrag"), style: Themes.primaryButtonStyle,),
               )
             ),
 
         ],
       ),
     );
+  }
+
+
+  void navigateToNewEntryView(DateTime selectedDate){
+
+    var isSameDay = false;
+    _markedDateMap.events.forEach((key, value) {
+        if(DateParser.isSameDay(key, selectedDate)){
+          isSameDay = true;
+        }
+    });
+
+
+    if(!isSameDay){
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => NewEntryView(newEntryDate: selectedDate)
+        )
+      );
+    }else{
+      showDialog(context: context, builder: (BuildContext context){
+        return const AlertDialog(
+          title: Text("HIER HAST DU SCHON EINEN EINTRAG GEMACHT"),
+        );
+      });
+    }
+      
   }
 
   

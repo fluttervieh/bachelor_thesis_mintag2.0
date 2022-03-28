@@ -121,8 +121,6 @@ class _OverviewScreenState extends State<OverviewScreen> {
     persistEntryDTO(testId, entry);
     String entryId = entry.entryId!;
 
-    debugPrint("[-----sdfsf]" + entry.entryId.toString());
-
     for (var entryMsg in entryMsgs) {
       persistEntryMsgDTO(testId, entryId, entryMsg);
     }
