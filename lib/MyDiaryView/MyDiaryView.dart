@@ -141,7 +141,7 @@ class _MyDiaryViewState extends State<MyDiaryView> {
     if(!isSameDay && !isDateInFuture){
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => NewEntryView(newEntryDate: selectedDate)
+          builder: (BuildContext context) => NewEntryView(newEntryDate: selectedDate, userAccountDTO: widget.userAccountDTO!,)
         )
       );
     }else if(isSameDay && !isDateInFuture){
