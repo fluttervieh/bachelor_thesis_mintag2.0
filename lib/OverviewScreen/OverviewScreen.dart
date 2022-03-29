@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
-import 'package:mintag_application/Database/ModelClasses/DiaryEntry.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';

@@ -6,7 +6,6 @@ import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
-import 'ModelClasses/DiaryEntry.dart';
 import 'package:flutter/material.dart';
 
 final databaseReference = FirebaseDatabase.instance.ref();
@@ -131,12 +130,3 @@ void persistEntryMsgDTO(String databaseId, String entryId, EntryMsgDTO entryMsgD
   ref.set(entryMsgDTO.toJson());
 }
 
-
-
-//this one is just for test purposes
-DatabaseReference saveEntry(DiaryEntry entry){
-  //print("[------" + databaseReference.path);
-  var id = databaseReference.child('entries/').push();
-  id.set(entry.toJson());
-  return id;
-}
