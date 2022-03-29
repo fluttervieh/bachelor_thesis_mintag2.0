@@ -22,9 +22,19 @@ class MyDiaryView extends StatefulWidget {
 class _MyDiaryViewState extends State<MyDiaryView> {
 
   DateTime _currentDate = DateTime.now();
-  final EventList<Event> _markedDateMap = new EventList(events: {});
+  final EventList<Event> _markedDateMap = EventList(events: {});
 
-   
+  static final Widget _eventIcon = Container(
+    decoration:  BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(1000)),
+        border: Border.all(color: Themes.primaryColor, width: 2.0)),
+    child: const  Icon(
+      Icons.check,
+      color: Themes.primaryColor,
+    ),
+  );
+
 
 
   //initState fills map with events
@@ -35,15 +45,33 @@ class _MyDiaryViewState extends State<MyDiaryView> {
     for(var entry in allEntries!){
       debugPrint("date: " + entry.date);
       var parsedDate = DateTime.parse(entry.date);
+      var parsedYear = parsedDate.year;
+      var parsedMonth = parsedDate.month;
+      var parsedDay = parsedDate.day;
+
+      var newFormattedDate = DateTime(parsedYear, parsedMonth, parsedDay);
+      
 
       _markedDateMap.add(
-        parsedDate,
+        newFormattedDate,
          Event(
-          date: parsedDate,
+          date: newFormattedDate,
           title: 'Entry',
-          icon: const Icon(Icons.check_circle_outline, color: Themes.primaryColor)
+          icon: _eventIcon
         ));
     }
+    
+    _markedDateMap.add(
+        DateTime(2022, 3, 25),
+         Event(
+          date:  DateTime(2022, 3, 25),
+          title: 'Event 5',
+          icon: _eventIcon,
+        ));
+
+
+    //          icon: const Icon(Icons.check_circle_outline, color: Themes.primaryColor)
+
 
   }
 
@@ -72,12 +100,13 @@ class _MyDiaryViewState extends State<MyDiaryView> {
       height: 400,
       customGridViewPhysics: const NeverScrollableScrollPhysics(),
       todayTextStyle: const TextStyle(color: Colors.white),
-      //todayButtonColor: Themes.primaryColor,
+      todayButtonColor: Themes.secondaryColor,
       selectedDateTime: _currentDate,
-      selectedDayButtonColor: Colors.yellow,
+      selectedDayButtonColor: Themes.primaryColor,
       markedDatesMap: _markedDateMap,
+      markedDateIconBorderColor: Colors.black,
       markedDateShowIcon: true,
-      showIconBehindDayText: true,
+      showIconBehindDayText: false,
        markedDateIconBuilder: (event) {
         return event.icon ?? const Icon(Icons.help_outline);
       },

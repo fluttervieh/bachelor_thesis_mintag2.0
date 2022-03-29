@@ -103,28 +103,35 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   @override
   Widget build(BuildContext context) =>Padding(
     padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16),
-    child: Material(
-      elevation: 10,
-      shadowColor: Colors.black,
-      color: Colors.white,
-      borderRadius: const BorderRadius.all(Radius.circular(12)),
-      child: SizedBox(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          
-          
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(Icons.check_circle, color: Color(0xffa4a4a4), size: 32,),
-                SizedBox(width: 16,),
-                Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
-              ],
-            ),
-          )
+    child: GestureDetector(
+      onTap: (){
+        setState(() {
+          isExpanded?isExpanded = false:isExpanded=true;
+        });
+      },
+      child: Material(
+        elevation: 10,
+        shadowColor: Colors.black,
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: SizedBox(
+            height: isExpanded?100:60,
+            width: MediaQuery.of(context).size.width,
+            
+            
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Icon(Icons.check_circle, color: Color(0xffa4a4a4), size: 32,),
+                  SizedBox(width: 16,),
+                  Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                ],
+              ),
+            )
+        ),
       ),
     ),
   );
