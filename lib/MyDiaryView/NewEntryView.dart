@@ -102,7 +102,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) =>Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16),
+    padding:  EdgeInsets.symmetric(horizontal: isExpanded?16.0: 48.0, vertical: 16),
     child: GestureDetector(
       onTap: (){
         setState(() {
@@ -119,7 +119,35 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
             width: MediaQuery.of(context).size.width,
             
             
-            child: Padding(
+            child: isExpanded?Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:  [
+                    const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children:  [
+                          const CircleAvatar(radius: 12, backgroundColor: Colors.green),
+                          Container(height: 2, width: 24, color: Colors.grey,),
+                          const CircleAvatar(radius: 12, backgroundColor: Colors.green),
+                          Container(height: 2, width: 24, color: Colors.grey,),
+                          const CircleAvatar(radius: 12, backgroundColor: Colors.green),
+                          Container(height: 2, width: 24, color: Colors.grey,),
+                          const CircleAvatar(radius: 12, backgroundColor: Colors.green),
+                          Container(height: 2, width: 24, color: Colors.grey,),
+                          const CircleAvatar(radius: 12, backgroundColor: Colors.green),
+
+                      ],
+                    )
+
+                ],
+              ),
+            )
+            
+            :Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
