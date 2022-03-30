@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
            }else{
                 return const CreateDiary();
            }  
-         
           }else{
             return const LoginScreen();
           }

@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
+import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
@@ -20,6 +23,8 @@ class NewEntryView extends StatefulWidget {
 class _NewEntryViewState extends State<NewEntryView> {
 
   // DiaryEntryDTO diaryEntryDTO= n;
+
+  final user = FirebaseAuth.instance.currentUser;
   List<EntryMsgDTO> entryMsgDTOs = [];
 
  
@@ -94,7 +99,22 @@ class _NewEntryViewState extends State<NewEntryView> {
       entryMsgDTOs.forEach((element) { 
         debugPrint("-----]" + element.message + ", " + element.rating.toString());
       });
+
+      addDiaryEntry(user!.uid, newEntry);
+      showDialog(context: context, builder: (BuildContext context){
+        return  AlertDialog(
+          title: const Text("it worked!"),
+          actions: [
+            ElevatedButton(onPressed: navigateToOverView, child: const Text("back to overview"), style: Themes.primaryButtonStyle,)
+          ],
+        );
+      });
+
     }
+  }
+
+  void navigateToOverView(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const OverviewScreen()));
   }
 }
 
@@ -240,10 +260,9 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   @override
   Widget build(BuildContext context) {
 
-                EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble());
-
-    
+    EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble(), false);
     bool _isPressed = widget.selectedBoxes[widget.index];
+
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
 

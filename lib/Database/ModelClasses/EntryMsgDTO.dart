@@ -6,8 +6,9 @@ class EntryMsgDTO{
   String? entryMsgId;
   String message;
   double rating;
+  bool isTextField;
 
-  EntryMsgDTO(this.message, this.rating);
+  EntryMsgDTO(this.message, this.rating, this.isTextField);
 
   void setId(String? id){
     entryMsgId = id;
@@ -18,11 +19,13 @@ class EntryMsgDTO{
   Map<String, dynamic> toJson(){
     return {
       'message' : message,
-      'rating': rating
+      'rating': rating,
+      'isTextField': isTextField,
     };
   }
 
   String getMessage() => message;
   double getRating() => rating;
+
 
 }
