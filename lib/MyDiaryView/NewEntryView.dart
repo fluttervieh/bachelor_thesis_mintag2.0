@@ -69,7 +69,7 @@ class _NewEntryViewState extends State<NewEntryView> {
               flex: 1,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8, right: 16, top: 8, bottom: 8),
-                child: ElevatedButton(onPressed: ()=> Navigator.of(context).pop(), child:  const Text("Speichern"), style: Themes.primaryButtonStyle,),
+                child: ElevatedButton(onPressed: safeEntry, child:  const Text("Speichern"), style: Themes.primaryButtonStyle,),
               )
             ),
 
@@ -77,6 +77,24 @@ class _NewEntryViewState extends State<NewEntryView> {
       ),
       
     );
+  }
+
+  void safeEntry(){
+    if(entryMsgDTOs.isEmpty){
+      showDialog(context: context, builder: (BuildContext context){
+        return const AlertDialog(
+          title: Text("der Eintrag ist leer"),
+        );
+      });
+    }else{
+
+      DiaryEntryDTO newEntry = DiaryEntryDTO(DateTime.now().toString());
+      newEntry.setEntryMsgs(entryMsgDTOs);
+
+      entryMsgDTOs.forEach((element) { 
+        debugPrint("-----]" + element.message + ", " + element.rating.toString());
+      });
+    }
   }
 }
 
@@ -100,17 +118,13 @@ class ExpandableListItem extends StatefulWidget {
 
 class _ExpandableListItemState extends State<ExpandableListItem> {
 
-  List<CircleCheckbox> checkBoxes = [];
+  List<Widget> checkBoxes = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print("[{-------------initState called");
-
-
     selectedBoxes = [
       false,
       false,
@@ -119,8 +133,15 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       false
     ];
     checkBoxes = [
-      CircleCheckbox(fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: 0),
-      CircleCheckbox(fillColor: Colors.yellow, value: 1, selectedBoxes: selectedBoxes, index: 1),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: 0),
+      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.orange, value: 2, selectedBoxes: selectedBoxes, index: 1),
+      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.yellow, value: 3, selectedBoxes: selectedBoxes, index: 2),
+      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.greenAccent, value: 4, selectedBoxes: selectedBoxes, index: 3),
+      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.green, value: 5, selectedBoxes: selectedBoxes, index: 4),
     ];
 
   }
@@ -157,21 +178,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: checkBoxes,
-                            
-                           
-                            // const CircleCheckbox(fillColor: Colors.red, value: 1),
-                            // Expanded(child: Container(height: 2, color: Colors.grey,)),
-                            // const CircleCheckbox(fillColor: Colors.orange, value: 2),   
-                            // Expanded(child: Container(height: 2, color: Colors.grey,)),
-                            // const CircleCheckbox(fillColor: Colors.yellow, value: 3),
-                            // Expanded(child: Container(height: 2, color: Colors.grey,)),
-                            // const CircleCheckbox(fillColor: Colors.greenAccent, value: 4),   
-                            // Expanded(child: Container(height: 2, color: Colors.grey,)),
-                            // const CircleCheckbox(fillColor: Colors.green, value: 5)
-
-                          
-                        
+                        children: checkBoxes,  
                       ),
                     )
 
@@ -184,10 +191,10 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Icon(Icons.check_circle, color: Color(0xffa4a4a4), size: 32,),
-                  SizedBox(width: 16,),
-                  Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                children:  [
+                  Icon(Icons.check_circle, color: selectedBoxes.contains(true)?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
+                  const SizedBox(width: 16,),
+                  const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
                 ],
               ),
             )
@@ -196,16 +203,19 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     ),
   );
 
+
   
 }
 
 class CircleCheckbox extends StatefulWidget {
    const CircleCheckbox({
     Key? key,
+    required this.entryMsgs,
     required this.fillColor,
     required this.value,
         required this.selectedBoxes,
         required this.index
+
 
   }) : super(key: key);
 
@@ -213,14 +223,25 @@ class CircleCheckbox extends StatefulWidget {
   final int value;
   final int index;
   final List<bool> selectedBoxes;
+  final List<EntryMsgDTO> entryMsgs;
+
+  
 
   @override
   State<CircleCheckbox> createState() => _CircleCheckboxState();
 }
 
 class _CircleCheckboxState extends State<CircleCheckbox> {
+
+
+
+  
+
   @override
   Widget build(BuildContext context) {
+
+                EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble());
+
     
     bool _isPressed = widget.selectedBoxes[widget.index];
     return StatefulBuilder(
@@ -228,19 +249,35 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
 
       return GestureDetector(
         onTap: (){
+
           if(_isPressed){
             setState(() {
               _isPressed = false;
               widget.selectedBoxes[widget.index] = false;
+              widget.entryMsgs.remove(msg);
               
             });
           }else{
-            setState(() {
-              _isPressed = true;
-              widget.selectedBoxes[widget.index] = true;
 
-            });
-          }    
+            // if (widget.selectedBoxes.contains(true)){
+
+            //   int oldIndex = getAlreadySelectedIndex();
+
+            //   setState(() {
+            //     widget.selectedBoxes[oldIndex] = false;
+            //     widget.selectedBoxes[widget.index] = true;
+            //     _isPressed = true;
+
+            //   });
+            // }else{
+              setState(() {
+                widget.entryMsgs.add(msg);
+                widget.selectedBoxes[widget.index] = true;
+                _isPressed = true;
+
+              });
+            }
+          //}    
         },
         child: Container(
           height: 36,
@@ -261,6 +298,15 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
       );
       }
     );
+  }
+
+  int getAlreadySelectedIndex(){
+    for(var i in widget.selectedBoxes){
+      if(i == true){
+        return widget.selectedBoxes.indexOf(i);
+      }
+    }
+    return 0;
   }
 }
 
