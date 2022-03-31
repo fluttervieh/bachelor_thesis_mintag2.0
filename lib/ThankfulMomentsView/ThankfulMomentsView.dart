@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
+import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 
@@ -21,6 +22,8 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
 
   List<List<String>> _goodMessages = [];
   //Map<DateTime, String> _badMessages = {};
+  List<bool> isSelected = [];
+                     
 
 
   @override
@@ -28,7 +31,10 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
     super.initState();
 
     List<DiaryEntryDTO>? entries=  widget.userAccountDTO.diary.entries;
+    
     if(entries != null){
+
+        entries = List.from(entries.reversed);
 
         List<EntryMsgDTO> entryMsgs = [];
         for( var entry in entries){
@@ -40,6 +46,7 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
               e.add(entry.date);
               e.add(entryMsg.message);
               _goodMessages.add(e);
+              isSelected.add(false);
             }  
         }
     }
@@ -64,10 +71,73 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                 Expanded(
                   flex: 9, 
                   child: Container(
-                    color: Colors.blue,
                     child: ListView.builder(itemBuilder: (context, index) {
-                      return Card(
-                        child: Text(_goodMessages[index][0] + ", "+ _goodMessages[index][1]) ,
+                      
+                      return GestureDetector(
+                        onTap: () => setState(() {
+                          if(isSelected[index]){
+                            isSelected[index] = false;
+                          }else{
+                            isSelected[index] = true;
+                          }
+                        }),
+                        child: isSelected[index]?Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(_goodMessages[index][0])) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                      const Icon(Icons.arrow_drop_up, color: Colors.black,),
+                                    ]
+                                  ),
+                                  const SizedBox(height: 8,),
+                                  Text(_goodMessages[index][1], style: const TextStyle(color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),)
+                                  
+                                  
+                                ],
+                              ),
+                            ),
+                            // child: Text(
+                            //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
+                            // ) ,
+                          )
+                        ):Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(_goodMessages[index][0])) + ":", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                      const Icon(Icons.arrow_drop_down, color: Colors.black,),
+                                    ]
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // child: Text(
+                            //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
+                            // ) ,
+                          )
+                        )
                       );
                     },
                     itemCount: _goodMessages.length,
