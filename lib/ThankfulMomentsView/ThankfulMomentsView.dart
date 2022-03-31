@@ -75,6 +75,16 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                       
                       return GestureDetector(
                         onTap: () => setState(() {
+                          
+                          if(isTabisAlreadyOpened()){
+                            int oldIndex = getIndexOfAlreadyOpenedTab();
+                            if(oldIndex != index){
+                               isSelected[oldIndex] = false;
+
+                            }
+                          }
+
+
                           if(isSelected[index]){
                             isSelected[index] = false;
                           }else{
@@ -163,6 +173,21 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
         ],
       ),
     );
+  }
+
+
+  int getIndexOfAlreadyOpenedTab(){
+    int index = 0;
+    for (var element in isSelected) {
+      if(element == true){
+        index =  isSelected.indexOf(element);
+      }
+    }
+    return index;
+  }
+
+  bool isTabisAlreadyOpened(){
+    return isSelected.contains(true);
   }
 }
 
