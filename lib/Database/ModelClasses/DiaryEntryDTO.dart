@@ -25,6 +25,7 @@ class DiaryEntryDTO{
     return {
       //'entryId': entryId,
       'date': date,
+      'entryMsgs': entryMsgs
     };
   }
 

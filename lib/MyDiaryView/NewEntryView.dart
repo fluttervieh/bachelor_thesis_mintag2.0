@@ -94,13 +94,19 @@ class _NewEntryViewState extends State<NewEntryView> {
     }else{
 
       DiaryEntryDTO newEntry = DiaryEntryDTO(DateTime.now().toString());
+      persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
+
       newEntry.setEntryMsgs(entryMsgDTOs);
+      String entryId = newEntry.entryId!;
+
 
       entryMsgDTOs.forEach((element) { 
         debugPrint("-----]" + element.message + ", " + element.rating.toString());
+        persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, element);
+
       });
 
-      addDiaryEntry(user!.uid, newEntry);
+      //addDiaryEntry(user!.uid, newEntry);
       showDialog(context: context, builder: (BuildContext context){
         return  AlertDialog(
           title: const Text("it worked!"),

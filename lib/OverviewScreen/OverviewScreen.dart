@@ -41,6 +41,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint("[initstate called");
     fetchUserAccount();
   }
 
