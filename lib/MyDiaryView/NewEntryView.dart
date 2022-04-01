@@ -34,12 +34,12 @@ class _NewEntryViewState extends State<NewEntryView> {
     // TODO: implement initState
     super.initState();
 
-    _expandableListItems.add(ExpandableListItem(index: 0, entries: _entryMsgs,  isTextField: true));
-    _expandableListItems.add(ExpandableListItem(index: 1, entries: _entryMsgs,  isTextField: true));
-    _expandableListItems.add(ExpandableListItem(index: 2, entries: _entryMsgs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 3, entries: _entryMsgs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 4, entries: _entryMsgs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 5, entries: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 0, entryMsgs: _entryMsgs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(index: 1, entryMsgs: _entryMsgs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(index: 2, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 3, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 4, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 5, entryMsgs: _entryMsgs,  isTextField: false));
   }
 
  
@@ -89,7 +89,7 @@ class _NewEntryViewState extends State<NewEntryView> {
 
 //persists the entry
   void safeEntry(){
-    if(entryMsgDTOs.isEmpty){
+    if(_entryMsgs.isEmpty){
       showDialog(context: context, builder: (BuildContext context){
         return const AlertDialog(
           title: Text("der Eintrag ist leer"),
@@ -101,14 +101,16 @@ class _NewEntryViewState extends State<NewEntryView> {
      // persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
 
       newEntry.setEntryMsgs(entryMsgDTOs);
-      String entryId = newEntry.entryId!;
+      //String entryId = newEntry.entryId!;
 
 
-      entryMsgDTOs.forEach((element) { 
-        debugPrint("-----]" + element.message + ", " + element.rating.toString());
-       // persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, element);
+      // entryMsgDTOs.forEach((element) { 
+      //   debugPrint("-----]" + element.message + ", " + element.rating.toString());
+      //  // persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, element);
 
-      });
+      // });
+
+      _entryMsgs.forEach((key, value) => print("[--mappp------]" + key.toString() + ": " + value.message + " , " + value.rating.toString()));
 
       //addDiaryEntry(user!.uid, newEntry);
       showDialog(context: context, builder: (BuildContext context){
@@ -131,13 +133,13 @@ class _NewEntryViewState extends State<NewEntryView> {
 class ExpandableListItem extends StatefulWidget {
 
   final int index;
-  final Map<int, EntryMsgDTO> entries;
+  final Map<int, EntryMsgDTO> entryMsgs;
   final bool isTextField;
 
   const ExpandableListItem({
     Key? key,
     required this.index,
-    required this.entries,
+    required this.entryMsgs,
     required this.isTextField,
   }) : super(key: key);
 
@@ -165,34 +167,64 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       false
     ];
     checkBoxes = [
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
-       => i = val!
+      CircleCheckbox(fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: 0, intCallBack: (val)=>setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
       ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.orange, value: 2, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
-       =>  i = val!
+      CircleCheckbox( fillColor: Colors.orange, value: 2, selectedBoxes: selectedBoxes, index: 1, intCallBack: (val)=> setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
+      ), ),
+      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
+      CircleCheckbox(fillColor: Colors.yellow, value: 3, selectedBoxes: selectedBoxes, index: 2, intCallBack: (val)=>setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
       ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.yellow, value: 3, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
-       => i = val!
+      CircleCheckbox(fillColor: Colors.greenAccent, value: 4, selectedBoxes: selectedBoxes, index: 3, intCallBack: (val)=>setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
       ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.greenAccent, value: 4, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
-      =>  i = val!
-      ),),
-      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.green, value: 5, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
-        =>i = val!
+      CircleCheckbox(fillColor: Colors.green, value: 5, selectedBoxes: selectedBoxes, index: 4, intCallBack: (val)=>setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
       ),),
     ];
 
   }
 
+    //callback fkt
     int i = 0;
     set integer(int value) => setState(() {
       print("[-----new val----]" + i.toString());
       i = value;
+      //msg.setRating(value.toDouble());
+
     });
+
+    void updateMessageDTOMap(int value){
+       if(widget.entryMsgs[widget.index] != null){
+        if(value.toDouble() == widget.entryMsgs[widget.index]!.rating){
+          widget.entryMsgs.remove(widget.index);
+        }else{
+          msg.setRating(value.toDouble());
+          widget.entryMsgs[widget.index] = msg;
+        }
+      }else{
+                  msg.setRating(value.toDouble());
+
+              widget.entryMsgs[widget.index] = msg;
+
+      }
+      
+    }
 
 
 
@@ -281,7 +313,6 @@ typedef void IntCallBack(int? i);
 class CircleCheckbox extends StatefulWidget {
    const CircleCheckbox({
     Key? key,
-    required this.entryMsgs,
     required this.fillColor,
     required this.value,
     required this.selectedBoxes,
@@ -295,7 +326,6 @@ class CircleCheckbox extends StatefulWidget {
   final int value;
   final int index;
   final List<bool> selectedBoxes;
-  final Map<int, EntryMsgDTO> entryMsgs;
   final IntCallBack intCallBack;
 
   
@@ -320,7 +350,6 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
 
       return GestureDetector(
         onTap:(){
-          debugPrint("[....called");
           widget.intCallBack(widget.value);
         }, 
         
