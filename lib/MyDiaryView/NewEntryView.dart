@@ -55,21 +55,9 @@ class _NewEntryViewState extends State<NewEntryView> {
           children: [
              HeaderContainer(header: "Neuer Eintrag" , subHeader: _dateString, optionalDescription: "Tippe die jeweiligen Boxen an und swipe für eine Bewertung.",),
              Expanded(
-               child: Container(
-                 child: SingleChildScrollView(
-                   child: Column(
-                     children: [
-                        ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: true),
-                        ExpandableListItem(index: 2, entries: entryMsgDTOs, isTextField: false),
-                        ExpandableListItem(index: 3, entries: entryMsgDTOs,  isTextField: false),
-                        ExpandableListItem(index: 4, entries: entryMsgDTOs,  isTextField: false),
-                        ExpandableListItem(index: 5, entries: entryMsgDTOs, isTextField: false),
-                        
-
-                     ],
-                   ),
-                 ),
-                )
+               child: ListView.builder(itemCount: _expandableListItems.length, itemBuilder: (context, index){
+                 return _expandableListItems[index];
+               })
               ),
       
           ],
