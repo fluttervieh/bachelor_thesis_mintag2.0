@@ -83,8 +83,6 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
 
                             }
                           }
-
-
                           if(isSelected[index]){
                             isSelected[index] = false;
                           }else{

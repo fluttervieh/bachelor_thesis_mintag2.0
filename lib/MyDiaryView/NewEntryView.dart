@@ -26,6 +26,20 @@ class _NewEntryViewState extends State<NewEntryView> {
 
   final user = FirebaseAuth.instance.currentUser;
   List<EntryMsgDTO> entryMsgDTOs = [];
+  List<ExpandableListItem> _expandableListItems = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _expandableListItems.add(ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(index: 2, entries: entryMsgDTOs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 2, entries: entryMsgDTOs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 2, entries: entryMsgDTOs,  isTextField: false));
+  }
 
  
   @override
@@ -45,7 +59,7 @@ class _NewEntryViewState extends State<NewEntryView> {
                  child: SingleChildScrollView(
                    child: Column(
                      children: [
-                        ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: false),
+                        ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: true),
                         ExpandableListItem(index: 2, entries: entryMsgDTOs, isTextField: false),
                         ExpandableListItem(index: 3, entries: entryMsgDTOs,  isTextField: false),
                         ExpandableListItem(index: 4, entries: entryMsgDTOs,  isTextField: false),
@@ -84,6 +98,7 @@ class _NewEntryViewState extends State<NewEntryView> {
     );
   }
 
+//persists the entry
   void safeEntry(){
     if(entryMsgDTOs.isEmpty){
       showDialog(context: context, builder: (BuildContext context){
@@ -94,7 +109,7 @@ class _NewEntryViewState extends State<NewEntryView> {
     }else{
 
       DiaryEntryDTO newEntry = DiaryEntryDTO(DateTime.now().toString());
-      persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
+     // persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
 
       newEntry.setEntryMsgs(entryMsgDTOs);
       String entryId = newEntry.entryId!;
@@ -102,7 +117,7 @@ class _NewEntryViewState extends State<NewEntryView> {
 
       entryMsgDTOs.forEach((element) { 
         debugPrint("-----]" + element.message + ", " + element.rating.toString());
-        persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, element);
+       // persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, element);
 
       });
 
@@ -194,7 +209,25 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
             
             child: isExpanded?Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
+              child: widget.isTextField?Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    const Text("Heute bin ich besonders dankbar für:" ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                      hintText: "Schreibe hier deine Gedanken auf...",
+                      ),
+                      onSaved:  (String?value){
+                        if(value != null){
+
+                        }
+                      } ,
+                    )
+                  ],
+                ),
+              ):
+               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:  [
@@ -273,37 +306,29 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
       builder: (BuildContext context, StateSetter setState) {
 
       return GestureDetector(
-        onTap: (){
+        onTap: () => setState((){
+
+
+            if(isNumberSelected()){
+            int oldIndex = getIndexOfAlreadySelectedNumber();
+            if(oldIndex != widget.index){
+              widget.selectedBoxes[oldIndex] = false;
+              _isPressed = false;
+              widget.entryMsgs.remove(msg);
+            }
+          }
 
           if(_isPressed){
-            setState(() {
-              _isPressed = false;
+             _isPressed = false;
               widget.selectedBoxes[widget.index] = false;
               widget.entryMsgs.remove(msg);
-              
-            });
           }else{
-
-            // if (widget.selectedBoxes.contains(true)){
-
-            //   int oldIndex = getAlreadySelectedIndex();
-
-            //   setState(() {
-            //     widget.selectedBoxes[oldIndex] = false;
-            //     widget.selectedBoxes[widget.index] = true;
-            //     _isPressed = true;
-
-            //   });
-            // }else{
-              setState(() {
-                widget.entryMsgs.add(msg);
+             widget.entryMsgs.add(msg);
                 widget.selectedBoxes[widget.index] = true;
                 _isPressed = true;
+          }
 
-              });
-            }
-          //}    
-        },
+        }),
         child: Container(
           height: 36,
           width: 36,
@@ -333,5 +358,19 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
     }
     return 0;
   }
+
+  bool isNumberSelected(){return widget.selectedBoxes.contains(true);}
+
+  int getIndexOfAlreadySelectedNumber(){
+    int index = 0;
+    for(var element in widget.selectedBoxes){
+      if(element == true){
+        index = widget.selectedBoxes.indexOf(element);
+      }
+    }
+    return index;
+
+  }
+  
 }
 
