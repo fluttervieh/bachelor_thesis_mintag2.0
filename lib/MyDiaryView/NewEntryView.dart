@@ -27,18 +27,19 @@ class _NewEntryViewState extends State<NewEntryView> {
   final user = FirebaseAuth.instance.currentUser;
   List<EntryMsgDTO> entryMsgDTOs = [];
   List<ExpandableListItem> _expandableListItems = [];
+  Map<int, EntryMsgDTO> _entryMsgs = {};
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _expandableListItems.add(ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: true));
-    _expandableListItems.add(ExpandableListItem(index: 2, entries: entryMsgDTOs,  isTextField: true));
-    _expandableListItems.add(ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 2, entries: entryMsgDTOs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 1, entries: entryMsgDTOs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 2, entries: entryMsgDTOs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 0, entries: _entryMsgs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(index: 1, entries: _entryMsgs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(index: 2, entries: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 3, entries: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 4, entries: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(index: 5, entries: _entryMsgs,  isTextField: false));
   }
 
  
@@ -130,7 +131,7 @@ class _NewEntryViewState extends State<NewEntryView> {
 class ExpandableListItem extends StatefulWidget {
 
   final int index;
-  final List<EntryMsgDTO> entries;
+  final Map<int, EntryMsgDTO> entries;
   final bool isTextField;
 
   const ExpandableListItem({
@@ -150,6 +151,8 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   List<Widget> checkBoxes = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
+  EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", 0.toDouble(), false);
+
 
   @override
   void initState() {
@@ -162,18 +165,35 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       false
     ];
     checkBoxes = [
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: 0),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
+       => i = val!
+      ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.orange, value: 2, selectedBoxes: selectedBoxes, index: 1),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.orange, value: 2, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
+       =>  i = val!
+      ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.yellow, value: 3, selectedBoxes: selectedBoxes, index: 2),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.yellow, value: 3, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
+       => i = val!
+      ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.greenAccent, value: 4, selectedBoxes: selectedBoxes, index: 3),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.greenAccent, value: 4, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
+      =>  i = val!
+      ),),
       Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.green, value: 5, selectedBoxes: selectedBoxes, index: 4),
+      CircleCheckbox(entryMsgs: widget.entries, fillColor: Colors.green, value: 5, selectedBoxes: selectedBoxes, index: widget.index, intCallBack: (val)=>setState(() 
+        =>i = val!
+      ),),
     ];
 
   }
+
+    int i = 0;
+    set integer(int value) => setState(() {
+      print("[-----new val----]" + i.toString());
+      i = value;
+    });
+
 
 
   @override
@@ -183,6 +203,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       onTap: (){
         setState(() {
           isExpanded?isExpanded = false:isExpanded=true;
+          print("[-----I-" + widget.index.toString() + "---]" + i.toString());
         });
       },
       child: Material(
@@ -207,6 +228,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                       hintText: "Schreibe hier deine Gedanken auf...",
                       ),
                       onSaved:  (String?value){
+                        //todo: validation
                         if(value != null){
 
                         }
@@ -254,14 +276,17 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   
 }
 
+typedef void IntCallBack(int? i);
+
 class CircleCheckbox extends StatefulWidget {
    const CircleCheckbox({
     Key? key,
     required this.entryMsgs,
     required this.fillColor,
     required this.value,
-        required this.selectedBoxes,
-        required this.index
+    required this.selectedBoxes,
+    required this.index,
+    required this.intCallBack
 
 
   }) : super(key: key);
@@ -270,7 +295,8 @@ class CircleCheckbox extends StatefulWidget {
   final int value;
   final int index;
   final List<bool> selectedBoxes;
-  final List<EntryMsgDTO> entryMsgs;
+  final Map<int, EntryMsgDTO> entryMsgs;
+  final IntCallBack intCallBack;
 
   
 
@@ -290,33 +316,40 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
     EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble(), false);
     bool _isPressed = widget.selectedBoxes[widget.index];
 
-    return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
+    
 
       return GestureDetector(
-        onTap: () => setState((){
+        onTap:(){
+          debugPrint("[....called");
+          widget.intCallBack(widget.value);
+        }, 
+        
+        //() => setState((){
 
 
-            if(isNumberSelected()){
-            int oldIndex = getIndexOfAlreadySelectedNumber();
-            if(oldIndex != widget.index){
-              widget.selectedBoxes[oldIndex] = false;
-              _isPressed = false;
-              widget.entryMsgs.remove(msg);
-            }
-          }
+          //   if(isNumberSelected()){
+          //   int oldIndex = getIndexOfAlreadySelectedNumber();
+          //   if(oldIndex != widget.index){
+          //     widget.selectedBoxes[oldIndex] = false;
+          //     _isPressed = false;
 
-          if(_isPressed){
-             _isPressed = false;
-              widget.selectedBoxes[widget.index] = false;
-              widget.entryMsgs.remove(msg);
-          }else{
-             widget.entryMsgs.add(msg);
-                widget.selectedBoxes[widget.index] = true;
-                _isPressed = true;
-          }
+          //     widget.entryMsgs.remove(oldIndex);
+          //   }
+          // }
 
-        }),
+          // if(_isPressed){
+          //    _isPressed = false;
+          //     widget.selectedBoxes[widget.index] = false;
+          //     widget.entryMsgs.remove(msg);
+          // }else{
+          //    widget.entryMsgs.add(msg);
+          //   widget.entryMsgs.forEach((element) {print("[----msg----]" + element.message + ", " + element.rating.toString());});
+
+          //       widget.selectedBoxes[widget.index] = true;
+          //       _isPressed = true;
+          // }
+
+       // }),
         child: Container(
           height: 36,
           width: 36,
@@ -334,8 +367,8 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
           ),
         ),
       );
-      }
-    );
+      
+    
   }
 
   int getAlreadySelectedIndex(){

@@ -27,5 +27,8 @@ class EntryMsgDTO{
   String getMessage() => message;
   double getRating() => rating;
 
+  void setTextField(bool isTextField)=>this.isTextField = isTextField;
+  void setRating(double rating)=> this.rating = rating;
+
 
 }
