@@ -203,12 +203,10 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     //callback fkt
     int i = 0;
     set integer(int value) => setState(() {
-      print("[-----new val----]" + i.toString());
       i = value;
-      //msg.setRating(value.toDouble());
-
     });
 
+    //updates msgDTO in map, removes entry on double selection. 
     void updateMessageDTOMap(int value){
        if(widget.entryMsgs[widget.index] != null){
         if(value.toDouble() == widget.entryMsgs[widget.index]!.rating){
@@ -218,12 +216,9 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
           widget.entryMsgs[widget.index] = msg;
         }
       }else{
-                  msg.setRating(value.toDouble());
-
-              widget.entryMsgs[widget.index] = msg;
-
-      }
-      
+          msg.setRating(value.toDouble());
+          widget.entryMsgs[widget.index] = msg;
+      }  
     }
 
 
@@ -346,39 +341,31 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
     EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble(), false);
     bool _isPressed = widget.selectedBoxes[widget.index];
 
-    
 
-      return GestureDetector(
-        onTap:(){
+        return GestureDetector(
+        onTap:()=>setState(() {
+          debugPrint("pressed");
+
+            if(isNumberSelected()){
+            int oldIndex = getIndexOfAlreadySelectedNumber();
+            if(oldIndex != widget.index){
+              widget.selectedBoxes[oldIndex] = false;
+              debugPrint("[---oldIndex] " + widget.selectedBoxes[oldIndex].toString());
+            }
+          }
+          if(_isPressed){
+            _isPressed = false;
+            widget.selectedBoxes[widget.index] = false;
+          }else{
+            _isPressed = true;
+                        widget.selectedBoxes[widget.index] = true;
+
+          }
+          debugPrint("[VALUE BOOL ISPRESSED]" + _isPressed.toString());
           widget.intCallBack(widget.value);
-        }, 
-        
-        //() => setState((){
-
-
-          //   if(isNumberSelected()){
-          //   int oldIndex = getIndexOfAlreadySelectedNumber();
-          //   if(oldIndex != widget.index){
-          //     widget.selectedBoxes[oldIndex] = false;
-          //     _isPressed = false;
-
-          //     widget.entryMsgs.remove(oldIndex);
-          //   }
-          // }
-
-          // if(_isPressed){
-          //    _isPressed = false;
-          //     widget.selectedBoxes[widget.index] = false;
-          //     widget.entryMsgs.remove(msg);
-          // }else{
-          //    widget.entryMsgs.add(msg);
-          //   widget.entryMsgs.forEach((element) {print("[----msg----]" + element.message + ", " + element.rating.toString());});
-
-          //       widget.selectedBoxes[widget.index] = true;
-          //       _isPressed = true;
-          // }
-
-       // }),
+          }
+        ),
+          
         child: Container(
           height: 36,
           width: 36,
@@ -396,6 +383,9 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
           ),
         ),
       );
+      
+  
+
       
     
   }
