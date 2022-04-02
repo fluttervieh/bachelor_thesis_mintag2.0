@@ -151,6 +151,7 @@ class ExpandableListItem extends StatefulWidget {
 class _ExpandableListItemState extends State<ExpandableListItem> {
 
   List<Widget> checkBoxes = [];
+  List<CircleSelection> circleSelections = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
   EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", 0.toDouble(), false);
@@ -198,6 +199,31 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       ),),
     ];
 
+    circleSelections.add(CircleSelection(false, 1, (val)=> setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
+      ), Colors.red));
+      circleSelections.add(CircleSelection(false, 2, (val)=> setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
+      ), Colors.orange));
+      circleSelections.add(CircleSelection(false, 3, (val)=> setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
+      ), Colors.yellow));
+      circleSelections.add(CircleSelection(false, 4, (val)=> setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
+      ), Colors.lightGreen));
+      circleSelections.add(CircleSelection(false, 5, (val)=> setState(() 
+       {i = val!;
+        updateMessageDTOMap(val);
+       }
+      ), Colors.green));
   }
 
     //callback fkt
@@ -228,10 +254,10 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     padding:  EdgeInsets.symmetric(horizontal: isExpanded?16.0: 48.0, vertical: 16),
     child: GestureDetector(
       onTap: (){
-        setState(() {
-          isExpanded?isExpanded = false:isExpanded=true;
+         setState(() { 
+           isExpanded?isExpanded = false:isExpanded=true;
           print("[-----I-" + widget.index.toString() + "---]" + i.toString());
-        });
+         });
       },
       child: Material(
         elevation: 10,
@@ -264,22 +290,59 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                   ],
                 ),
               ):
-               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children:  [
-                    const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: checkBoxes,  
-                      ),
-                    )
+              //  Column(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children:  [
+              //         const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+              //         Padding(
+              //           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: checkBoxes,  
+              //           ),
+                        
+              //         )
+               
+              //     ],
+              //   ),
+              ListView.builder(shrinkWrap: true, itemCount: circleSelections.length, scrollDirection: Axis.horizontal, itemBuilder: (context, index){
+                            return GestureDetector(
+                              onTap: (){
+                                for(int i = 0; i<circleSelections.length; ++i){
 
-                ],
-              ),
+                                  
+                                  if(i == index){
+                                    if(circleSelections[i].isSelected){
+                                      setState(() {
+                                        circleSelections[i].isSelected = false;
+                                      });
+                                    }else{
+                                      setState(() {
+                                        circleSelections[i].isSelected = true;
+                                      });
+                                    }
+                                   
+                                  }else{
+                                    setState(() {
+                                      circleSelections[i].isSelected = false;
+                                    });
+                                  }
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  color: circleSelections[index].isSelected?circleSelections[index].fillColor:Colors.blue,
+                                ),
+                              ),
+                            );
+                           //return Container(height: 5, width: 5, color: Colors.blue);
+                         }),
+               
             )
             
             :Padding(
@@ -299,6 +362,17 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     ),
   );
 
+  int getIndexOfAlreadySelectedCheckbox(List<bool> selectedBoxes){
+     int index = 0;
+    for (var element in selectedBoxes) {
+      if(element == true){
+        index =  selectedBoxes.indexOf(element);
+      }
+    }
+    return index;
+  }
+  
+
 
   
 }
@@ -306,14 +380,13 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
 typedef void IntCallBack(int? i);
 
 class CircleCheckbox extends StatefulWidget {
-   const CircleCheckbox({
+    const CircleCheckbox({
     Key? key,
     required this.fillColor,
     required this.value,
     required this.selectedBoxes,
     required this.index,
-    required this.intCallBack
-
+    required this.intCallBack,
 
   }) : super(key: key);
 
@@ -331,58 +404,59 @@ class CircleCheckbox extends StatefulWidget {
 
 class _CircleCheckboxState extends State<CircleCheckbox> {
 
-
-
   
-
+  bool isSelected = false;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isSelected = widget.selectedBoxes[widget.index];
+  }
+ 
   @override
   Widget build(BuildContext context) {
 
     EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble(), false);
-    bool _isPressed = widget.selectedBoxes[widget.index];
-
-
         return GestureDetector(
-        onTap:()=>setState(() {
-          debugPrint("pressed");
-
+          onTap: ()=>setState(() {
+            debugPrint("pressed" + isSelected.toString());
             if(isNumberSelected()){
             int oldIndex = getIndexOfAlreadySelectedNumber();
             if(oldIndex != widget.index){
               widget.selectedBoxes[oldIndex] = false;
-              debugPrint("[---oldIndex] " + widget.selectedBoxes[oldIndex].toString());
             }
           }
-          if(_isPressed){
-            _isPressed = false;
+          if(isSelected){
+            isSelected = false;
             widget.selectedBoxes[widget.index] = false;
           }else{
-            _isPressed = true;
+            isSelected = true;
                         widget.selectedBoxes[widget.index] = true;
 
           }
-          debugPrint("[VALUE BOOL ISPRESSED]" + _isPressed.toString());
           widget.intCallBack(widget.value);
-          }
-        ),
+        
           
-        child: Container(
-          height: 36,
-          width: 36,
-          decoration: BoxDecoration(
-            color: _isPressed?widget.fillColor: Colors.white,
-            borderRadius: BorderRadius.circular(1000),
-            border: Border.all(color: _isPressed?Colors.transparent:const Color(0xffa4a4a4), width: 2),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(widget.value.toInt().toString(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: _isPressed?Colors.white : const Color(0xffa4a4a4)), )
-            ],
-          ),
-        ),
-      );
+          }),
+          child: Container(
+            height: 36,
+            width: 36,
+            decoration: BoxDecoration(
+              color: isSelected?widget.fillColor: Colors.white,
+              borderRadius: BorderRadius.circular(1000),
+              border: Border.all(color: isSelected?Colors.transparent:const Color(0xffa4a4a4), width: 2),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(widget.value.toInt().toString(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: widget.selectedBoxes[widget.index]?Colors.white : const Color(0xffa4a4a4)), )
+              ],
+            ),
+          
+              ),
+        );
       
   
 
@@ -412,5 +486,14 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
 
   }
   
+}
+
+class CircleSelection{
+  bool isSelected;
+  int value;
+  IntCallBack callBack;
+  Color fillColor;
+
+  CircleSelection(this.isSelected, this.value, this.callBack, this.fillColor);
 }
 
