@@ -160,46 +160,8 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   @override
   void initState() {
     super.initState();
-    selectedBoxes = [
-      false,
-      false,
-      false,
-      false,
-      false
-    ];
-    checkBoxes = [
-      CircleCheckbox(fillColor: Colors.red, value: 1, selectedBoxes: selectedBoxes, index: 0, intCallBack: (val)=>setState(() 
-       {i = val!;
-        updateMessageDTOMap(val);
-       }
-      ),),
-      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox( fillColor: Colors.orange, value: 2, selectedBoxes: selectedBoxes, index: 1, intCallBack: (val)=> setState(() 
-       {i = val!;
-        updateMessageDTOMap(val);
-       }
-      ), ),
-      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(fillColor: Colors.yellow, value: 3, selectedBoxes: selectedBoxes, index: 2, intCallBack: (val)=>setState(() 
-       {i = val!;
-        updateMessageDTOMap(val);
-       }
-      ),),
-      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(fillColor: Colors.greenAccent, value: 4, selectedBoxes: selectedBoxes, index: 3, intCallBack: (val)=>setState(() 
-       {i = val!;
-        updateMessageDTOMap(val);
-       }
-      ),),
-      Expanded(child: Container(height: 2, color: const Color(0xffa4a4a4),)),
-      CircleCheckbox(fillColor: Colors.green, value: 5, selectedBoxes: selectedBoxes, index: 4, intCallBack: (val)=>setState(() 
-       {i = val!;
-        updateMessageDTOMap(val);
-       }
-      ),),
-    ];
-
-    circleSelections.add(CircleSelection(false, 1, (val)=> setState(() 
+  
+      circleSelections.add(CircleSelection(false, 1, (val)=> setState(() 
        {i = val!;
         updateMessageDTOMap(val);
        }
@@ -247,8 +209,6 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       }  
     }
 
-
-
   @override
   Widget build(BuildContext context) =>Padding(
     padding:  EdgeInsets.symmetric(horizontal: isExpanded?16.0: 48.0, vertical: 16),
@@ -290,62 +250,63 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                   ],
                 ),
               ):
-              //  Column(
-              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children:  [
-              //         const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
-              //         Padding(
-              //           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             crossAxisAlignment: CrossAxisAlignment.center,
-              //             children: checkBoxes,  
-              //           ),
-                        
-              //         )
-               
-              //     ],
-              //   ),
-              ListView.builder(shrinkWrap: true, itemCount: circleSelections.length, scrollDirection: Axis.horizontal, itemBuilder: (context, index){
-                            return GestureDetector(
-                              onTap: (){
-                                for(int i = 0; i<circleSelections.length; ++i){
-
+              Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                    Expanded(
+                      child: ListView.builder(shrinkWrap: true, itemCount: circleSelections.length, scrollDirection: Axis.horizontal, itemBuilder: (context, index){
+                                    return GestureDetector(
+                                      onTap: (){
+                                        for(int i = 0; i<circleSelections.length; ++i){                                  
+                                          if(i == index){
+                                            if(circleSelections[i].isSelected){
+                                              setState(() {
+                                                circleSelections[i].isSelected = false;
+                                                circleSelections[i].callBack(circleSelections[i].value);
                                   
-                                  if(i == index){
-                                    if(circleSelections[i].isSelected){
-                                      setState(() {
-                                        circleSelections[i].isSelected = false;
-                                        circleSelections[i].callBack(circleSelections[i].value);
-
-                                      });
-                                    }else{
-                                      setState(() {
-                                        circleSelections[i].isSelected = true;
-                                        circleSelections[i].callBack(circleSelections[i].value);
-                                      });
-                                    }
-                                   
-                                  }else{
-                                    setState(() {
-                                      circleSelections[i].isSelected = false;
-                                    });
-                                  }
-                                }
-
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: 30,
-                                  width: 30,
-                                  color: circleSelections[index].isSelected?circleSelections[index].fillColor:Colors.blue,
-                                ),
-                              ),
-                            );
-                           //return Container(height: 5, width: 5, color: Colors.blue);
-                         }),
+                                              });
+                                            }else{
+                                              setState(() {
+                                                circleSelections[i].isSelected = true;
+                                                circleSelections[i].callBack(circleSelections[i].value);
+                                              });
+                                            }
+                                           
+                                          }else{
+                                            setState(() {
+                                              circleSelections[i].isSelected = false;
+                                            });
+                                          }
+                                        }
+                                  
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                         height: 36,
+                                        width: 36,
+                                        decoration: BoxDecoration(
+                                          color: circleSelections[index].isSelected?circleSelections[index].fillColor: Colors.white,
+                                          borderRadius: BorderRadius.circular(1000),
+                                          border: Border.all(color: circleSelections[index].isSelected?Colors.transparent:const Color(0xffa4a4a4), width: 2),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                         crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(circleSelections[index].value.toString(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: circleSelections[index].isSelected?Colors.white : const Color(0xffa4a4a4)), )
+                                          ],
+                                        ),
+                                        ),
+                                      ),
+                                    );
+                                 }),
+                    ),
+                  ],
+                ),
+              ),
                
             )
             
@@ -355,7 +316,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:  [
-                  Icon(Icons.check_circle, color: selectedBoxes.contains(true)?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
+                  Icon(Icons.check_circle, color: checkIfCircleSelectionsContainsTrue()?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
                   const SizedBox(width: 16,),
                   const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
                 ],
@@ -366,131 +327,19 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     ),
   );
 
-  int getIndexOfAlreadySelectedCheckbox(List<bool> selectedBoxes){
-     int index = 0;
-    for (var element in selectedBoxes) {
-      if(element == true){
-        index =  selectedBoxes.indexOf(element);
+  bool checkIfCircleSelectionsContainsTrue(){
+    for (var item in circleSelections) {
+      if(item.isSelected){
+        return true;
       }
     }
-    return index;
+    return false;
   }
-  
-
-
-  
 }
 
 typedef void IntCallBack(int? i);
 
-class CircleCheckbox extends StatefulWidget {
-    const CircleCheckbox({
-    Key? key,
-    required this.fillColor,
-    required this.value,
-    required this.selectedBoxes,
-    required this.index,
-    required this.intCallBack,
 
-  }) : super(key: key);
-
-  final Color fillColor;
-  final int value;
-  final int index;
-  final List<bool> selectedBoxes;
-  final IntCallBack intCallBack;
-
-  
-
-  @override
-  State<CircleCheckbox> createState() => _CircleCheckboxState();
-}
-
-class _CircleCheckboxState extends State<CircleCheckbox> {
-
-  
-  bool isSelected = false;
-  
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    isSelected = widget.selectedBoxes[widget.index];
-  }
- 
-  @override
-  Widget build(BuildContext context) {
-
-    EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", widget.value.toDouble(), false);
-        return GestureDetector(
-          onTap: ()=>setState(() {
-            debugPrint("pressed" + isSelected.toString());
-            if(isNumberSelected()){
-            int oldIndex = getIndexOfAlreadySelectedNumber();
-            if(oldIndex != widget.index){
-              widget.selectedBoxes[oldIndex] = false;
-            }
-          }
-          if(isSelected){
-            isSelected = false;
-            widget.selectedBoxes[widget.index] = false;
-          }else{
-            isSelected = true;
-                        widget.selectedBoxes[widget.index] = true;
-
-          }
-          widget.intCallBack(widget.value);
-        
-          
-          }),
-          child: Container(
-            height: 36,
-            width: 36,
-            decoration: BoxDecoration(
-              color: isSelected?widget.fillColor: Colors.white,
-              borderRadius: BorderRadius.circular(1000),
-              border: Border.all(color: isSelected?Colors.transparent:const Color(0xffa4a4a4), width: 2),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(widget.value.toInt().toString(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: widget.selectedBoxes[widget.index]?Colors.white : const Color(0xffa4a4a4)), )
-              ],
-            ),
-          
-              ),
-        );
-      
-  
-
-      
-    
-  }
-
-  int getAlreadySelectedIndex(){
-    for(var i in widget.selectedBoxes){
-      if(i == true){
-        return widget.selectedBoxes.indexOf(i);
-      }
-    }
-    return 0;
-  }
-
-  bool isNumberSelected(){return widget.selectedBoxes.contains(true);}
-
-  int getIndexOfAlreadySelectedNumber(){
-    int index = 0;
-    for(var element in widget.selectedBoxes){
-      if(element == true){
-        index = widget.selectedBoxes.indexOf(element);
-      }
-    }
-    return index;
-
-  }
-  
-}
 
 class CircleSelection{
   bool isSelected;
