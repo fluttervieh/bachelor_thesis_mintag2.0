@@ -42,11 +42,14 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
 
             //todo: somehow filter bad/ good
             for(var entryMsg in entryMsgs){
-              List<String> e = [];
+              if(entryMsg.isTextField){
+                 List<String> e = [];
               e.add(entry.date);
               e.add(entryMsg.message);
               _goodMessages.add(e);
               isSelected.add(false);
+              }
+             
             }  
         }
     }

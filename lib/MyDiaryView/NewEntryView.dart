@@ -98,19 +98,15 @@ class _NewEntryViewState extends State<NewEntryView> {
     }else{
 
       DiaryEntryDTO newEntry = DiaryEntryDTO(DateTime.now().toString());
-     // persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
+      persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
 
       newEntry.setEntryMsgs(entryMsgDTOs);
-      //String entryId = newEntry.entryId!;
+      String entryId = newEntry.entryId!;
 
-
-      // entryMsgDTOs.forEach((element) { 
-      //   debugPrint("-----]" + element.message + ", " + element.rating.toString());
-      //  // persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, element);
-
-      // });
-
-      _entryMsgs.forEach((key, value) => print("[--mappp------]" + key.toString() + ": " + value.message + " , " + value.rating.toString()));
+      _entryMsgs.forEach((key, value) {
+         print("[--mappp------]" + key.toString() + ": " + value.message + " , " + value.rating.toString());
+        persistEntryMsgDTO(widget.userAccountDTO.databaseId!, entryId, value);
+      });
 
       //addDiaryEntry(user!.uid, newEntry);
       showDialog(context: context, builder: (BuildContext context){
@@ -259,10 +255,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                               });
                             }
                         
-                      } ,
-                       
-                        //todo: validation
-                    
+                      } ,                    
                     )
                   ],
                 ),
