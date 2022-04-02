@@ -150,11 +150,15 @@ class ExpandableListItem extends StatefulWidget {
 
 class _ExpandableListItemState extends State<ExpandableListItem> {
 
-  List<Widget> checkBoxes = [];
   List<CircleSelection> circleSelections = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
   EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", 0.toDouble(), false);
+
+
+  String defaultTextValue = "";
+  TextEditingController textEditingController = TextEditingController();
+
 
 
   @override
@@ -236,16 +240,29 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 child: Column(
                   children: [
                     const Text("Heute bin ich besonders dankbar für:" ,style: TextStyle(fontWeight: FontWeight.bold,)),
-                    TextFormField(
+                    TextField(
+                      controller: textEditingController,
                       decoration: const InputDecoration(
                       hintText: "Schreibe hier deine Gedanken auf...",
                       ),
-                      onSaved:  (String?value){
-                        //todo: validation
-                        if(value != null){
+                      onEditingComplete:() {
+                            if(textEditingController.text != ""){
+                                setState(() {
+                                       defaultTextValue = textEditingController.text;
+                                widget.entryMsgs[widget.index]=EntryMsgDTO(textEditingController.text, 0, true);
+                                });
 
-                        }
+                            }else{
+                              setState(() {
+                                defaultTextValue = textEditingController.text;
+                                widget.entryMsgs.remove(widget.index);
+                              });
+                            }
+                        
                       } ,
+                       
+                        //todo: validation
+                    
                     )
                   ],
                 ),
@@ -316,7 +333,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:  [
-                  Icon(Icons.check_circle, color: checkIfCircleSelectionsContainsTrue()?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
+                  Icon(Icons.check_circle, color: checkIfCircleSelectionsContainsTrue(defaultTextValue)?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
                   const SizedBox(width: 16,),
                   const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
                 ],
@@ -327,14 +344,20 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     ),
   );
 
-  bool checkIfCircleSelectionsContainsTrue(){
+
+// checks 
+  bool checkIfCircleSelectionsContainsTrue(String textMsg){
     for (var item in circleSelections) {
       if(item.isSelected){
         return true;
       }
     }
+     if(textMsg != ""){
+      return true;
+    }
     return false;
   }
+
 }
 
 typedef void IntCallBack(int? i);
