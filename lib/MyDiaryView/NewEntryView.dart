@@ -317,10 +317,13 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                                     if(circleSelections[i].isSelected){
                                       setState(() {
                                         circleSelections[i].isSelected = false;
+                                        circleSelections[i].callBack(circleSelections[i].value);
+
                                       });
                                     }else{
                                       setState(() {
                                         circleSelections[i].isSelected = true;
+                                        circleSelections[i].callBack(circleSelections[i].value);
                                       });
                                     }
                                    
@@ -330,6 +333,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                                     });
                                   }
                                 }
+
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
