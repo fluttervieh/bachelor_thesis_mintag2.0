@@ -68,8 +68,8 @@ class _MyRatingsViewState extends State<MyRatingsView> {
     Colors.yellow.withOpacity(0.8)
   ],
   [
-    Colors.greenAccent,
-    Colors.greenAccent.withOpacity(0.8)
+    Colors.lightGreen,
+    Colors.lightGreen.withOpacity(0.8)
   ],
   [
     const Color(0xff0c947b),

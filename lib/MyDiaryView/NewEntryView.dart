@@ -31,15 +31,13 @@ class _NewEntryViewState extends State<NewEntryView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    _expandableListItems.add(ExpandableListItem(index: 0, entryMsgs: _entryMsgs,  isTextField: true));
-    _expandableListItems.add(ExpandableListItem(index: 1, entryMsgs: _entryMsgs,  isTextField: true));
-    _expandableListItems.add(ExpandableListItem(index: 2, entryMsgs: _entryMsgs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 3, entryMsgs: _entryMsgs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 4, entryMsgs: _entryMsgs,  isTextField: false));
-    _expandableListItems.add(ExpandableListItem(index: 5, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(header: "Heute bin ich besonders Dankbar für:", index: 0, entryMsgs: _entryMsgs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(header: "Heute bin ich weniger Danbar für:", index: 1, entryMsgs: _entryMsgs,  isTextField: true));
+    _expandableListItems.add(ExpandableListItem(header: "Heute habe ich mich gesund gefühlt.", index: 2, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(header: "Heute habe ich mich gerne für etwas angestrengt.", index: 3, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(header: "Ich habe Wünsche für die Zukunft.",index: 4, entryMsgs: _entryMsgs,  isTextField: false));
+    _expandableListItems.add(ExpandableListItem(header: "Manches ist mir heute besonders gut gelungen.", index: 5, entryMsgs: _entryMsgs,  isTextField: false));
   }
 
  
@@ -60,7 +58,6 @@ class _NewEntryViewState extends State<NewEntryView> {
                  return _expandableListItems[index];
                })
               ),
-      
           ],
         ),
       ),
@@ -121,6 +118,7 @@ class _NewEntryViewState extends State<NewEntryView> {
     }
   }
 
+  //function to navigate to the overview View after successful persistance of the entry.
   void navigateToOverView(){
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const OverviewScreen()));
   }
@@ -128,12 +126,14 @@ class _NewEntryViewState extends State<NewEntryView> {
 
 class ExpandableListItem extends StatefulWidget {
 
+  final String header;
   final int index;
   final Map<int, EntryMsgDTO> entryMsgs;
   final bool isTextField;
 
   const ExpandableListItem({
     Key? key,
+    required this.header,
     required this.index,
     required this.entryMsgs,
     required this.isTextField,
@@ -149,7 +149,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   List<CircleSelection> circleSelections = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
-  EntryMsgDTO msg = EntryMsgDTO("NEW MESSAGE---TEST", 0.toDouble(), false);
+  EntryMsgDTO msg = EntryMsgDTO("", 0, false);
 
 
   String defaultTextValue = "";
@@ -160,6 +160,8 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   @override
   void initState() {
     super.initState();
+
+      msg = EntryMsgDTO(widget.header, 0.toDouble(), false);
   
       circleSelections.add(CircleSelection(false, 1, (val)=> setState(() 
        {i = val!;
@@ -170,7 +172,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
        {i = val!;
         updateMessageDTOMap(val);
        }
-      ), Colors.orange));
+      ), Themes.secondaryColor));
       circleSelections.add(CircleSelection(false, 3, (val)=> setState(() 
        {i = val!;
         updateMessageDTOMap(val);
@@ -185,7 +187,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
        {i = val!;
         updateMessageDTOMap(val);
        }
-      ), Colors.green));
+      ), Themes.primaryColor));
   }
 
     //callback fkt
@@ -235,7 +237,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    const Text("Heute bin ich besonders dankbar für:" ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                    Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,)),
                     TextField(
                       controller: textEditingController,
                       decoration: const InputDecoration(
@@ -264,7 +266,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                    Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,)),
                     Expanded(
                       child: ListView.builder(shrinkWrap: true, itemCount: circleSelections.length, scrollDirection: Axis.horizontal, itemBuilder: (context, index){
                                     return GestureDetector(
@@ -328,7 +330,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 children:  [
                   Icon(Icons.check_circle, color: checkIfCircleSelectionsContainsTrue(defaultTextValue)?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
                   const SizedBox(width: 16,),
-                  const Text("Heute geht es mir sehr gut." ,style: TextStyle(fontWeight: FontWeight.bold,)),
+                  Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,)),
                 ],
               ),
             )
