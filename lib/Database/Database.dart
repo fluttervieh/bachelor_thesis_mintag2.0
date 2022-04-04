@@ -134,3 +134,14 @@ void persistEntryMsgDTO(String databaseId, String entryId, EntryMsgDTO entryMsgD
   ref.set(entryMsgDTO.toJson());
 }
 
+//updates an exiisting entryDTO and changes its isFavourite value
+void updateEntryMsgDTO(String databaseId, String entryId, EntryMsgDTO entryMsgDTO, bool isFavorite){
+
+  String? entryMsgId = entryMsgDTO.entryMsgId;
+  EntryMsgDTO newEntryMsgDTO = EntryMsgDTO(entryMsgDTO.message, entryMsgDTO.rating, entryMsgDTO.isTextField, isFavorite);
+  newEntryMsgDTO.setId(entryMsgId); 
+
+  databaseReference.child('accounts/' + databaseId + '/diary/entries/' + entryId + '/' + entryId + '/').update(newEntryMsgDTO.toJson());
+
+}
+
