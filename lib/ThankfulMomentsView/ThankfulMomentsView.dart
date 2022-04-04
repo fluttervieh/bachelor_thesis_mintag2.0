@@ -61,14 +61,64 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
       body: SafeArea(
         child: Column(
           children:   [
-            const HeaderContainer(header: "Dankbare Momente", subHeader: "Hier werden Situationen angegeben, für die du in letzter Zeit besonders dankbar warst."),
+            const HeaderContainer(header: "Meine Momente", subHeader: "Hier werden Situationen angegeben, für die du in letzter Zeit besonders dankbar warst."),
             Expanded(
               child: Column(
               children:[
                 Expanded(
                   flex: 1, 
-                  child: Container(
-                    color: Colors.red, //this gonna be the slider for the good/bad selection
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.max,
+                          children:  [
+                            const Padding(
+                              padding:  EdgeInsets.only(top: 16.0),
+                              child: Text("Alle", style: TextStyle(fontSize: 16, color: Themes.primaryColor, fontWeight: FontWeight.bold),),
+                            ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal:8.0),
+                                      child: Divider(thickness: 6, color: Themes.primaryColor, ),
+                                    )
+                                  ],
+                                ),
+                              )
+                          ]
+                        ),
+                      ),
+                        Expanded(
+                        flex: 1,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.max,
+                          children:  [
+                            const Padding(
+                              padding:  EdgeInsets.only(top: 16.0),
+                              child: Text("Favoriten", style: TextStyle(fontSize: 16, color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),),
+                            ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal:8.0),
+                                      child: Divider(thickness: 6, color: Color(0xffa4a4a4), ),
+                                    )
+                                  ],
+                                ),
+                              )
+                          ]
+                        ),
+                        )],
                   )
                 ),
                 Expanded(
