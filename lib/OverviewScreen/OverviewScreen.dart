@@ -83,12 +83,15 @@ class _OverviewScreenState extends State<OverviewScreen> {
                           child: Text("Weisheit des Tages", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                         ),
                         const WisdomOfTheDay(),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("MinTag", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                        ),
                         OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
                         //const SizedBox(height: 16),
                         OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
                         //const SizedBox(height: 16),
                         OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
-                        const SizedBox(height: 32),
                       ],
                     ),
                   ),
@@ -127,7 +130,7 @@ class WisdomOfTheDay extends StatelessWidget {
       shadowColor: Colors.black,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
       child: SizedBox(
-        height: 160,
+        height: 140,
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 16),

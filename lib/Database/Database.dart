@@ -72,6 +72,7 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
         int rating;
         bool isTextField;
         String entryDate = "";
+        bool isFavorite;
 
         //fetching and parsing all entryMsgDTOs 
         allEntryMsgs.forEach((msgKey, msgValue) {
@@ -80,9 +81,10 @@ Future<UserAccountDTO> fetchUserAccountDTO(String? dataBaseId) async {
             rating = msgValue['rating'];
             message = msgValue['message'];
             isTextField = msgValue['isTextField'];
+            isFavorite = msgValue['isFavorite'];
             msgId = msgKey.toString();
 
-            entryMsgDTO = EntryMsgDTO(message, rating.toDouble(), isTextField);
+            entryMsgDTO = EntryMsgDTO(message, rating.toDouble(), isTextField, isFavorite);
             entryMsgDTO.setId(msgId);
             entryMsgDTOs.add(entryMsgDTO);
 

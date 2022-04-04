@@ -7,8 +7,9 @@ class EntryMsgDTO{
   String message;
   double rating;
   bool isTextField;
+  bool isFavorite;
 
-  EntryMsgDTO(this.message, this.rating, this.isTextField);
+  EntryMsgDTO(this.message, this.rating, this.isTextField, this.isFavorite);
 
   void setId(String? id){
     entryMsgId = id;
@@ -21,6 +22,7 @@ class EntryMsgDTO{
       'message' : message,
       'rating': rating,
       'isTextField': isTextField,
+      'isFavorite' : isFavorite,
     };
   }
 

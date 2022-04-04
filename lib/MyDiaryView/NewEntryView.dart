@@ -149,7 +149,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   List<CircleSelection> circleSelections = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
-  EntryMsgDTO msg = EntryMsgDTO("", 0, false);
+  EntryMsgDTO msg = EntryMsgDTO("", 0, false, false);
 
 
   String defaultTextValue = "";
@@ -161,7 +161,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   void initState() {
     super.initState();
 
-      msg = EntryMsgDTO(widget.header, 0.toDouble(), false);
+      msg = EntryMsgDTO(widget.header, 0.toDouble(), false, false);
   
       circleSelections.add(CircleSelection(false, 1, (val)=> setState(() 
        {i = val!;
@@ -247,7 +247,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                             if(textEditingController.text != ""){
                                 setState(() {
                                        defaultTextValue = textEditingController.text;
-                                widget.entryMsgs[widget.index]=EntryMsgDTO(textEditingController.text, 0, true);
+                                widget.entryMsgs[widget.index]=EntryMsgDTO(textEditingController.text, 0, true, false);
                                 });
 
                             }else{
