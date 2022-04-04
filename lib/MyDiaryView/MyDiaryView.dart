@@ -60,17 +60,12 @@ class _MyDiaryViewState extends State<MyDiaryView> {
           icon: _eventIcon
         ));
     }
-    
-    _markedDateMap.add(
-        DateTime(2022, 3, 25),
-         Event(
-          date:  DateTime(2022, 3, 25),
-          title: 'Event 5',
-          icon: _eventIcon,
-        ));
+    _markedDateMap.events.forEach((key, value) {
+      for(var e in value){
+              print("[-----VAL----]" + e.date.toString());
 
-
-    //          icon: const Icon(Icons.check_circle_outline, color: Themes.primaryColor)
+      }
+    });
 
 
   }
@@ -106,6 +101,7 @@ class _MyDiaryViewState extends State<MyDiaryView> {
       markedDatesMap: _markedDateMap,
       markedDateIconBorderColor: Colors.black,
       markedDateShowIcon: true,
+      markedDateIconMaxShown: 1,
       showIconBehindDayText: false,
        markedDateIconBuilder: (event) {
         return event.icon ?? const Icon(Icons.help_outline);

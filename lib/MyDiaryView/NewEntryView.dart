@@ -52,7 +52,7 @@ class _NewEntryViewState extends State<NewEntryView> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             HeaderContainer(header: "Neuer Eintrag" , subHeader: _dateString, optionalDescription: "Tippe die jeweiligen Boxen an und swipe für eine Bewertung.",),
+             HeaderContainer(header: "Neuer Eintrag" , subHeader: "Heutiges Datum: " + _dateString, optionalDescription: "Tippe die jeweiligen Felder an und wähle deine Bewertung von 1-5.",),
              Expanded(
                child: ListView.builder(itemCount: _expandableListItems.length, itemBuilder: (context, index){
                  return _expandableListItems[index];
@@ -213,7 +213,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
 
   @override
   Widget build(BuildContext context) =>Padding(
-    padding:  EdgeInsets.symmetric(horizontal: isExpanded?16.0: 48.0, vertical: 16),
+    padding:  EdgeInsets.symmetric(horizontal: isExpanded?16.0: 32.0, vertical: 16),
     child: GestureDetector(
       onTap: (){
          setState(() { 
@@ -237,7 +237,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,)),
+                    Flexible(child: Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,), overflow: TextOverflow.ellipsis, maxLines: 2,)),
                     TextField(
                       controller: textEditingController,
                       decoration: const InputDecoration(
@@ -266,7 +266,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,)),
+                    Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,),overflow: TextOverflow.ellipsis, maxLines: 2),
                     Expanded(
                       child: ListView.builder(shrinkWrap: true, itemCount: circleSelections.length, scrollDirection: Axis.horizontal, itemBuilder: (context, index){
                                     return GestureDetector(
@@ -330,7 +330,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 children:  [
                   Icon(Icons.check_circle, color: checkIfCircleSelectionsContainsTrue(defaultTextValue)?const Color(0xff0c947b): const Color(0xffa4a4a4), size: 32,),
                   const SizedBox(width: 16,),
-                  Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,)),
+                  Flexible(child: Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,), overflow: TextOverflow.clip, maxLines: 2)),
                 ],
               ),
             )

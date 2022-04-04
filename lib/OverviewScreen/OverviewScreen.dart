@@ -70,21 +70,27 @@ class _OverviewScreenState extends State<OverviewScreen> {
           children:  [
              HeaderContainer(header: _userAccountDTO==null?"":"Willkommen, " + userName!, subHeader: "Heute ist der " + DateParser.parseDate(DateTime.now()).toString(), optionalDescription: "Wie geht es dir heute?",),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
-                      //const SizedBox(height: 16),
-                      OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
-                      //const SizedBox(height: 16),
-                      OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
-                      const SizedBox(height: 32),
-              
-                      
-                    ],
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Weisheit des Tages", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                        ),
+                        const WisdomOfTheDay(),
+                        OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
+                        //const SizedBox(height: 16),
+                        OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
+                        //const SizedBox(height: 16),
+                        OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
+                        const SizedBox(height: 32),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -107,28 +113,38 @@ class _OverviewScreenState extends State<OverviewScreen> {
   void navigateToMyRatingsView(){
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyRatingsView(userAccountDTO: _userAccountDTO!)));
   }
+}
 
-  // //test purpose
-  void addTestEntry(){
+class WisdomOfTheDay extends StatelessWidget {
+  const WisdomOfTheDay({
+    Key? key,
+  }) : super(key: key);
 
-    List<EntryMsgDTO> entryMsgs = [];
-    var msg = EntryMsgDTO("Heute gings mir gut", 5, false);
-    entryMsgs.add(msg);
-    entryMsgs.add(msg);
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      shadowColor: Colors.black,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+      child: SizedBox(
+        height: 160,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 16),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children:const [
+                 Text("'Wenn du ein Problem hast, dann versuche es zu lösen. Kannst du es nicht lösen, dann mache kein Problem daraus.'", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16), textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, maxLines: 3,),
+                Text("-Buddha", style: TextStyle(color: Color(0xffa4a4a4), fontSize: 12),),
+              ],
+          ),
+        ),
+      ),
 
-    var entry = DiaryEntryDTO(DateTime.now().toString());
-
-    String testId = user!.uid;
-
-    persistEntryDTO(testId, entry);
-    String entryId = entry.entryId!;
-
-    for (var entryMsg in entryMsgs) {
-      persistEntryMsgDTO(testId, entryId, entryMsg);
-    }
-
+      
+    );
   }
-
 }
 
 
