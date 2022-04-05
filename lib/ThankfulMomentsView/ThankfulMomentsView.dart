@@ -21,8 +21,10 @@ class ThankfulMomentsView extends StatefulWidget {
 class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
 
   List<List<String>> _goodMessages = [];
+  List<List<String>> _favouriteMessages = [];
   //Map<DateTime, String> _badMessages = {};
   List<bool> isSelected = [];
+  List<bool> isFavouriteSelected = [];
                      
 
 
@@ -44,10 +46,13 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
             for(var entryMsg in entryMsgs){
               if(entryMsg.isTextField){
                  List<String> e = [];
-              e.add(entry.date);
-              e.add(entryMsg.message);
-              _goodMessages.add(e);
-              isSelected.add(false);
+                e.add(entry.date);
+                e.add(entryMsg.message);
+                _goodMessages.add(e);
+                isSelected.add(false);
+                if(entryMsg.isFavorite){
+                  _favouriteMessages.add(e);
+                }
               }
              
             }  
@@ -133,7 +138,6 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                             int oldIndex = getIndexOfAlreadyOpenedTab();
                             if(oldIndex != index){
                                isSelected[oldIndex] = false;
-
                             }
                           }
                           if(isSelected[index]){
@@ -142,7 +146,8 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                             isSelected[index] = true;
                           }
                         }),
-                        child: isSelected[index]?Card(
+                        child: isSelected[index]?
+                        Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -158,7 +163,16 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(_goodMessages[index][0])) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                                      const Icon(Icons.arrow_drop_up, color: Colors.black,),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          _favouriteMessages.contains(_goodMessages[index])?
+                                          const Icon(Icons.favorite, color: Colors.red,):
+                                          const Icon(Icons.favorite_outline, color: Color(0xffa4a4a4),),
+                                          const Icon(Icons.arrow_drop_up, color: Colors.black,),
+                                        ],
+                                      ),
                                     ]
                                   ),
                                   const SizedBox(height: 8,),
