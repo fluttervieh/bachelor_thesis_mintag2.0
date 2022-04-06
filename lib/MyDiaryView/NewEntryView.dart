@@ -46,42 +46,85 @@ class _NewEntryViewState extends State<NewEntryView> {
 
     final String _dateString = DateParser.parseDate(widget.newEntryDate);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return WillPopScope(
+      onWillPop: ()async {
+        final value = await showDialog<bool>(
+          context: context,
+          builder: (context){
+            return  leavingConfirmationDialog(context);
+          });
+          return value == true;
+      } ,
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+               HeaderContainer(header: "Neuer Eintrag" , subHeader: "Heutiges Datum: " + _dateString, optionalDescription: "Tippe die jeweiligen Felder an und wähle deine Bewertung von 1-5.",),
+               Expanded(
+                 child: ListView.builder(itemCount: _expandableListItems.length, itemBuilder: (context, index){
+                   return _expandableListItems[index];
+                 })
+                ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Row(
           children: [
-             HeaderContainer(header: "Neuer Eintrag" , subHeader: "Heutiges Datum: " + _dateString, optionalDescription: "Tippe die jeweiligen Felder an und wähle deine Bewertung von 1-5.",),
-             Expanded(
-               child: ListView.builder(itemCount: _expandableListItems.length, itemBuilder: (context, index){
-                 return _expandableListItems[index];
-               })
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 8, top: 8, bottom: 8),
+                  child: ElevatedButton(
+                    onPressed: ()=> showDialog(
+                      context: context, 
+                      builder: (context){
+                        return leavingConfirmationDialog(context);
+                      }
+                    ),
+                  child:  const Text("Zurück"), style: Themes.secondaryButtonStyle),
+                ),
               ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 16, top: 8, bottom: 8),
+                  child: ElevatedButton(onPressed: safeEntry, child:  const Text("Speichern"), style: Themes.primaryButtonStyle,),
+                )
+              ),
+    
           ],
         ),
+        
       ),
-      bottomNavigationBar: Row(
-        children: [
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 8, top: 8, bottom: 8),
-                child: ElevatedButton(onPressed: ()=> Navigator.of(context).pop(), child:  const Text("Zurück"), style: Themes.secondaryButtonStyle),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8, right: 16, top: 8, bottom: 8),
-                child: ElevatedButton(onPressed: safeEntry, child:  const Text("Speichern"), style: Themes.primaryButtonStyle,),
-              )
-            ),
-
-        ],
-      ),
-      
     );
+  }
+
+  AlertDialog leavingConfirmationDialog(BuildContext context) {
+    return AlertDialog(
+            content: const Text("Willst du die Seite wirklich verlassen? Der Eintrag wird nicht gespeichert!", style: TextStyle(fontWeight: FontWeight.bold)),
+            actions: [
+              Row(
+                children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 4.0, left: 4),
+                        child: ElevatedButton(
+                          onPressed: ()=>Navigator.of(context).pop(true), 
+                          child: const Text("Verlassen"), style: Themes.secondaryButtonStyle),
+                      )),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 4, left: 4.0),
+                        child: ElevatedButton(onPressed: ()=>Navigator.of(context).pop(false), 
+                        child: const Text("Bleiben"), style: Themes.primaryButtonStyle),
+                      ))
+                ],
+              )
+              
+            ],
+          );
   }
 
 //persists the entry
@@ -247,7 +290,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                             if(textEditingController.text != ""){
                                 setState(() {
                                        defaultTextValue = textEditingController.text;
-                                widget.entryMsgs[widget.index]=EntryMsgDTO(textEditingController.text, 0, true, false);
+                                widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
                                 });
 
                             }else{

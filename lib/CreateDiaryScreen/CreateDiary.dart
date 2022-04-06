@@ -39,7 +39,7 @@ class _CreateDiaryState extends State<CreateDiary> {
         Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: ElevatedButton(
-              onPressed: ()=> createDiary("Richard"), 
+              onPressed: _nameController.text != ""? ()=> createDiary(_nameController.text) : (){}, 
               child: const Text(
                 "Erstellen", 
                 style: TextStyle(
