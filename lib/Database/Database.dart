@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
@@ -10,16 +11,23 @@ import 'package:flutter/material.dart';
 
 final databaseReference = FirebaseDatabase.instance.ref();
 final user = FirebaseAuth.instance.currentUser;
+const _storage = FlutterSecureStorage();
+
 
 
 
 //checks if user already has a diary
 Future<bool>checkIfUserAlreadyHasAccount()async{
   //var ref2 = databaseReference.set('accounts');
+  String? firebaseUid = await _storage.read(key: "firebaseUid");
+
+  if(firebaseUid == null){
+    return false;
+  }
   var ref  = databaseReference.child('accounts/');
   var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
 
-  return json.containsKey(user!.uid);
+  return json.containsKey(firebaseUid);
 }
 
 //persists a given useraccountdto for a new user. 

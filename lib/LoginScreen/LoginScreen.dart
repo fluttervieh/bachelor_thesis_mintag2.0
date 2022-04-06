@@ -37,13 +37,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 )
               ),
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Image.asset("assets/img/undraw_back_to_school_inwc.png"),
-                )
-              ),
+            
               Expanded(
                 flex: 2,
                 child: Row(

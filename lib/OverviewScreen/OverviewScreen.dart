@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
@@ -36,6 +37,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   final _user = FirebaseAuth.instance.currentUser;
   UserAccountDTO? _userAccountDTO;
+  final _storage = const FlutterSecureStorage();
+
 
 
   @override
@@ -76,7 +79,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                    Positioned(
                      right: 0,
                      top: 5,
-                     child: IconButton(onPressed: ()=> print("TAPPPPP"), icon: const Icon(Icons.logout, color: Colors.white , size: 30,),),
+                     child: IconButton(onPressed: ()=> signOut(), icon: const Icon(Icons.logout, color: Colors.white , size: 30,),),
                     )
                  ],
                ),
@@ -99,9 +102,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             child: Text("MinTag", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                           ),
                           OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
-                          //const SizedBox(height: 16),
                           OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
-                          //const SizedBox(height: 16),
                           OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
                         ],
                       ),
@@ -127,6 +128,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   void navigateToMyRatingsView(){
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyRatingsView(userAccountDTO: _userAccountDTO!)));
+  }
+
+  //logout function
+  Future<void>signOut() async{
+    await _storage.deleteAll();
+    await FirebaseAuth.instance.signOut();
   }
 }
 
@@ -161,6 +168,8 @@ class WisdomOfTheDay extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

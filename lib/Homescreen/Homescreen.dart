@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/CreateDiaryScreen/CreateDiary.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/LoginScreen/LoginScreen.dart';
-import 'package:mintag_application/OverviewScreen/overviewScreen.dart';
+import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -16,23 +16,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _hasUserAlreadyAccount = false;
+  final _storage = const FlutterSecureStorage();
+
 
   @override
   void initState() {
     super.initState();
-    checkIfUserExists();
+    //checkIfUserExists();
 
   }
 
   //checks if a user already exists
   Future<void> checkIfUserExists()async{
+        //await _storage.write(key: "firebaseUid", value: "nmiSEsmpTBc9od3mw8LmHwNwwi32");
+
 
     bool hasUserAlreadyAccount = await checkIfUserAlreadyHasAccount();
 
+
     debugPrint("[---userExists???----]    " + hasUserAlreadyAccount.toString());
-    setState(() {
-      _hasUserAlreadyAccount = hasUserAlreadyAccount;
-    });
+    // setState(() {
+    //   _hasUserAlreadyAccount = hasUserAlreadyAccount;
+    // });
 
   }
 
@@ -47,15 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
           }else if (snapshot.hasError){
             return const Center(child: Text("irgendwas is schiefgelaufen..."),);
           }else if(snapshot.hasData){
-      
-           //no diary, create a new one!
+              User u = snapshot.data as User;
+              if(u.metadata.creationTime != null){
+                return const OverviewScreen();
+              }
 
-           if(_hasUserAlreadyAccount){
-              return  const OverviewScreen(); 
-           }else{
-                return const CreateDiary();
-           }  
+              return const CreateDiary();
+          
           }else{
+
             return const LoginScreen();
           }
          
