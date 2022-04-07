@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mintag_application/CreateDiaryScreen/CreateDiary.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
@@ -38,7 +39,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   final _user = FirebaseAuth.instance.currentUser;
   UserAccountDTO? _userAccountDTO;
   final _storage = const FlutterSecureStorage();
-
+  bool _isDiaryCreated = false;
 
 
   @override
@@ -49,12 +50,16 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 
   Future<void>fetchUserAccount()async{
-     //_dbId = await _storage.read(key: "db_id");
-    UserAccountDTO u = await fetchUserAccountDTO(_user!.uid);
 
-     setState(() {
-       _userAccountDTO = u;
-     });
+    bool isDiaryCreated = await checkIfUserAlreadyHasAccount();
+
+    if(isDiaryCreated){
+        UserAccountDTO u = await fetchUserAccountDTO(_user!.uid);
+        setState(() {
+          _userAccountDTO = u;
+          _isDiaryCreated = isDiaryCreated;
+        });
+    }
   }
   
 
@@ -66,7 +71,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
+      child: _isDiaryCreated? Scaffold(
         body: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -113,7 +118,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
             ],
           ),
         )
-        ),
+        ): const CreateDiary()
     );
     
   }

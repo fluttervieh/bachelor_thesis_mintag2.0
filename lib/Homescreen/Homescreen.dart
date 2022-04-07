@@ -22,17 +22,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    //checkIfUserExists();
 
   }
 
-  //checks if a user already exists
+  //checks if a user already exists UNNECCESSARY HERE
   Future<void> checkIfUserExists()async{
-        //await _storage.write(key: "firebaseUid", value: "nmiSEsmpTBc9od3mw8LmHwNwwi32");
+      //await _storage.write(key: "firebaseUid", value: "nmiSEsmpTBc9od3mw8LmHwNwwi32");
 
 
     bool hasUserAlreadyAccount = await checkIfUserAlreadyHasAccount();
-
 
     debugPrint("[---userExists???----]    " + hasUserAlreadyAccount.toString());
     // setState(() {
@@ -52,13 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }else if (snapshot.hasError){
             return const Center(child: Text("irgendwas is schiefgelaufen..."),);
           }else if(snapshot.hasData){
-              User u = snapshot.data as User;
-              if(u.metadata.creationTime != null){
-                return const OverviewScreen();
-              }
-
-              return const CreateDiary();
-          
+              return const OverviewScreen();          
           }else{
 
             return const LoginScreen();

@@ -20,7 +20,7 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     _user = googleUser;
 
-    debugPrint("[---user---]" + user.email);
+    //debugPrint("[---user---]" + user.email);
 
     final googleAuth = await googleUser.authentication;
 
@@ -30,31 +30,27 @@ class GoogleSignInProvider extends ChangeNotifier {
     );
 
 
+    await FirebaseAuth.instance.signInWithCredential(credential);
+        notifyListeners();
 
-    debugPrint(credential.accessToken);
+    // if (u.additionalUserInfo!.isNewUser){
+    //   print("[---NEW USER");
 
-    UserCredential u =  await FirebaseAuth.instance.signInWithCredential(credential);
-    if (u.additionalUserInfo!.isNewUser){
-      print("[---NEW USER");
+    // }else{
+    //   print("[---NO NEW USER AMK");
+    //   print(u.additionalUserInfo!.username);
+    // }
 
-    }else{
-      print("[---NO NEW USER AMK");
-      print(u.additionalUserInfo!.username);
-    }
-
-    print("[---firebaseUID---]" + FirebaseAuth.instance.currentUser!.uid);
-    await _storage.write(key: "firebaseUid", value: FirebaseAuth.instance.currentUser!.uid);
-
-
-    notifyListeners();
+    // print("[---firebaseUID---]" + FirebaseAuth.instance.currentUser!.uid);
+    // await _storage.write(key: "firebaseUid", value: FirebaseAuth.instance.currentUser!.uid);
 
   }
 
-  Future googleLogout() async {
-     googleSignIn.disconnect();
-    FirebaseAuth.instance.signOut();
+  // Future googleLogout() async {
+  //    googleSignIn.disconnect();
+  //   FirebaseAuth.instance.signOut();
 
-  }
+  // }
 
 
 }

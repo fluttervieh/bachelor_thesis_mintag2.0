@@ -19,15 +19,17 @@ const _storage = FlutterSecureStorage();
 //checks if user already has a diary
 Future<bool>checkIfUserAlreadyHasAccount()async{
   //var ref2 = databaseReference.set('accounts');
-  String? firebaseUid = await _storage.read(key: "firebaseUid");
+  //String? firebaseUid = await _storage.read(key: "firebaseUid");
 
-  if(firebaseUid == null){
-    return false;
-  }
+  String uid = user!.uid;
+
+  // if(uid == null){
+  //   return false;
+  // }
   var ref  = databaseReference.child('accounts/');
   var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
 
-  return json.containsKey(firebaseUid);
+  return json.containsKey(uid);
 }
 
 //persists a given useraccountdto for a new user. 
