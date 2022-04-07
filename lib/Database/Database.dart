@@ -18,14 +18,8 @@ const _storage = FlutterSecureStorage();
 
 //checks if user already has a diary
 Future<bool>checkIfUserAlreadyHasAccount()async{
-  //var ref2 = databaseReference.set('accounts');
-  //String? firebaseUid = await _storage.read(key: "firebaseUid");
 
   String uid = user!.uid;
-
-  // if(uid == null){
-  //   return false;
-  // }
   var ref  = databaseReference.child('accounts/');
   var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
 
@@ -145,7 +139,7 @@ void persistEntryMsgDTO(String databaseId, String entryId, EntryMsgDTO entryMsgD
 }
 
 //updates an exiisting entryDTO and changes its isFavourite value
-void updateEntryMsgDTO(String databaseId, String entryId, EntryMsgDTO entryMsgDTO, bool isFavorite){
+void updateEntryMsgDTO(String databaseId, String entryId, String entryMsgId, EntryMsgDTO entryMsgDTO, bool isFavorite){
 
   String? entryMsgId = entryMsgDTO.entryMsgId;
   EntryMsgDTO newEntryMsgDTO = EntryMsgDTO(entryMsgDTO.message, entryMsgDTO.rating, entryMsgDTO.isTextField, isFavorite);

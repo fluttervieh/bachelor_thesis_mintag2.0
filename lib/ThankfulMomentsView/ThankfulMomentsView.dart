@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
@@ -25,6 +26,15 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
   //Map<DateTime, String> _badMessages = {};
   List<bool> isSelected = [];
   List<bool> isFavouriteSelected = [];
+
+  Map<String?, EntryMsgWrapper> allMessages = {};
+  Map<String?, EntryMsgWrapper> favoriteMessages = {};
+  List<String?> allMessagesKeys = [];
+  List<String?> favoriteMessagesKeys = [];
+
+
+
+
                      
 
 
@@ -45,19 +55,21 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
             //todo: somehow filter bad/ good
             for(var entryMsg in entryMsgs){
               if(entryMsg.isTextField){
-                 List<String> e = [];
-                e.add(entry.date);
-                e.add(entryMsg.message);
-                _goodMessages.add(e);
+
+                allMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId,entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
+               
                 isSelected.add(false);
                 if(entryMsg.isFavorite){
-                  _favouriteMessages.add(e);
+                  favoriteMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId, entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
                 }
               }
              
             }  
         }
     }
+    allMessagesKeys = allMessages.keys.toList();
+    favoriteMessagesKeys = favoriteMessages.keys.toList();
+    allMessages.forEach((key, value) {debugPrint("[---key: " + value.entryId! + " [val: "  + value.msg  + " " + value.date);});
   }
 
   @override
@@ -130,7 +142,6 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                   flex: 9, 
                   child: Container(
                     child: ListView.builder(itemBuilder: (context, index) {
-                      
                       return GestureDetector(
                         onTap: () => setState(() {
                           
@@ -162,21 +173,19 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(_goodMessages[index][0])) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[allMessagesKeys[index]]!.date)) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                                       Row(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          _favouriteMessages.contains(_goodMessages[index])?
-                                          const Icon(Icons.favorite, color: Colors.red,):
-                                          const Icon(Icons.favorite_outline, color: Color(0xffa4a4a4),),
-                                          const Icon(Icons.arrow_drop_up, color: Colors.black,),
+                                          IconButton(onPressed: ()=>updateEntryMsg(allMessages[allMessagesKeys[index]]!, widget.userAccountDTO.databaseId!, favoriteMessages), icon:  favoriteMessagesKeys.contains(allMessagesKeys[index])? const Icon(Icons.favorite, color: Colors.red,):const Icon(Icons.favorite_outline, color: Color(0xffa4a4a4),),),
+                                          const  Icon(Icons.arrow_drop_up, color: Colors.black,),
                                         ],
                                       ),
                                     ]
                                   ),
                                   const SizedBox(height: 8,),
-                                  Text(_goodMessages[index][1], style: const TextStyle(color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),)
+                                  Text(allMessages[allMessagesKeys[index]]!.msg, style: const TextStyle(color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),)
                                   
                                   
                                 ],
@@ -201,7 +210,7 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(_goodMessages[index][0])) + ":", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[allMessagesKeys[index]]!.date)) + ":", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                                       const Icon(Icons.arrow_drop_down, color: Colors.black,),
                                     ]
                                   ),
@@ -215,7 +224,7 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                         )
                       );
                     },
-                    itemCount: _goodMessages.length,
+                    itemCount: allMessagesKeys.length,
                     )),
                   )
                 
@@ -254,6 +263,40 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
   bool isTabisAlreadyOpened(){
     return isSelected.contains(true);
   }
+
+  void updateEntryMsg (EntryMsgWrapper msg, String dbId, Map<String?, EntryMsgWrapper> favoriteMap){
+
+    debugPrint("[---tapped---]");
+
+    String entryId = msg.entryId!;
+    String entryMsgId = msg.entryMsgId!;
+    
+    EntryMsgDTO entryMsgDTO = EntryMsgDTO(msg.msg, 0, true, msg.isFavorite);
+
+    updateEntryMsgDTO(dbId, entryId, entryMsgId, entryMsgDTO, msg.isFavorite?false:true);
+
+    setState(() {
+
+      if(msg.isFavorite){
+        favoriteMap[entryMsgId] = EntryMsgWrapper(entryId, entryMsgId, msg.date, msg.msg, true);
+      }else{
+        favoriteMap.remove(entryMsgId);
+      }
+      
+    });
+
+  }
+}
+
+//wrapper to get the date into msg
+class EntryMsgWrapper{
+  String? entryId;
+  String? entryMsgId;
+  String date;
+  String msg;
+  bool isFavorite;
+
+  EntryMsgWrapper(this.entryId, this.entryMsgId,  this.date, this.msg, this.isFavorite);
 }
 
 
