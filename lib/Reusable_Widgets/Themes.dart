@@ -16,6 +16,8 @@ class Themes{
     static const Color primaryColor =  Color(0xff0c947b);
 
     static const Color secondaryColor = Color(0xffe06031);
+
+    static const Color secondaryTextColor = Color(0xffa4a4a4);
     
 
 }

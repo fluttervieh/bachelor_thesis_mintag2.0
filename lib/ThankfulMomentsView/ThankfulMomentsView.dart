@@ -35,13 +35,7 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
   List<String?> favoriteMessagesKeys = [];
 
 
-  bool areAllMessagesSelected = false;
-
-
-
-
-                     
-
+  bool areAllMessagesSelected = true;
 
   @override
   void initState() {
@@ -52,54 +46,8 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
     
   }
 
-  Future<void> updateUserAccountDTO ()async{
+  Future<List<String?>> getAllMessages (bool areAllMessagesSelected)async{
 
-    debugPrint("[---called---]");
-     userAccountDTO =  await fetchUserAccountDTO(FirebaseAuth.instance.currentUser!.uid);
-
-      List<DiaryEntryDTO>? entries=  userAccountDTO!.diary.entries;
-    
-    if(entries != null){
-
-        entries = List.from(entries.reversed);
-
-        List<EntryMsgDTO> entryMsgs = [];
-        for( var entry in entries){
-            entryMsgs = entry.entryMsgs;
-
-            //todo: somehow filter bad/ good
-            for(var entryMsg in entryMsgs){
-              if(entryMsg.isTextField){
-
-                allMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId,entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
-               
-                isSelected.add(false);
-                if(entryMsg.isFavorite){
-                  favoriteMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId, entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
-                }
-              }
-             
-            }  
-        }
-    }
-
-
-   // setState(() {
-      allMessagesKeys = allMessages.keys.toList();
-    favoriteMessagesKeys = favoriteMessages.keys.toList();
-    //});
-    
-    favoriteMessages.forEach((key, value) {debugPrint("[---key: " + value.entryId! + " [val: "  + value.msg  + " " + value.date);});
-
-  }
-
-
-
-  
-    Future<List<String?>> getAllMessages (bool areAllMessagesSelected)async{
-
-
-      print("[----the function----]");
 
 
       userAccountDTO =  await fetchUserAccountDTO(FirebaseAuth.instance.currentUser!.uid);
@@ -107,7 +55,6 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
     
         if(entries != null){
 
-        //entries = List.from(entries.reversed);
 
         List<EntryMsgDTO> entryMsgs = [];
         for( var entry in entries){
@@ -122,6 +69,7 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                 isSelected.add(false);
                  if(entryMsg.isFavorite){
                    favoriteMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId, entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
+                   isFavouriteSelected.add(false);
                  }
               }
             }  
@@ -149,52 +97,66 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.max,
-                          children:  [
-                            const Padding(
-                              padding:  EdgeInsets.only(top: 16.0),
-                              child: Text("Alle", style: TextStyle(fontSize: 16, color: Themes.primaryColor, fontWeight: FontWeight.bold),),
-                            ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: const [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(horizontal:8.0),
-                                      child: Divider(thickness: 6, color: Themes.primaryColor, ),
-                                    )
-                                  ],
-                                ),
-                              )
-                          ]
+                        child: GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              areAllMessagesSelected = true;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.max,
+                            children:  [
+                               Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: Text("Alle", style: TextStyle(fontSize: 16, color: areAllMessagesSelected? Themes.primaryColor: Themes.secondaryTextColor, fontWeight: FontWeight.bold),),
+                              ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children:  [
+                                      Padding(
+                                        padding:const EdgeInsets.symmetric(horizontal:8.0),
+                                        child: Divider(thickness: 6, color: areAllMessagesSelected?Themes.primaryColor:Themes.secondaryTextColor),
+                                      )
+                                    ],
+                                  ),
+                                )
+                            ]
+                          ),
                         ),
                       ),
                         Expanded(
                         flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.max,
-                          children:  [
-                            const Padding(
-                              padding:  EdgeInsets.only(top: 16.0),
-                              child: Text("Favoriten", style: TextStyle(fontSize: 16, color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),),
-                            ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: const [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(horizontal:8.0),
-                                      child: Divider(thickness: 6, color: Color(0xffa4a4a4), ),
-                                    )
-                                  ],
-                                ),
-                              )
-                          ]
+                        child: GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              areAllMessagesSelected = false;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.max,
+                            children:  [
+                               Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: Text("Favoriten", style: TextStyle(fontSize: 16, color: areAllMessagesSelected?  Themes.secondaryTextColor:Themes.primaryColor, fontWeight: FontWeight.bold),),
+                              ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children:  [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal:8.0),
+                                        child: Divider(thickness: 6, color: areAllMessagesSelected? Themes.secondaryTextColor:Themes.primaryColor, ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                            ]
+                          ),
                         ),
                         )],
                   )
@@ -203,14 +165,15 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                   flex: 9, 
                   child: Container(
                     child: FutureBuilder(
-                      future: getAllMessages(true),
+                      future: getAllMessages(areAllMessagesSelected),
                       builder: (context, AsyncSnapshot snapshot){
                         if(snapshot.hasData){
                         return ListView.builder(itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () => setState(() {
                             
-                            if(isTabisAlreadyOpened()){
+                            if(areAllMessagesSelected){
+                              if(isTabisAlreadyOpened()){
                               int oldIndex = getIndexOfAlreadyOpenedTab();
                               if(oldIndex != index){
                                  isSelected[oldIndex] = false;
@@ -221,7 +184,9 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                             }else{
                               isSelected[index] = true;
                             }
+                          }
                           }),
+                          
                           child: isSelected[index]?
                           Card(
                             shape: RoundedRectangleBorder(
