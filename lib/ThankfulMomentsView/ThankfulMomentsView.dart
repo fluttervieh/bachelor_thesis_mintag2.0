@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
@@ -21,8 +22,9 @@ class ThankfulMomentsView extends StatefulWidget {
 
 class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
 
-  List<List<String>> _goodMessages = [];
-  List<List<String>> _favouriteMessages = [];
+  UserAccountDTO? userAccountDTO;
+
+  
   //Map<DateTime, String> _badMessages = {};
   List<bool> isSelected = [];
   List<bool> isFavouriteSelected = [];
@@ -33,6 +35,9 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
   List<String?> favoriteMessagesKeys = [];
 
 
+  bool areAllMessagesSelected = false;
+
+
 
 
                      
@@ -40,9 +45,19 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
 
   @override
   void initState() {
+    print("[---calledddd init");
+    //updateUserAccountDTO();
     super.initState();
 
-    List<DiaryEntryDTO>? entries=  widget.userAccountDTO.diary.entries;
+    
+  }
+
+  Future<void> updateUserAccountDTO ()async{
+
+    debugPrint("[---called---]");
+     userAccountDTO =  await fetchUserAccountDTO(FirebaseAuth.instance.currentUser!.uid);
+
+      List<DiaryEntryDTO>? entries=  userAccountDTO!.diary.entries;
     
     if(entries != null){
 
@@ -67,10 +82,56 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
             }  
         }
     }
-    allMessagesKeys = allMessages.keys.toList();
+
+
+   // setState(() {
+      allMessagesKeys = allMessages.keys.toList();
     favoriteMessagesKeys = favoriteMessages.keys.toList();
-    allMessages.forEach((key, value) {debugPrint("[---key: " + value.entryId! + " [val: "  + value.msg  + " " + value.date);});
+    //});
+    
+    favoriteMessages.forEach((key, value) {debugPrint("[---key: " + value.entryId! + " [val: "  + value.msg  + " " + value.date);});
+
   }
+
+
+
+  
+    Future<List<String?>> getAllMessages (bool areAllMessagesSelected)async{
+
+
+      print("[----the function----]");
+
+
+      userAccountDTO =  await fetchUserAccountDTO(FirebaseAuth.instance.currentUser!.uid);
+      List<DiaryEntryDTO>? entries=  userAccountDTO!.diary.entries;
+    
+        if(entries != null){
+
+        //entries = List.from(entries.reversed);
+
+        List<EntryMsgDTO> entryMsgs = [];
+        for( var entry in entries){
+            entryMsgs = entry.entryMsgs;
+
+            //todo: somehow filter bad/ good
+            for(var entryMsg in entryMsgs){
+              if(entryMsg.isTextField){
+
+                allMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId,entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
+               
+                isSelected.add(false);
+                 if(entryMsg.isFavorite){
+                   favoriteMessages[entryMsg.entryMsgId] = EntryMsgWrapper(entry.entryId, entryMsg.entryMsgId, entry.date, entryMsg.message, entryMsg.isFavorite);
+                 }
+              }
+            }  
+        }
+        allMessagesKeys = allMessages.keys.toList();
+        favoriteMessagesKeys = favoriteMessages.keys.toList();
+
+      }
+      return areAllMessagesSelected? allMessagesKeys:favoriteMessagesKeys;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -141,90 +202,100 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                 Expanded(
                   flex: 9, 
                   child: Container(
-                    child: ListView.builder(itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => setState(() {
-                          
-                          if(isTabisAlreadyOpened()){
-                            int oldIndex = getIndexOfAlreadyOpenedTab();
-                            if(oldIndex != index){
-                               isSelected[oldIndex] = false;
+                    child: FutureBuilder(
+                      future: getAllMessages(true),
+                      builder: (context, AsyncSnapshot snapshot){
+                        if(snapshot.hasData){
+                        return ListView.builder(itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => setState(() {
+                            
+                            if(isTabisAlreadyOpened()){
+                              int oldIndex = getIndexOfAlreadyOpenedTab();
+                              if(oldIndex != index){
+                                 isSelected[oldIndex] = false;
+                              }
                             }
-                          }
-                          if(isSelected[index]){
-                            isSelected[index] = false;
-                          }else{
-                            isSelected[index] = true;
-                          }
-                        }),
-                        child: isSelected[index]?
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: SizedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[allMessagesKeys[index]]!.date)) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(onPressed: ()=>updateEntryMsg(allMessages[allMessagesKeys[index]]!, widget.userAccountDTO.databaseId!, favoriteMessages), icon:  favoriteMessagesKeys.contains(allMessagesKeys[index])? const Icon(Icons.favorite, color: Colors.red,):const Icon(Icons.favorite_outline, color: Color(0xffa4a4a4),),),
-                                          const  Icon(Icons.arrow_drop_up, color: Colors.black,),
-                                        ],
-                                      ),
-                                    ]
-                                  ),
-                                  const SizedBox(height: 8,),
-                                  Text(allMessages[allMessagesKeys[index]]!.msg, style: const TextStyle(color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),)
-                                  
-                                  
-                                ],
-                              ),
+                            if(isSelected[index]){
+                              isSelected[index] = false;
+                            }else{
+                              isSelected[index] = true;
+                            }
+                          }),
+                          child: isSelected[index]?
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            // child: Text(
-                            //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
-                            // ) ,
-                          )
-                        ):Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: SizedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[allMessagesKeys[index]]!.date)) + ":", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                                      const Icon(Icons.arrow_drop_down, color: Colors.black,),
-                                    ]
-                                  ),
-                                ],
+                            child: SizedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[snapshot.data[index]]!.date)) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(onPressed: ()=>updateEntryMsg(allMessages[snapshot.data[index]]!, widget.userAccountDTO.databaseId!, favoriteMessages), icon:  favoriteMessagesKeys.contains(snapshot.data[index])? const Icon(Icons.favorite, color: Colors.red,):const Icon(Icons.favorite_outline, color: Color(0xffa4a4a4),),),
+                                            const  Icon(Icons.arrow_drop_up, color: Colors.black,),
+                                          ],
+                                        ),
+                                      ]
+                                    ),
+                                    const SizedBox(height: 8,),
+                                    Text(allMessages[snapshot.data[index]]!.msg, style: const TextStyle(color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),)
+                                    
+                                    
+                                  ],
+                                ),
                               ),
+                              // child: Text(
+                              //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
+                              // ) ,
+                            )
+                          ):Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            // child: Text(
-                            //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
-                            // ) ,
+                            child: SizedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[snapshot.data[index]]!.date)) + ":", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                        const Icon(Icons.arrow_drop_down, color: Colors.black,),
+                                      ]
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // child: Text(
+                              //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
+                              // ) ,
+                            )
                           )
-                        )
+                        );
+                      },
+                      itemCount: snapshot.data.length,
                       );
-                    },
-                    itemCount: allMessagesKeys.length,
+                        }else{
+                          return const Center(child: CircularProgressIndicator(color: Themes.primaryColor),);
+                        }
+                      },
+                     
                     )),
                   )
                 
@@ -273,14 +344,21 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
     
     EntryMsgDTO entryMsgDTO = EntryMsgDTO(msg.msg, 0, true, msg.isFavorite);
 
-    updateEntryMsgDTO(dbId, entryId, entryMsgId, entryMsgDTO, msg.isFavorite?false:true);
+    bool newIsFavoriteState = msg.isFavorite?false:true;
+
+
+    updateEntryMsgDTO(dbId, entryId, entryMsgId, entryMsgDTO, newIsFavoriteState);
+
+
 
     setState(() {
 
-      if(msg.isFavorite){
+      if(newIsFavoriteState){
         favoriteMap[entryMsgId] = EntryMsgWrapper(entryId, entryMsgId, msg.date, msg.msg, true);
+        debugPrint("[----added----]");
       }else{
         favoriteMap.remove(entryMsgId);
+        print("[----removed---]");
       }
       
     });
