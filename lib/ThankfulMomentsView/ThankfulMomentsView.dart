@@ -187,7 +187,9 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                           }
                           }),
                           
-                          child: isSelected[index]?
+                          child: areAllMessagesSelected?
+                          
+                          isSelected[index]?
                           Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -247,12 +249,43 @@ class _ThankfulMomentsViewState extends State<ThankfulMomentsView> {
                                   ],
                                 ),
                               ),
-                              // child: Text(
-                              //   _goodMessages[index][0] + ", "+ _goodMessages[index][1]),
-                              // ) ,
+                             
+                            )
+                          ): Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SizedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Eintrag vom "  + DateParser.parseDate(DateTime.parse(allMessages[snapshot.data[index]]!.date)) + ".", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(onPressed: ()=>updateEntryMsg(allMessages[snapshot.data[index]]!, widget.userAccountDTO.databaseId!, favoriteMessages), icon:  favoriteMessagesKeys.contains(snapshot.data[index])? const Icon(Icons.favorite, color: Colors.red,):const Icon(Icons.favorite_outline, color: Color(0xffa4a4a4),),),
+                                          ],
+                                        ),
+                                      ]
+                                    ),
+                                    const SizedBox(height: 8,),
+                                    Text(allMessages[snapshot.data[index]]!.msg, style: const TextStyle(color: Color(0xffa4a4a4), fontWeight: FontWeight.bold),)
+                                  ],
+                                ),
+                              ),
+                             
                             )
                           )
                         );
+
                       },
                       itemCount: snapshot.data.length,
                       );
