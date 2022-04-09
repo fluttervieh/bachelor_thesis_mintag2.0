@@ -187,7 +187,7 @@ class _WisdomOfTheDayState extends State<WisdomOfTheDay> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                  Text(quoteDTO.quote, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16), textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, maxLines: 3,),
-                Text(quoteDTO.author, style: const TextStyle(color: Themes.secondaryTextColor, fontSize: 12),),
+                Text("- " + quoteDTO.author, style: const TextStyle(color: Themes.secondaryTextColor, fontSize: 12),),
               ],
           ),
         ),
