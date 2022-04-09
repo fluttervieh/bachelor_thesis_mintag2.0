@@ -25,6 +25,8 @@ Future<bool>checkIfUserAlreadyHasAccount()async{
   var ref  = databaseReference.child('accounts/');
   var json = (await ref.once()).snapshot.value as Map<dynamic, dynamic>;
 
+  print("[------]" + json.containsKey(uid).toString());
+
   return json.containsKey(uid);
 }
 

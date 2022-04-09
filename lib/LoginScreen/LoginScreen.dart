@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mintag_application/LoginScreen/FirebaseSignInProvider.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.only(top: 16.0, bottom: 32, left: 16, right: 16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 const Text("E-Mail", style: TextStyle(fontWeight: FontWeight.bold),),
                                 TextFormField(
+                                  controller: _emailController,
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.mail, color: Themes.primaryColor,),
                                    // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: Themes.primaryColor))
@@ -69,8 +74,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     return null;
                                   },
                                 ),
+                                const SizedBox(height: 16,),
                                 const Text("Passwort", style: TextStyle(fontWeight: FontWeight.bold),),
                                 TextFormField(
+                                  controller: _passwordController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.lock, color: Themes.primaryColor,),
@@ -125,7 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                             )
                                           ),
                                           const SizedBox(height: 8,),
-                                          const Text("Registrieren" , style: TextStyle(color: Themes.primaryColor, fontWeight: FontWeight.bold),),
+                                          GestureDetector(
+                                            onTap: () => signUp(_emailController.text, _passwordController.text),
+                                            child: const Text("Registrieren" , style: TextStyle(color: Themes.primaryColor, fontWeight: FontWeight.bold),)),
                                             ],
                                           ),
                                 )
@@ -143,6 +152,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         ),
     );
+  }
+  Future<User?> signUp(String email, String password)async{
+    try{
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      assert(userCredential.user!=null);
+      assert(await userCredential.user!.getIdToken() != null);
+      return userCredential.user;
+    }catch (e){
+      print(e);
+      return null;
+    }
   }
 }
 

@@ -62,6 +62,7 @@ class _CreateDiaryState extends State<CreateDiary> {
   //creates a new diary persists it in firebase
   Future<void> createDiary(String name )async{
       //final user = FirebaseAuth.instance.currentUser!;
+
       var uuid = Uuid();
       String newDiaryId = uuid.v1();
       List<DiaryEntryDTO> entries = [];
