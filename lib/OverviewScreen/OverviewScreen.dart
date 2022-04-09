@@ -12,12 +12,14 @@ import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
+import 'package:mintag_application/Database/ModelClasses/QuoteDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/MyDiaryView/MyDiaryView.dart';
 import 'package:mintag_application/MyRatingsView/MyRatingsView.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
+import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:mintag_application/ThankfulMomentsView/ThankfulMomentsView.dart';
 import 'package:provider/provider.dart';
 
@@ -142,10 +144,32 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 }
 
-class WisdomOfTheDay extends StatelessWidget {
+class WisdomOfTheDay extends StatefulWidget {
   const WisdomOfTheDay({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<WisdomOfTheDay> createState() => _WisdomOfTheDayState();
+}
+
+class _WisdomOfTheDayState extends State<WisdomOfTheDay> {
+
+  QuoteDTO quoteDTO = QuoteDTO("", "");
+
+  @override
+  void initState() {
+    super.initState();
+    initQuoteDTO();
+  }
+
+  Future<void> initQuoteDTO()async{
+    QuoteDTO quote = await getRandomQuote();
+    setState(() {
+      quoteDTO = quote;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,9 +185,9 @@ class WisdomOfTheDay extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children:const [
-                 Text("'Wenn du ein Problem hast, dann versuche es zu lösen. Kannst du es nicht lösen, dann mache kein Problem daraus.'", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16), textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, maxLines: 3,),
-                Text("-Buddha", style: TextStyle(color: Color(0xffa4a4a4), fontSize: 12),),
+              children: [
+                 Text(quoteDTO.quote, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16), textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, maxLines: 3,),
+                Text(quoteDTO.author, style: const TextStyle(color: Themes.secondaryTextColor, fontSize: 12),),
               ],
           ),
         ),
