@@ -32,25 +32,39 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     await FirebaseAuth.instance.signInWithCredential(credential);
         notifyListeners();
-
-    // if (u.additionalUserInfo!.isNewUser){
-    //   print("[---NEW USER");
-
-    // }else{
-    //   print("[---NO NEW USER AMK");
-    //   print(u.additionalUserInfo!.username);
-    // }
-
-    // print("[---firebaseUID---]" + FirebaseAuth.instance.currentUser!.uid);
-    // await _storage.write(key: "firebaseUid", value: FirebaseAuth.instance.currentUser!.uid);
-
+        
+  }
+  
+  Future<User?> signUp(String email, String password)async{
+    try{
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      assert(userCredential.user!=null);
+      assert(await userCredential.user!.getIdToken() != null);
+      notifyListeners();
+      return userCredential.user;
+    }catch (e){
+      print(e);
+      return null;
+    }
   }
 
-  // Future googleLogout() async {
-  //    googleSignIn.disconnect();
-  //   FirebaseAuth.instance.signOut();
+   Future<User?> signIn(String email, String password)async{
+    try{
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      assert(userCredential.user != null);
+      assert(await userCredential.user!.getIdToken() != null);
+      final User currentUser =  FirebaseAuth.instance.currentUser!;
+      assert(userCredential.user!.uid == currentUser.uid);
+      notifyListeners();
+      return userCredential.user;
 
-  // }
+      
+    }catch (e){
+      print(e);
+      return null;
+    }
+  }
+
 
 
 }

@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,6 +8,7 @@ import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
+import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateDiary extends StatefulWidget {
@@ -39,21 +41,32 @@ class _CreateDiaryState extends State<CreateDiary> {
         Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: ElevatedButton(
-              onPressed: _nameController.text != ""? ()=> createDiary(_nameController.text) : (){}, 
+              onPressed: (){
+              debugPrint("[---controller text--]" + _nameController.text);
+              if(_nameController.text.isNotEmpty){
+                createDiary(_nameController.text);
+              }
+              else{
+                showDialog(context: context, builder: (BuildContext context){
+                  return  AlertDialog(
+                    title:const  Text("Bitte gib deinen Namen ein."),
+                    actions: [
+                      ElevatedButton(onPressed: ()=>Navigator.of(context).pop(), child: const Text("Schließen"), style: Themes.primaryButtonStyle,)
+                    ],
+                  );
+                });
+              }  
+              //nameController.text != ""? createDiary(_nameController.text)
+              },  
               child: const Text(
                 "Erstellen", 
                 style: TextStyle(
                   color: Colors.white, 
-                  fontWeight: FontWeight.bold, 
+                  //fontWeight: FontWeight.bold, 
                   fontSize: 16),), 
-                style: ElevatedButton.styleFrom(
-                  primary: const Color(0xff0C947B), 
-                  shape: RoundedRectangleBorder( //to set border radius to button
-                  borderRadius: BorderRadius.circular(12)
+                style: Themes.primaryButtonStyle,
                 ),
-              ),
-            ),
-          ),
+              ),  
       ],
       ),
     );

@@ -139,8 +139,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   //logout function
   Future<void>signOut() async{
-    await _storage.deleteAll();
+    final googleSignIn = GoogleSignIn();
+    //await _storage.deleteAll();
     await FirebaseAuth.instance.signOut();
+    await googleSignIn.signOut();
   }
 }
 

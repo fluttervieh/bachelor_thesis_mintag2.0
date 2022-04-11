@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/LoginScreen/FirebaseSignInProvider.dart';
 import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+
 
 
 class LoginScreen extends StatefulWidget {
@@ -100,10 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ElevatedButton(
                                             style: Themes.primaryButtonStyle,
                                             onPressed: (){
-                                              if(_formKey.currentState!.validate()){
-                                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Verarbeite Daten..")));
-                                               }
-                                            }, 
+                                              final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                                              provider.signIn(_emailController.text, _passwordController.text);
+                                            },
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: const [
@@ -133,7 +135,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                           const SizedBox(height: 8,),
                                           GestureDetector(
-                                            onTap: () => signUp(_emailController.text, _passwordController.text),
+                                            onTap: () {
+                                              final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                                              provider.signUp(_emailController.text, _passwordController.text);
+                                            }, 
                                             child: const Text("Registrieren" , style: TextStyle(color: Themes.primaryColor, fontWeight: FontWeight.bold),)),
                                             ],
                                           ),
@@ -153,17 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
     );
   }
-  Future<User?> signUp(String email, String password)async{
-    try{
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-      assert(userCredential.user!=null);
-      assert(await userCredential.user!.getIdToken() != null);
-      return userCredential.user;
-    }catch (e){
-      print(e);
-      return null;
-    }
-  }
+  
+ 
 }
 
 
