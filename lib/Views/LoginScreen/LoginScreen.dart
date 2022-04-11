@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mintag_application/Database/Database.dart';
-import 'package:mintag_application/LoginScreen/FirebaseSignInProvider.dart';
-import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
+import 'package:mintag_application/Views/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';

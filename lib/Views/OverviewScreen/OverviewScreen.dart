@@ -7,20 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mintag_application/CreateDiaryScreen/CreateDiary.dart';
+import 'package:mintag_application/Views/CreateDiaryScreen/CreateDiary.dart';
 import 'package:mintag_application/Database/Database.dart';
-import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
-import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
-import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/QuoteDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
-import 'package:mintag_application/LoginScreen/GoogleSignInProvider.dart';
-import 'package:mintag_application/MyDiaryView/MyDiaryView.dart';
-import 'package:mintag_application/MyRatingsView/MyRatingsView.dart';
+import 'package:mintag_application/Views/MyDiaryView/MyDiaryView.dart';
+import 'package:mintag_application/Views/MyRatingsView/MyRatingsView.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
-import 'package:mintag_application/ThankfulMomentsView/ThankfulMomentsView.dart';
+import 'package:mintag_application/Views/ThankfulMomentsView/ThankfulMomentsView.dart';
 import 'package:provider/provider.dart';
 
 

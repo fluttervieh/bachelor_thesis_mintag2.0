@@ -3,7 +3,7 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
-import 'package:mintag_application/MyDiaryView/NewEntryView.dart';
+import 'package:mintag_application/Views/MyDiaryView/NewEntryView.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';

@@ -4,7 +4,7 @@ import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
-import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
+import 'package:mintag_application/Views/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';

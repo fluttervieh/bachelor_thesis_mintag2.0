@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mintag_application/CreateDiaryScreen/CreateDiary.dart';
+import 'package:mintag_application/Views/CreateDiaryScreen/CreateDiary.dart';
 import 'package:mintag_application/Database/Database.dart';
-import 'package:mintag_application/LoginScreen/LoginScreen.dart';
-import 'package:mintag_application/OverviewScreen/OverviewScreen.dart';
+import 'package:mintag_application/Views/LoginScreen/LoginScreen.dart';
+import 'package:mintag_application/Views/OverviewScreen/OverviewScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
