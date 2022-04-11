@@ -106,7 +106,7 @@ class _Prog_NewEntryViewState extends State<Prog_NewEntryView> {
       List<EntryMsgDTO> messageList = [];
 
       newEntry.setEntryMsgs(entryMsgDTOs);
-      String entryId = newEntry.entryId!;
+      //String entryId = newEntry.entryId!;
 
       _entryMsgs.forEach((key, value) {
          print("[--mappp------]" + key.toString() + ": " + value.message + " , " + value.rating.toString());

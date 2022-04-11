@@ -43,24 +43,27 @@ class _Prog_MyDiaryState extends State<Prog_MyDiary> {
   void initState() {
     super.initState();
     List<DiaryEntryDTO>? allEntries = widget.tempUserAccount.diary.entries;
-    for(var entry in allEntries!){
-      debugPrint("date: " + entry.date);
-      var parsedDate = DateTime.parse(entry.date);
-      var parsedYear = parsedDate.year;
-      var parsedMonth = parsedDate.month;
-      var parsedDay = parsedDate.day;
+    // for(var entry in allEntries!){
+    //   debugPrint("date: " + entry.date);
+    //   var parsedDate = DateTime.parse(entry.date);
+    //   var parsedYear = parsedDate.year;
+    //   var parsedMonth = parsedDate.month;
+    //   var parsedDay = parsedDate.day;
 
-      var newFormattedDate = DateTime(parsedYear, parsedMonth, parsedDay);
+    //   var newFormattedDate = DateTime(parsedYear, parsedMonth, parsedDay);
       
 
-      _markedDateMap.add(
-        newFormattedDate,
-         Event(
-          date: newFormattedDate,
-          title: 'Entry',
-          icon: _eventIcon
-        ));
-    }
+    //   _markedDateMap.add(
+    //     newFormattedDate,
+    //      Event(
+    //       date: newFormattedDate,
+    //       title: 'Entry',
+    //       icon: _eventIcon
+    //     ));
+    // }
+    final now = DateTime.now();
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
+    _markedDateMap.add(yesterday,Event(date: yesterday, icon: _eventIcon));
   }
 
 
