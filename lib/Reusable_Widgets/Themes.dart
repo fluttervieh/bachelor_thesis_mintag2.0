@@ -13,6 +13,13 @@ class Themes{
       primary: const  Color(0xffE06031)
     );
 
+    static final primaryButtonContrastStyle = ElevatedButton.styleFrom(
+      primary: Colors.white,
+      side: const BorderSide(color: primaryColor, width: 2),
+      shape: RoundedRectangleBorder( //to set border radius to button
+        borderRadius: BorderRadius.circular(30)),
+    );
+
     static const Color primaryColor =  Color(0xff0c947b);
 
     static const Color secondaryColor = Color(0xffe06031);
