@@ -4,6 +4,7 @@ import 'package:mintag_application/Views/StartScreen/Homescreen.dart';
 import 'package:mintag_application/Views/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/Views/LoginScreen/LoginScreen.dart';
 import 'package:mintag_application/MaterialColor.dart';
+import 'package:mintag_application/prog_onboarding/Prog_StartScreen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: theme,
-        home: const HomeScreen(),
+        //home: const HomeScreen(),
+        home: const Prog_StartScreen()
       ),
     );
   }

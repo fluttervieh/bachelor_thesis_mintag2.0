@@ -1,6 +1,9 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:mintag_application/Database/ModelClasses/DiaryDTO.dart';
+import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
+import 'package:mintag_application/prog_onboarding/Prog_OverviewScreen.dart';
 
 class Prog_StartScreen extends StatefulWidget {
   const Prog_StartScreen({ Key? key }) : super(key: key);
@@ -10,9 +13,16 @@ class Prog_StartScreen extends StatefulWidget {
 }
 
 class _Prog_StartScreenState extends State<Prog_StartScreen> {
+
+
+
+  UserAccountDTO tempUserAccount  = UserAccountDTO(DiaryDTO("123456789", "tempUser's Diary"), "tempUser");
+
+  
   @override
   Widget build(BuildContext context) {
-    return Container(
+   return Center(
+      child: ElevatedButton(onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=> Prog_OverviewScreen(tempUserAccount: tempUserAccount,))), child: const Text("Los gehts"),),
       
     );
   }
