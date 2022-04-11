@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mintag_application/BO_Onboarding/SelfReflection.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 
 // ignore: camel_case_types
@@ -44,7 +45,11 @@ class BO_StartScreen extends StatelessWidget {
                           children: [
                             Expanded(child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                              child: ElevatedButton(onPressed: (){}, style: Themes.primaryButtonContrastStyle, child: const Text("Na klar!", style:  TextStyle(color: Themes.primaryColor, fontSize: 16),)),
+                              child: ElevatedButton(
+                                onPressed: (){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SelfReflection()));
+                                },
+                                style: Themes.primaryButtonContrastStyle, child: const Text("Na klar!", style:  TextStyle(color: Themes.primaryColor, fontSize: 16),)),
                             )),
                           ],
                         ),
@@ -61,5 +66,7 @@ class BO_StartScreen extends StatelessWidget {
       ),
       
     );
+
+  
   }
 }
