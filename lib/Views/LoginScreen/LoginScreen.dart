@@ -30,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> checkIfUserFinishedOnboarding()async{
 
       String? s = await _storage.read(key: "onboardingFinished");
-      debugPrint("Hier komm ich reinnnnnnn" + s.toString());
 
       if(s != null && s == "yes"){
           setState(() {
@@ -41,7 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkIfUserFinishedOnboarding();
   }
@@ -192,5 +190,4 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
 
-// onTap: () {
-//                           },
+

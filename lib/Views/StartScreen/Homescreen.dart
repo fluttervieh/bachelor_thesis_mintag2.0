@@ -21,25 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isOnboaringFinished = false;
 
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   checkIfUserFinishedOnboarding();
-
-  // }
-
-  //checks if a user already exists UNNECCESSARY HERE
-  // Future<void> checkIfUserFinishedOnboarding()async{
-
-  //     debugPrint("Hier komm ich reinnnnnnn");
-  //     String? s = await _storage.read(key: "onboardingFinished");
-  //     if(s != null && s == "yes"){
-  //         setState(() {
-  //           isOnboaringFinished = true;
-  //         });
-  //     }
-
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
           }else if (snapshot.hasError){
             return const Center(child: Text("irgendwas is schiefgelaufen..."),);
           }else if(snapshot.hasData){
-            print("hier komm ich rein snap hat data");
               return const OverviewScreen();          
           }else{
-            
-            print("[onboarding finihsed???]" + isOnboaringFinished.toString());
-           // return isOnboaringFinished? const LoginScreen() : const BO_StartScreen();
-           return const LoginScreen();
+              return const LoginScreen();
           }
          
         },

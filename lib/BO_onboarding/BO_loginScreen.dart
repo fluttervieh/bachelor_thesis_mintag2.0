@@ -176,6 +176,8 @@ class _BO_LoginScreenState extends State<BO_LoginScreen> {
     );
   }
 
+  //deletes the navigation stack till the homescreen, where listeneers are
+  //notified of how they should redirect
   void deleteNavigationStack(){
     Navigator.pushAndRemoveUntil(
       context,
