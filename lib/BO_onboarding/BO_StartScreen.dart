@@ -47,7 +47,12 @@ class BO_StartScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(horizontal: 60.0),
                               child: ElevatedButton(
                                 onPressed: (){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SelfReflection()));
+                                  Navigator.of(context).push( PageRouteBuilder(
+                                    pageBuilder: (c, a1, a2) => const SelfReflection(),
+                                    transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
+                                    transitionDuration: const Duration(milliseconds: 1000),
+                                    ),
+                                  );
                                 },
                                 style: Themes.primaryButtonContrastStyle, child: const Text("Na klar!", style:  TextStyle(color: Themes.primaryColor, fontSize: 16),)),
                             )),
