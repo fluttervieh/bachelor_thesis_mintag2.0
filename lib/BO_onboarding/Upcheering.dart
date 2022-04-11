@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/BO_Onboarding/HealthMonitoring.dart';
 import 'package:mintag_application/Reusable_Widgets/BO_Onboarding/BO_Header.dart';
 import 'package:mintag_application/Reusable_Widgets/BO_Onboarding/BO_ProgressBar.dart';
@@ -73,13 +74,16 @@ class Upcheering extends StatelessWidget {
       
     ); 
   }
-  void navigateToHealthMonitoringView(BuildContext context){
-    Navigator.of(context).push( PageRouteBuilder(
-      pageBuilder: (c, a1, a2) => const HealthMonitoring(),
-      transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
-      transitionDuration: const Duration(milliseconds: 1000),
-      ),
-    );
+  void navigateToHealthMonitoringView(BuildContext context) {
+    
+    // Navigator.of(context).push( PageRouteBuilder(
+    //   pageBuilder: (c, a1, a2) => const HealthMonitoring(),
+    //   transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
+    //   transitionDuration: const Duration(milliseconds: 1000),
+    //   ),
+    // );
+        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const HealthMonitoring()));
+
 }
 
 }

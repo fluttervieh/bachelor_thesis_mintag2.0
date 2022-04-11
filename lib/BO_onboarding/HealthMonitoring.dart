@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/BO_onboarding/BO_loginScreen.dart';
 import 'package:mintag_application/Reusable_Widgets/BO_Onboarding/BO_Header.dart';
 import 'package:mintag_application/Reusable_Widgets/BO_Onboarding/BO_ProgressBar.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
+import 'package:mintag_application/Views/LoginScreen/LoginScreen.dart';
 
 
 class HealthMonitoring extends StatelessWidget {
@@ -22,7 +24,7 @@ class HealthMonitoring extends StatelessWidget {
                   const Expanded(
                     flex: 3,
                     child:  SizedBox(
-                      child: BO_Header(header: "Gesundheits-Monitoring.",subHeader: "Wie ging es dir in letzter Zeit? Ein überblick über deine Gesamtbewertungen hilft dir, einen Überblick über dein allgemeines Wohlbefinden zu erhalten.",),
+                      child: BO_Header(header: "Gesundheits-Monitoring.",subHeader: "Wie ging es dir in letzter Zeit? Ein Überblick über deine Gesamtbewertungen hilft dir, einen Überblick über dein allgemeines Wohlbefinden zu erhalten.",),
                     ),
                   ),
                   Expanded(
@@ -75,12 +77,14 @@ class HealthMonitoring extends StatelessWidget {
       
     ); 
   }
-  void navigateToLoginView(BuildContext context){
-     Navigator.of(context).push( PageRouteBuilder(
-        pageBuilder: (c, a1, a2) => const BO_LoginScreen(),
-        transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
-        transitionDuration: const Duration(milliseconds: 1000),
-    ),
-  );
+  void navigateToLoginView(BuildContext context) async{
+    await finishOnboarding(); 
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const BO_LoginScreen()));
   }
+
+  Future<void>finishOnboarding()async{
+    final storage = FlutterSecureStorage();
+    await storage.write(key: "onboardingFinished", value: "yes");
+  }
+
 }

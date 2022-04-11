@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mintag_application/BO_onboarding/BO_StartScreen.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Views/LoginScreen/GoogleSignInProvider.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
@@ -19,10 +21,34 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _storage = FlutterSecureStorage();
+
+  bool isOnboardingFinished = false;
+
+  
+
+  Future<void> checkIfUserFinishedOnboarding()async{
+
+      String? s = await _storage.read(key: "onboardingFinished");
+      debugPrint("Hier komm ich reinnnnnnn" + s.toString());
+
+      if(s != null && s == "yes"){
+          setState(() {
+            isOnboardingFinished = true;
+          });
+      }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkIfUserFinishedOnboarding();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isOnboardingFinished? Scaffold(
         resizeToAvoidBottomInset: false, 
 
       body: SafeArea(
@@ -101,9 +127,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     children: [
                                           ElevatedButton(
                                             style: Themes.primaryButtonStyle,
-                                            onPressed: (){
+                                            onPressed: ()  {
+                                              //await _storage.deleteAll();
                                               final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                                              provider.signIn(_emailController.text, _passwordController.text);
+                                             provider.signIn(_emailController.text, _passwordController.text);
                                             },
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -135,6 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           const SizedBox(height: 8,),
                                           GestureDetector(
                                             onTap: () {
+
                                               final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                               provider.signUp(_emailController.text, _passwordController.text);
                                             }, 
@@ -155,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         ),
-    );
+    ): const BO_StartScreen();
   }
   
  

@@ -1,8 +1,12 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:mintag_application/Views/LoginScreen/GoogleSignInProvider.dart';
+import 'package:mintag_application/Views/LoginScreen/LoginScreen.dart';
+import 'package:mintag_application/Views/OverviewScreen/OverviewScreen.dart';
+import 'package:mintag_application/Views/StartScreen/Homescreen.dart';
 import 'package:provider/provider.dart';
 
 class BO_LoginScreen extends StatefulWidget {
@@ -18,6 +22,15 @@ class _BO_LoginScreenState extends State<BO_LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //finishOnboarding();
+
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +116,8 @@ class _BO_LoginScreenState extends State<BO_LoginScreen> {
                                           ElevatedButton(
                                             style: Themes.primaryButtonStyle,
                                             onPressed: (){
+                                              deleteNavigationStack();
+                                              print("[---anmelden komm ich rein]");
                                               final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                               provider.signIn(_emailController.text, _passwordController.text);
                                             },
@@ -122,6 +137,7 @@ class _BO_LoginScreenState extends State<BO_LoginScreen> {
                                               ),
                                             ),
                                             onPressed: (){
+                                              deleteNavigationStack();
                                               final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                               provider.googleLogin();
                                             }, child: Row(
@@ -136,6 +152,7 @@ class _BO_LoginScreenState extends State<BO_LoginScreen> {
                                           const SizedBox(height: 8,),
                                           GestureDetector(
                                             onTap: () {
+                                              deleteNavigationStack();
                                               final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                               provider.signUp(_emailController.text, _passwordController.text);
                                             }, 
@@ -156,6 +173,16 @@ class _BO_LoginScreenState extends State<BO_LoginScreen> {
           ],
         ),
         ),
+    );
+  }
+
+  void deleteNavigationStack(){
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const HomeScreen(),
+      ),
+      (route) => false,
     );
   }
 }

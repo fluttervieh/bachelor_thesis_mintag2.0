@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mintag_application/BO_onboarding/BO_StartScreen.dart';
 import 'package:mintag_application/Views/StartScreen/Homescreen.dart';
 import 'package:mintag_application/Views/LoginScreen/GoogleSignInProvider.dart';
@@ -8,11 +9,14 @@ import 'package:mintag_application/MaterialColor.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -25,8 +29,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: theme,
-        //home: const HomeScreen(),
-        home: const BO_StartScreen()
+        home: const HomeScreen(),
+        //home: const BO_StartScreen()
       ),
     );
     
