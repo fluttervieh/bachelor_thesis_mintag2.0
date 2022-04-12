@@ -134,7 +134,7 @@ class _Prog_NewEntryViewState extends State<Prog_NewEntryView> {
         });
       });
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Prog_OverviewScreen(tempUserAccount: widget.tempUserAccount)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) =>   Prog_OverviewScreen(tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: true, isMyRatingsEabled: false,)))));
 
       
     }
