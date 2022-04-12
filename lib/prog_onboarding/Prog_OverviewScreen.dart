@@ -73,7 +73,7 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
   }
 
   void navigateToThankfulMomentsView(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Prog_ThankfulMoments()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>  Prog_ThankfulMoments(tempUserAccount: widget.tempUserAccount,)));
   }
 
   void navigateToMyRatingsView(){
