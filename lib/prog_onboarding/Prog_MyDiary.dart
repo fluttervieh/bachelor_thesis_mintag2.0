@@ -11,6 +11,7 @@ import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:mintag_application/prog_onboarding/Prog_NewEntry.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class Prog_MyDiary extends StatefulWidget {
   final UserAccountDTO tempUserAccount;
@@ -22,6 +23,10 @@ class Prog_MyDiary extends StatefulWidget {
 
 class _Prog_MyDiaryState extends State<Prog_MyDiary> {
 
+
+  final calendarKey = GlobalKey();
+  final newEntryKey = GlobalKey();
+  
   DateTime _currentDate = DateTime.now();
   final EventList<Event> _markedDateMap = EventList(events: {});
 
@@ -64,6 +69,9 @@ class _Prog_MyDiaryState extends State<Prog_MyDiary> {
     final now = DateTime.now();
     final yesterday = DateTime(now.year, now.month, now.day - 1);
     _markedDateMap.add(yesterday,Event(date: yesterday, icon: _eventIcon));
+
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{ ShowCaseWidget.of(context)!.startShowCase([calendarKey, newEntryKey]); });
+
   }
 
 
@@ -115,7 +123,7 @@ class _Prog_MyDiaryState extends State<Prog_MyDiary> {
               children: [
                 Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: _calendarCarousel,
+                    child: Showcase(key: calendarKey, description: 'Zuerst musst du ein Datum auswählen, an dem du einen neuen Eintrag machen willst. An den mit Häkchen versehenen Tagen wurde bereits in das Tagebuch eingetragen.', child: _calendarCarousel),
                   ),
               ],
             ),
@@ -135,7 +143,7 @@ class _Prog_MyDiaryState extends State<Prog_MyDiary> {
               flex: 1,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8, right: 16, top: 8, bottom: 8),
-                child: ElevatedButton(onPressed: ()=>navigateToNewEntryView(_currentDate), child:  const Text("Neuer Eintrag"), style: Themes.primaryButtonStyle,),
+                child: Showcase(key: newEntryKey, description: 'Wenn du ein Datum ausgewählt hast, drücke auf diesen Knopf. Bitte beachte, dass das Datum nicht in der Zukunft liegen darf.',child: ElevatedButton(onPressed: ()=>navigateToNewEntryView(_currentDate), child:  const Text("Neuer Eintrag"), style: Themes.primaryButtonStyle,)),
               )
             ),
 
@@ -158,7 +166,7 @@ class _Prog_MyDiaryState extends State<Prog_MyDiary> {
     if(!isSameDay && !isDateInFuture){
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => Prog_NewEntryView(newEntryDate: selectedDate, tempUserAccount: widget.tempUserAccount,)
+          builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) => Prog_NewEntryView(newEntryDate: selectedDate, tempUserAccount: widget.tempUserAccount,)))
         )
       );
     }else if(isSameDay && !isDateInFuture){

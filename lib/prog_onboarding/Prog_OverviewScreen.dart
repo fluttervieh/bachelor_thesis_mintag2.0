@@ -7,6 +7,7 @@ import 'package:mintag_application/Views/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/prog_onboarding/Prog_MyDiary.dart';
 import 'package:mintag_application/prog_onboarding/Prog_MyRatingsView.dart';
 import 'package:mintag_application/prog_onboarding/Prog_ThankfulMoments.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class Prog_OverviewScreen extends StatefulWidget {
   final UserAccountDTO tempUserAccount;
@@ -17,6 +18,17 @@ class Prog_OverviewScreen extends StatefulWidget {
 }
 
 class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
+
+  final keyOne = GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+   WidgetsBinding.instance!.addPostFrameCallback((_)async{ ShowCaseWidget.of(context)!.startShowCase([keyOne]); });
+  }
   @override
   Widget build(BuildContext context) {
     
@@ -53,7 +65,10 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
                             padding: EdgeInsets.all(8.0),
                             child: Text("MinTag", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                           ),
-                          OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView),
+                          Showcase(
+                            key: keyOne,
+                            description: "Hier kannst du neue Einträge in dein Tagebuch machen.",
+                            child: OverViewListItem(header: "Mein Tagebuch", subHeader: "Hier kannst du einen neuen Eintrag in dein Tagebuch machen.", assetImgUrl: "assets/img/undraw_Diary.png", onPress: navigateToMyDiaryView)),
                           OverViewListItem(header: "Dankbare Momente", subHeader: "Dankbare Momente erhellen einen regnerischen Tag.", assetImgUrl: "assets/img/undraw_moments.png", onPress: navigateToThankfulMomentsView),
                           OverViewListItem(header: "Meine Bewertungen", subHeader: "Gesamtüberblick über deine bisher abgegebenen Bewertungen.", assetImgUrl: "assets/img/undraw_Segment_analysis.png", onPress: navigateToMyRatingsView),
                         ],
@@ -69,14 +84,14 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
     );
   }
   void navigateToMyDiaryView(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Prog_MyDiary(tempUserAccount: widget.tempUserAccount,)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) => Prog_MyDiary(tempUserAccount: widget.tempUserAccount,)))));
   }
 
   void navigateToThankfulMomentsView(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>  Prog_ThankfulMoments(tempUserAccount: widget.tempUserAccount,)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>  ShowCaseWidget(builder: Builder(builder: (_) => Prog_ThankfulMoments(tempUserAccount: widget.tempUserAccount,)))));
   }
 
   void navigateToMyRatingsView(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>  Prog_MyRatingsView(tempUserAccount: widget.tempUserAccount,)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>  ShowCaseWidget(builder: Builder(builder: (_) => Prog_MyRatingsView(tempUserAccount: widget.tempUserAccount,)))));
   }
 }
