@@ -52,7 +52,16 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
         return AlertDialog(
           title: const Text("Herzlichen Glückwunsch! Du hast das Tutorial erfolgreich beendet! Wenn du mit MinTag weitermachen möchtest, drücke den Button und erstelle dein ganz eigenes Tagebuch!"),
           actions: [
-            ElevatedButton(onPressed: (){},style: Themes.primaryButtonStyle, child: const Text("Zum Login"))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: ElevatedButton(onPressed: (){},style: Themes.primaryButtonStyle, child: const Text("Zum Login")),
+                )
+              ],
+            )
           ],
         );
     })):null;

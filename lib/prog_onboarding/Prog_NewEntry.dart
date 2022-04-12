@@ -136,7 +136,16 @@ class _Prog_NewEntryViewState extends State<Prog_NewEntryView> {
          return  AlertDialog(
            title: const Text("Damit du das Tutorial erfolgreich abschließen kannst, fülle bitte mindestens eine Textfrage und eine Punktefrage aus."),
            actions: [
-             ElevatedButton(onPressed: ()=> Navigator.of(context).pop(), child: const Text("OK"), style: Themes.primaryButtonStyle,)
+             Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: ElevatedButton(onPressed: ()=> Navigator.of(context).pop(), child: const Text("OK"), style: Themes.primaryButtonStyle,),
+                  )
+               ],
+             )
            ],
          );
        });
