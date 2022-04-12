@@ -23,7 +23,7 @@ class _Prog_StartScreenState extends State<Prog_StartScreen> {
   @override
   Widget build(BuildContext context) {
    return Center(
-      child: ElevatedButton(onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=> ShowCaseWidget(builder: Builder(builder: (_)=>Prog_OverviewScreen(tempUserAccount: tempUserAccount, isMyDiaryEnabled: true, isMyRatingsEabled: false, isThankfulViewEnabled: false,))))), child: const Text("Los gehts"),),
+      child: ElevatedButton(onPressed: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=> ShowCaseWidget(builder: Builder(builder: (_)=>Prog_OverviewScreen(tempUserAccount: tempUserAccount, isMyDiaryEnabled: true, isMyRatingsEabled: false, isThankfulViewEnabled: false, isTutorialFinished: false,))))), child: const Text("Los gehts"),),
       
     );
   }

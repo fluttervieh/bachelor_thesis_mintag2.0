@@ -1,8 +1,10 @@
 // ignore_for_file: camel_case_types
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
+import 'package:mintag_application/Reusable_Widgets/Themes.dart';
 import 'package:mintag_application/Views/OverviewScreen/OverviewScreen.dart';
 import 'package:mintag_application/prog_onboarding/Prog_MyDiary.dart';
 import 'package:mintag_application/prog_onboarding/Prog_MyRatingsView.dart';
@@ -13,11 +15,13 @@ class Prog_OverviewScreen extends StatefulWidget {
   final bool isMyDiaryEnabled;
   final bool isThankfulViewEnabled;
   final bool isMyRatingsEabled;
+  final bool isTutorialFinished;
   final UserAccountDTO tempUserAccount;
   const Prog_OverviewScreen({ 
     required this.isMyDiaryEnabled,
     required this.isThankfulViewEnabled,
     required this.isMyRatingsEabled,
+    required this.isTutorialFinished,
     required this.tempUserAccount,
     Key? key }) : super(key: key);
 
@@ -40,6 +44,20 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
     widget.isMyDiaryEnabled? WidgetsBinding.instance!.addPostFrameCallback((_)async{ ShowCaseWidget.of(context)!.startShowCase([myDiaryViewKey]); }):null;
     widget.isThankfulViewEnabled? WidgetsBinding.instance!.addPostFrameCallback((_)async{ ShowCaseWidget.of(context)!.startShowCase([thankfulMomentsKey]); }):null;
     widget.isMyRatingsEabled? WidgetsBinding.instance!.addPostFrameCallback((_)async{ ShowCaseWidget.of(context)!.startShowCase([myRatingsKey]); }):null;
+
+    widget.isTutorialFinished?SchedulerBinding.instance!.addPostFrameCallback((_) => showDialog(
+      context: context, 
+      barrierDismissible: false,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text("Herzlichen Glückwunsch! Du hast das Tutorial erfolgreich beendet! Wenn du mit MinTag weitermachen möchtest, drücke den Button und erstelle dein ganz eigenes Tagebuch!"),
+          actions: [
+            ElevatedButton(onPressed: (){},style: Themes.primaryButtonStyle, child: const Text("Zum Login"))
+          ],
+        );
+    })):null;
+
+    
 
    
   }

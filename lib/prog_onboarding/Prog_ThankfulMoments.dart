@@ -263,7 +263,7 @@ class _Prog_ThankfulMomentsState extends State<Prog_ThankfulMoments> {
   }
 
   void navigateToOverView(){
-          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) =>  Prog_OverviewScreen(tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: false, isMyRatingsEabled: true,)))));
+          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) =>  Prog_OverviewScreen(tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: false, isMyRatingsEabled: true, isTutorialFinished: false,)))));
 
   }
 }

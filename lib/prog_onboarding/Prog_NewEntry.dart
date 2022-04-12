@@ -101,13 +101,7 @@ class _Prog_NewEntryViewState extends State<Prog_NewEntryView> {
     );
   }
   void safeEntry(){
-    if(_entryMsgs.isEmpty){
-      showDialog(context: context, builder: (BuildContext context){
-        return const AlertDialog(
-          title: Text("der Eintrag ist leer"),
-        );
-      });
-    }else{
+   
 
       DiaryEntryDTO newEntry = DiaryEntryDTO(DateTime.now().toString());
       //persistEntryDTO(widget.userAccountDTO.databaseId!, newEntry);
@@ -134,11 +128,43 @@ class _Prog_NewEntryViewState extends State<Prog_NewEntryView> {
         });
       });
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) =>   Prog_OverviewScreen(tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: true, isMyRatingsEabled: false,)))));
+     
+     if(checkIfMinimumOneTextAndOneNumberIsAnswered(messageList)){
+        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShowCaseWidget(builder: Builder(builder: (_) =>   Prog_OverviewScreen(tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: true, isMyRatingsEabled: false, isTutorialFinished: false,)))));
+     }else{
+       showDialog(context: context, builder: (BuildContext context){
+         return  AlertDialog(
+           title: const Text("Damit du das Tutorial erfolgreich abschließen kannst, fülle bitte mindestens eine Textfrage und eine Punktefrage aus."),
+           actions: [
+             ElevatedButton(onPressed: ()=> Navigator.of(context).pop(), child: const Text("OK"), style: Themes.primaryButtonStyle,)
+           ],
+         );
+       });
+     }
+
 
       
-    }
+    
   }
+  bool checkIfMinimumOneTextAndOneNumberIsAnswered(List<EntryMsgDTO> messages){
+
+      bool textDone = false;
+      bool numberDone = false;
+
+      messages.forEach((m) {
+        if(m.isTextField){
+          textDone = true;
+        }else{
+          numberDone = true;
+        }
+      });
+
+      if(textDone && numberDone){
+        return true;
+      }else{
+        return false;
+      }
+    }
 }
 
 class Prog_ExpandableListItem extends StatefulWidget {

@@ -319,7 +319,7 @@ class _Prog_MyRatingsViewState extends State<Prog_MyRatingsView> {
                       builder: (BuildContext context) => ShowCaseWidget(
                         builder: Builder(
                           builder: (_) =>   Prog_OverviewScreen(
-                            tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: false, isMyRatingsEabled: false,
+                            tempUserAccount: widget.tempUserAccount, isMyDiaryEnabled: false, isThankfulViewEnabled: false, isMyRatingsEabled: false, isTutorialFinished: true,
                           )
                         )
                       )
