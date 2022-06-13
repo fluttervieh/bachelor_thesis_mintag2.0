@@ -41,9 +41,9 @@ class _Prog_NewEntryViewState extends State<Prog_NewEntryView> {
    @override
   void initState() {
     super.initState();
-    _expandableListItems.add(Showcase(key: textKey, description: 'Hier kannst du reinschreiben, was immer du willst. Wenn du fertig bist, drücke "OK" auf deiner Tastatur.', child: Prog_ExpandableListItem(header: "Heute bin ich besonders Dankbar für:", index: 0, entryMsgs: _entryMsgs,  isTextField: true, isSelected: true,)));
+    _expandableListItems.add(Showcase(key: textKey, description: 'Hier kannst du reinschreiben, was immer du willst. Wenn du fertig bist, drücke "OK"-Knopf.', child: Prog_ExpandableListItem(header: "Heute bin ich besonders Dankbar für:", index: 0, entryMsgs: _entryMsgs,  isTextField: true, isSelected: true,)));
     _expandableListItems.add(Prog_ExpandableListItem(header: "Heute bin ich weniger Dankbar für:", index: 1, entryMsgs: _entryMsgs,  isTextField: true, isSelected: false,));
-    _expandableListItems.add(Showcase(key: checkboxKey, description: 'Hier siehst eine Bewertungsskala von 1 bis 5, wobei 1 eher schlecht und 5 eher gut ist. Um die Frage zu beantworten, tippe einfach eine der Zahlen an.',child: Prog_ExpandableListItem(header: "Heute habe ich mich gesund gefühlt.", index: 2, entryMsgs: _entryMsgs,  isTextField: false, isSelected: true,)));
+    _expandableListItems.add(Showcase(key: checkboxKey, description: 'Diese Fragen kannst du von 1 (schlecht) bis 5(super gut) bewerten. Tippe dafür einfach nur einen der Kreise an.',child: Prog_ExpandableListItem(header: "Heute habe ich mich gesund gefühlt.", index: 2, entryMsgs: _entryMsgs,  isTextField: false, isSelected: true,)));
     _expandableListItems.add(Prog_ExpandableListItem(header: "Heute habe ich mich gerne für etwas angestrengt.", index: 3, entryMsgs: _entryMsgs,  isTextField: false, isSelected: false,));
     _expandableListItems.add(Prog_ExpandableListItem(header: "Ich habe Wünsche für die Zukunft.",index: 4, entryMsgs: _entryMsgs,  isTextField: false, isSelected: false,));
     _expandableListItems.add(Prog_ExpandableListItem(header: "Manches ist mir heute besonders gut gelungen.", index: 5, entryMsgs: _entryMsgs,  isTextField: false, isSelected: false,));
@@ -203,6 +203,8 @@ class _Prog_ExpandableListItemState extends State<Prog_ExpandableListItem> {
   List<CircleSelection> circleSelections = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
+  bool isTextMsgSaved = false;
+
   EntryMsgDTO msg = EntryMsgDTO("", 0, false, false);
 
 
@@ -273,7 +275,15 @@ class _Prog_ExpandableListItemState extends State<Prog_ExpandableListItem> {
     child: GestureDetector(
       onTap: (){
          setState(() { 
-           isExpanded?isExpanded = false:isExpanded=true;
+
+          if(isExpanded){
+             if(!isTextMsgSaved){
+                textEditingController.clear();
+             }
+             isExpanded = false;
+           }else{
+             isExpanded = true;
+           }
           print("[-----I-" + widget.index.toString() + "---]" + i.toString());
          });
       },
@@ -294,26 +304,57 @@ class _Prog_ExpandableListItemState extends State<Prog_ExpandableListItem> {
                 child: Column(
                   children: [
                     Flexible(child: Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,), overflow: TextOverflow.ellipsis, maxLines: 2,)),
-                    TextField(
-                      controller: textEditingController,
-                      decoration: const InputDecoration(
-                      hintText: "Schreibe hier deine Gedanken auf...",
-                      ),
-                      onEditingComplete:() {
-                            if(textEditingController.text != ""){
-                                setState(() {
-                                       defaultTextValue = textEditingController.text;
-                                widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
-                                });
-
-                            }else{
-                              setState(() {
-                                defaultTextValue = textEditingController.text;
-                                widget.entryMsgs.remove(widget.index);
-                              });
-                            }
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 8,
+                          child: TextField(
+                            controller: textEditingController,
+                            decoration: InputDecoration(
+                            hintText: isTextMsgSaved? defaultTextValue:"Schreibe hier...",
+                            ),
+                            onEditingComplete:() {
+                                  if(textEditingController.text != ""){
+                                      setState(() {
+                                             defaultTextValue = textEditingController.text;
+                                      widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
+                                      });
                         
-                      } ,                    
+                                  }else{
+                                    setState(() {
+                                      defaultTextValue = textEditingController.text;
+                                      widget.entryMsgs.remove(widget.index);
+                                    });
+                                  }
+                              
+                            } ,                    
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(onPressed: (){
+                              print("---------"  + textEditingController.text);
+
+                              if(textEditingController.text != ""){
+                                      setState(() {
+                                             defaultTextValue = textEditingController.text;
+                                              widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
+                                              isExpanded = false;
+                                              isTextMsgSaved = true;
+                                              textEditingController.clear();
+                                      });
+                        
+                                  }else{
+                                    setState(() {
+                                      defaultTextValue = textEditingController.text;
+                                      widget.entryMsgs.remove(widget.index);
+                                    });
+                                  }
+                          }, 
+                            child: const Text("Ok"), 
+                            style: Themes.primaryButtonStyle,))
+
+                      ],
                     )
                   ],
                 ),
