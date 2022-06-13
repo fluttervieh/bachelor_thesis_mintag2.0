@@ -62,7 +62,7 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: ElevatedButton(onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const LoginScreen())),style: Themes.primaryButtonStyle, child: const Text("Zum Login")),
+                  child: ElevatedButton(onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Prog_Login())),style: Themes.primaryButtonStyle, child: const Text("Zum Login")),
                 )
               ],
             )

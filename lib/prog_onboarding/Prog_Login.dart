@@ -102,6 +102,7 @@ class _Prog_LoginState extends State<Prog_Login> {
                                             ElevatedButton(
                                               style: Themes.primaryButtonStyle,
                                               onPressed: (){
+                                                deleteNavigationStack();
                                                 final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                                 provider.signIn(_emailController.text, _passwordController.text);
                                               },
@@ -121,6 +122,7 @@ class _Prog_LoginState extends State<Prog_Login> {
                                                 ),
                                               ),
                                               onPressed: (){
+                                               deleteNavigationStack();
                                                 final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                                 provider.googleLogin();
                                               }, child: Row(
@@ -135,6 +137,7 @@ class _Prog_LoginState extends State<Prog_Login> {
                                             const SizedBox(height: 8,),
                                             GestureDetector(
                                               onTap: () {
+                                                deleteNavigationStack();
                                                 final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                                                 provider.signUp(_emailController.text, _passwordController.text);
                                               }, 
