@@ -5,7 +5,9 @@ import 'package:mintag_application/Database/ModelClasses/UserAccountDTO.dart';
 import 'package:mintag_application/Reusable_Widgets/DateParser.dart';
 import 'package:mintag_application/Reusable_Widgets/HeaderContainer.dart';
 import 'package:mintag_application/Reusable_Widgets/Themes.dart';
+import 'package:mintag_application/Views/LoginScreen/LoginScreen.dart';
 import 'package:mintag_application/Views/OverviewScreen/OverviewScreen.dart';
+import 'package:mintag_application/prog_onboarding/Prog_Login.dart';
 import 'package:mintag_application/prog_onboarding/Prog_MyDiary.dart';
 import 'package:mintag_application/prog_onboarding/Prog_MyRatingsView.dart';
 import 'package:mintag_application/prog_onboarding/Prog_ThankfulMoments.dart';
@@ -46,10 +48,12 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
     widget.isMyRatingsEabled? WidgetsBinding.instance!.addPostFrameCallback((_)async{ ShowCaseWidget.of(context)!.startShowCase([myRatingsKey]); }):null;
 
     widget.isTutorialFinished?SchedulerBinding.instance!.addPostFrameCallback((_) => showDialog(
+
       context: context, 
       barrierDismissible: false,
       builder: (BuildContext context){
         return AlertDialog(
+
           title: const Text("Herzlichen Glückwunsch! Du hast das Tutorial erfolgreich beendet! Wenn du mit MinTag weitermachen möchtest, drücke den Button und erstelle dein ganz eigenes Tagebuch!"),
           actions: [
             Row(
@@ -58,7 +62,7 @@ class _Prog_OverviewScreenState extends State<Prog_OverviewScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: ElevatedButton(onPressed: (){},style: Themes.primaryButtonStyle, child: const Text("Zum Login")),
+                  child: ElevatedButton(onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const LoginScreen())),style: Themes.primaryButtonStyle, child: const Text("Zum Login")),
                 )
               ],
             )
