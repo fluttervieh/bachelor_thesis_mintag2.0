@@ -192,6 +192,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   List<CircleSelection> circleSelections = [];
   List<bool> selectedBoxes =[];
   bool isExpanded = false;
+  bool isTextMsgSaved = false;
   EntryMsgDTO msg = EntryMsgDTO("", 0, false, false);
 
 
@@ -260,7 +261,15 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     child: GestureDetector(
       onTap: (){
          setState(() { 
-           isExpanded?isExpanded = false:isExpanded=true;
+           if(isExpanded){
+             if(!isTextMsgSaved){
+                textEditingController.clear();
+             }
+             isExpanded = false;
+           }else{
+             isExpanded = true;
+           }
+           //isExpanded?isExpanded = false:isExpanded=true;
           print("[-----I-" + widget.index.toString() + "---]" + i.toString());
          });
       },
@@ -281,26 +290,41 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                 child: Column(
                   children: [
                     Flexible(child: Text(widget.header ,style: const TextStyle(fontWeight: FontWeight.bold,), overflow: TextOverflow.ellipsis, maxLines: 2,)),
-                    TextField(
-                      controller: textEditingController,
-                      decoration: const InputDecoration(
-                      hintText: "Schreibe hier deine Gedanken auf...",
-                      ),
-                      onEditingComplete:() {
-                            if(textEditingController.text != ""){
-                                setState(() {
-                                       defaultTextValue = textEditingController.text;
-                                widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
-                                });
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 8,
+                          child: TextField(
+                            controller: textEditingController,
+                            decoration:  InputDecoration(
+                            hintText: isTextMsgSaved? defaultTextValue:"Schreibe hier...",
+                            ),                
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(onPressed: (){
+                              print("---------"  + textEditingController.text);
 
-                            }else{
-                              setState(() {
-                                defaultTextValue = textEditingController.text;
-                                widget.entryMsgs.remove(widget.index);
-                              });
-                            }
+                              if(textEditingController.text != ""){
+                                      setState(() {
+                                             defaultTextValue = textEditingController.text;
+                                              widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
+                                              isExpanded = false;
+                                              isTextMsgSaved = true;
+                                              textEditingController.clear();
+                                      });
                         
-                      } ,                    
+                                  }else{
+                                    setState(() {
+                                      defaultTextValue = textEditingController.text;
+                                      widget.entryMsgs.remove(widget.index);
+                                    });
+                                  }
+                          }, 
+                            child: const Text("Ok"), 
+                            style: Themes.primaryButtonStyle,))
+                      ],
                     )
                   ],
                 ),
