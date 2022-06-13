@@ -280,7 +280,7 @@ class _Prog_MyRatingsViewState extends State<Prog_MyRatingsView> {
                         padding: const EdgeInsets.all(32.0),
                         child: Showcase(
                           key: piechartKey,
-                          description: 'Hier siehst du die Verteilung aller bis jetzt von dir abgegebenen Punkte. Die Zahlen innheralb des Kreises sind die jeweilge Anzahl der Skalawerte von 1 bis 5. Welcher Farbe diese zugehören, kannst du aus der Legende unten entnehmen.',
+                          description: 'Hier siehst du die Verteilung aller bis jetzt von dir abgegebenen Punkte. Die Zahlen innheralb des Kreises sind die jeweilge Anzahl der Werte von 1 bis 5. Welcher Farbe diese zugehören, kannst du weiter unten sehen.',
                           child: PieChart(
                             dataMap: isAllTimeViewSelected? ratingCountsAllTime: ratingCountsThisMonth,
                             animationDuration: const Duration(milliseconds: 1500),
