@@ -21,7 +21,7 @@ class SelfReflection extends StatelessWidget {
                   const Expanded(
                     flex: 3,
                     child:  SizedBox(
-                      child: BO_Header(header: "Selbstreflexion.",subHeader: "MinTag unterstützt dich dabei, deinen Tag zu revue passieren zu lassen und deine Gedanken zu organisieren.",),
+                      child: BO_Header(header: "Blick in den Spiegel.",subHeader: "MinTag unterstützt dich dabei, deinen Tag zu revue passieren zu lassen und deine Gedanken zu organisieren.",),
                     ),
                   ),
                   Expanded(

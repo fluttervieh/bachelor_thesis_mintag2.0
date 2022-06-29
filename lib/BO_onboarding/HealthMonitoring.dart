@@ -24,7 +24,7 @@ class HealthMonitoring extends StatelessWidget {
                   const Expanded(
                     flex: 3,
                     child:  SizedBox(
-                      child: BO_Header(header: "Gesundheits-Monitoring.",subHeader: "Wie ging es dir in letzter Zeit? Ein Überblick über deine Gesamtbewertungen hilft dir, einen Überblick über dein allgemeines Wohlbefinden zu erhalten.",),
+                      child: BO_Header(header: "Deine Gesundheit.",subHeader: "Wie ging es dir in letzter Zeit? Ein Überblick über deine Gesamtbewertungen hilft dir, einen Überblick über dein allgemeines Wohlbefinden zu erhalten.",),
                     ),
                   ),
                   Expanded(
