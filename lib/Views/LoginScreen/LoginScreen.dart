@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -28,6 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   
 
   Future<void> checkIfUserFinishedOnboarding()async{
+
+            await _storage.deleteAll();
 
       String? s = await _storage.read(key: "onboardingFinished");
 
