@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_string_encryption/flutter_string_encryption.dart';
+import 'package:string_encryption/string_encryption.dart';
 import 'package:mintag_application/Database/Database.dart';
 import 'package:mintag_application/Database/ModelClasses/DiaryEntryDTO.dart';
 import 'package:mintag_application/Database/ModelClasses/EntryMsgDTO.dart';
@@ -199,6 +201,8 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
   String defaultTextValue = "";
   TextEditingController textEditingController = TextEditingController();
 
+  
+
 
 
   @override
@@ -255,6 +259,7 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
       }  
     }
 
+  
   @override
   Widget build(BuildContext context) =>Padding(
     padding:  EdgeInsets.symmetric(horizontal: isExpanded?16.0: 32.0, vertical: 16),
@@ -303,13 +308,16 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
                         ),
                         Expanded(
                           flex: 2,
-                          child: ElevatedButton(onPressed: (){
+                          child: ElevatedButton(onPressed: ()async{
                               print("---------"  + textEditingController.text);
 
                               if(textEditingController.text != ""){
-                                      setState(() {
+                                      setState(() async{
                                              defaultTextValue = textEditingController.text;
-                                              widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + textEditingController.text, 0, true, false);
+                                             //dencryption stuff
+                                              String encryptedText = await encrypt(textEditingController.text);
+                                              debugPrint("[----encrypted " + encryptedText);
+                                              widget.entryMsgs[widget.index]=EntryMsgDTO(widget.header + " " + encryptedText, 0, true, false);
                                               isExpanded = false;
                                               isTextMsgSaved = true;
                                               textEditingController.clear();
@@ -419,6 +427,16 @@ class _ExpandableListItemState extends State<ExpandableListItem> {
     }
     return false;
   }
+
+}
+
+Future<String> encrypt(String text)async{
+  final cryptor = PlatformStringCryptor();
+  final salt = await cryptor.generateSalt();
+  String key = await cryptor.generateKeyFromPassword(text, salt);
+  String encrypted = await cryptor.encrypt(text, key);
+
+  return encrypted;
 
 }
 
